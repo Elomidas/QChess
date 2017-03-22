@@ -7,10 +7,10 @@ class Piece
 {
     public:
         Piece();
-        Piece(Couleur);
+        Piece(const Couleur);
         virtual ~Piece();
         Couleur GetCouleur();
-        void SetCouleur(Couleur c);
+        void SetCouleur(const Couleur c);
 
     protected:
         Couleur m_couleur;

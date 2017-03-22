@@ -5,7 +5,7 @@ Piece::Piece() : m_couleur(_NOIR)
     //ctor
 }
 
-Piece::Piece(Couleur c) : m_couleur(c)
+Piece::Piece(const Couleur c) : m_couleur(c)
 {
     //ctor
 }
@@ -20,7 +20,7 @@ Couleur Piece::GetCouleur()
     return m_couleur;
 }
 
-void Piece::SetCouleur(Couleur c)
+void Piece::SetCouleur(const Couleur c)
 {
-
+    m_couleur = c;
 }

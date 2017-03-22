@@ -12,7 +12,12 @@ class Plateau
     public:
         Plateau();
         virtual ~Plateau();
+        Piece& GetPiece(const int x, const int y);
+        const Piece& GetPiece(const int x, const int y);
+
     protected:
+        Piece m_pieces[8][8];
+
     private:
 };
 
