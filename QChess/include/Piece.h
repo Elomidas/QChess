@@ -11,6 +11,7 @@ class Piece
         virtual ~Piece();
         Couleur GetCouleur();
         void SetCouleur(const Couleur c);
+        char GetChar();
 
     protected:
         Couleur m_couleur;

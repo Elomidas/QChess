@@ -24,3 +24,8 @@ void Piece::SetCouleur(const Couleur c)
 {
     m_couleur = c;
 }
+
+char GetChar()
+{
+    return '?';
+}

@@ -1,6 +1,8 @@
 #ifndef PLATEAU_H
 #define PLATEAU_H
 
+#include <string>
+
 #include "Roi.h"
 #include "Reine.h"
 #include "Tour.h"
@@ -14,6 +16,7 @@ class Plateau
         virtual ~Plateau();
         Piece& GetPiece(const int x, const int y);
         const Piece& GetPiece(const int x, const int y);
+        string ToStr();
 
     protected:
         Piece m_pieces[8][8];
