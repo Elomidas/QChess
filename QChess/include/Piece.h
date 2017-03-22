@@ -1,6 +1,8 @@
 #ifndef PIECE_H
 #define PIECE_H
 
+#include <vector>
+
 enum Couleur{_BLANC, _NOIR};
 
 class Piece
@@ -12,6 +14,7 @@ class Piece
         Couleur GetCouleur();
         void SetCouleur(const Couleur c);
         char GetChar();
+        vector<int[2]> Deplacements();
 
     protected:
         Couleur m_couleur;
