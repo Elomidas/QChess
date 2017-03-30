@@ -1,4 +1,4 @@
-#include "Cavalier.h"
+#include "../include/Cavalier.h"
 
 Cavalier::Cavalier()
 {

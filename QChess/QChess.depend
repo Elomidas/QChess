@@ -1,0 +1,55 @@
+# depslib dependency file v1.0
+1490872665 source:d:\code\c++\projets\qchess\qchess\main.cpp
+	<iostream>
+
+1490874150 source:d:\code\c++\projets\qchess\qchess\src\cavalier.cpp
+	"../include/Cavalier.h"
+
+1490872665 d:\code\c++\projets\qchess\qchess\include\cavalier.h
+	"Piece.h"
+
+1490911042 d:\code\c++\projets\qchess\qchess\include\piece.h
+	<vector>
+	"Deplacement.h"
+
+1490907420 source:d:\code\c++\projets\qchess\qchess\src\piece.cpp
+	"../include/Piece.h"
+
+1490874156 source:d:\code\c++\projets\qchess\qchess\src\pion.cpp
+	"../include/Pion.h"
+
+1490872665 d:\code\c++\projets\qchess\qchess\include\pion.h
+	"Piece.h"
+
+1490907039 source:d:\code\c++\projets\qchess\qchess\src\plateau.cpp
+	"../include/Plateau.h"
+
+1490905845 d:\code\c++\projets\qchess\qchess\include\plateau.h
+	<string>
+	<assert.h>
+	"Roi.h"
+	"Reine.h"
+	"Tour.h"
+	"Cavalier.h"
+	"Pion.h"
+
+1490872665 d:\code\c++\projets\qchess\qchess\include\roi.h
+	"Piece.h"
+
+1490872665 d:\code\c++\projets\qchess\qchess\include\reine.h
+	"Piece.h"
+
+1490908911 d:\code\c++\projets\qchess\qchess\include\tour.h
+	"Piece.h"
+
+1490910072 d:\code\c++\projets\qchess\qchess\include\deplacement.h
+
+1490910799 source:d:\code\c++\projets\qchess\qchess\src\deplacement.cpp
+	"Deplacement.h"
+
+1490907054 source:d:\code\c++\projets\qchess\qchess\src\reine.cpp
+	"../include/Reine.h"
+
+1490872665 source:d:\code\c++\projets\qchess\qchess\src\roi.cpp
+	"Roi.h"
+

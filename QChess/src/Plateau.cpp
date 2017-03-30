@@ -1,4 +1,4 @@
-#include "Plateau.h"
+#include "../include/Plateau.h"
 
 Plateau::Plateau()
 {
@@ -10,39 +10,50 @@ Plateau::~Plateau()
     //dtor
 }
 
-Piece& Plateau::GetPiece(const int x, const int y)
+Piece& Plateau::GetPiece(const Couleur c, const int index)
 {
-    if((x >= 0)
-       && (x < 8)
-       && (y >= 0)
-       && (y < 8))
-        return m_pieces[x][y];
-    return NULL;
+    assert(0 <= index);
+    assert(_NB_PIECES > index);
+    return m_pieces[c][index];
 }
 
-const Piece& Plateau::GetPiece(const int x, const int y)
+bool Plateau::Bouger(const Couleur couleur, const int index, const int newLigne, const int newColonne)
 {
-    if((x >= 0)
-       && (x < 8)
-       && (y >= 0)
-       && (y < 8))
-        return m_pieces[x][y];
-    return NULL;
+    //
 }
 
-bool Plateau::Bouger(const int dx, const int dy, const int ax, const int ay);
-
-string ToStr()
+string Plateau::ToStr()
 {
     string str("");
-    for(int i(0); i < 8; i++)
+    char tab[_HAUTEUR_PLATEAU][_LARGEUR_PLATEAU];
+
+    //Initialisation
+    for(int i(0); i < _HAUTEUR_PLATEAU; i++)
     {
-        for(int j(0); j < 8; j++)
+        for(int j(0); j < _LARGEUR_PLATEAU; j++)
+            tab[i][j] = ' ';
+    }
+
+    //On ajoute les pieces
+    for(int i(0); i < 2; i++)
+    {
+        for(int j(0); j < _NB_PIECES; j++)
         {
-            if(m_pieces[i][j] != NULL)
-                str += m_pieces[i][j].GetChar();
-            else str += ' ';
+            int x = m_pieces[i][j].GetLigne();
+            int y = m_pieces[i][j].GetColonne();
+            if((x >= 0)
+               && (x < _HAUTEUR_PLATEAU)
+               && (y >= 0)
+               && (y < _LARGEUR_PLATEAU))
+                tab[x][y] = m_pieces[x][y].GetChar();
         }
+    }
+
+    //On cree str a partir du tableau de caracteres
+    for(int i(0); i < _HAUTEUR_PLATEAU; i++)
+    {
+        for(int j(0); j < _LARGEUR_PLATEAU; j++)
+            str += tab[i][j];
         str += '\n';
     }
     return str;

@@ -2,6 +2,7 @@
 #define PLATEAU_H
 
 #include <string>
+#include <assert.h>
 
 #include "Roi.h"
 #include "Reine.h"
@@ -9,18 +10,29 @@
 #include "Cavalier.h"
 #include "Pion.h"
 
+//Nombre de piece jouee par chaque joueur
+#define _NB_PIECES  8
+//Largeur et hauteur du plateau
+#define _LARGEUR_PLATEAU    8
+#define _HAUTEUR_PLATEAU    8
+
 class Plateau
 {
     public:
+        //Constructeur
         Plateau();
+        //Destructeur
         virtual ~Plateau();
-        Piece& GetPiece(const int x, const int y);
-        const Piece& GetPiece(const int x, const int y);
+        //Accesseur
+        Piece& GetPiece(const Couleur, const int);
+        //Mutateur
+        bool Bouger(const Couleur, const int, const int, const int);
+        bool Bouger(Piece&, const int, const int);
+        //Affichage
         string ToStr();
-        bool Bouger(const int dx, const int dy, const int ax, const int ay);
 
     protected:
-        Piece m_pieces[8][8];
+        Piece m_pieces[2][_NB_PIECES];
 
     private:
 };
