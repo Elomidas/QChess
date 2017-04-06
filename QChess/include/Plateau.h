@@ -28,7 +28,7 @@ class Plateau
         //Initialisation
         void InitialiserPieces();
         //Accesseur
-        Piece& GetPiece(const Couleur, const int);
+        Piece* GetPiece(const Couleur, const int);
         //Mutateur
         bool Bouger(const Couleur, const int, const int, const int);
         bool Bouger(Piece&, const int, const int);
@@ -36,7 +36,7 @@ class Plateau
         string ToStr();
 
     protected:
-        Piece m_pieces[2][_NB_PIECES];
+        Piece* m_pieces[2][_NB_PIECES];
 
     private:
 };

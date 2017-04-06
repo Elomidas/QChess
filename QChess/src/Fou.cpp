@@ -2,19 +2,19 @@
 
 vector<Deplacement*> Fou::m_deplacements = Fou::InitDeplacements();
 
-Fou::Fou() : Piece();
+Fou::Fou()
 {
-    //ctor
+    Init(_NOIR, -1, -1);
 }
 
-Fou::Fou(const Couleur c) : Piece(c)
+Fou::Fou(const Couleur c)
 {
-    //ctor
+    Init(c, -1, -1);
 }
 
-Fou::Fou(const Couleur c, const int ligne, const int colonne) : Piece(c, ligne, colonne)
+Fou::Fou(const Couleur c, const int ligne, const int colonne)
 {
-    //ctor
+    Init(c, ligne, colonne);
 }
 
 Fou::~Fou()

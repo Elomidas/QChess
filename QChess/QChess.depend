@@ -1,39 +1,40 @@
 # depslib dependency file v1.0
-1490872665 source:d:\code\c++\projets\qchess\qchess\main.cpp
+1491488905 source:d:\code\c++\projets\qchess\qchess\main.cpp
 	<iostream>
+	"Plateau.h"
 
-1490874150 source:d:\code\c++\projets\qchess\qchess\src\cavalier.cpp
+1491489320 source:d:\code\c++\projets\qchess\qchess\src\cavalier.cpp
 	"../include/Cavalier.h"
 
-1490872665 d:\code\c++\projets\qchess\qchess\include\cavalier.h
+1491487282 d:\code\c++\projets\qchess\qchess\include\cavalier.h
 	"Piece.h"
 
 1490911042 d:\code\c++\projets\qchess\qchess\include\piece.h
 	<vector>
 	"Deplacement.h"
 
-1490907420 source:d:\code\c++\projets\qchess\qchess\src\piece.cpp
+1491489155 source:d:\code\c++\projets\qchess\qchess\src\piece.cpp
 	"../include/Piece.h"
 
-1490874156 source:d:\code\c++\projets\qchess\qchess\src\pion.cpp
+1491489395 source:d:\code\c++\projets\qchess\qchess\src\pion.cpp
 	"../include/Pion.h"
 
-1490872665 d:\code\c++\projets\qchess\qchess\include\pion.h
+1491488752 d:\code\c++\projets\qchess\qchess\include\pion.h
 	"Piece.h"
 
-1490907039 source:d:\code\c++\projets\qchess\qchess\src\plateau.cpp
+1491489577 source:d:\code\c++\projets\qchess\qchess\src\plateau.cpp
 	"../include/Plateau.h"
 
-1490905845 d:\code\c++\projets\qchess\qchess\include\plateau.h
+1491488795 d:\code\c++\projets\qchess\qchess\include\plateau.h
 	<string>
 	<assert.h>
 	"Roi.h"
-	"Reine.h"
+	"Fou.h"
 	"Tour.h"
 	"Cavalier.h"
 	"Pion.h"
 
-1490872665 d:\code\c++\projets\qchess\qchess\include\roi.h
+1491487534 d:\code\c++\projets\qchess\qchess\include\roi.h
 	"Piece.h"
 
 1490872665 d:\code\c++\projets\qchess\qchess\include\reine.h
@@ -50,6 +51,15 @@
 1490907054 source:d:\code\c++\projets\qchess\qchess\src\reine.cpp
 	"../include/Reine.h"
 
-1490872665 source:d:\code\c++\projets\qchess\qchess\src\roi.cpp
+1491489368 source:d:\code\c++\projets\qchess\qchess\src\roi.cpp
 	"Roi.h"
+
+1491489349 source:d:\code\c++\projets\qchess\qchess\src\fou.cpp
+	"../include/Fou.h"
+
+1491487629 d:\code\c++\projets\qchess\qchess\include\fou.h
+	"Piece.h"
+
+1491489287 source:d:\code\c++\projets\qchess\qchess\src\tour.cpp
+	"../include/Tour.h"
 
