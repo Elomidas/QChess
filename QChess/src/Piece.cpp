@@ -25,7 +25,12 @@ void Piece::SetCouleur(const Couleur c)
     m_couleur = c;
 }
 
-char GetChar()
+char Piece::GetChar()
 {
     return '?';
+}
+
+vector<int[2]> Piece::Deplacements()
+{
+    //
 }

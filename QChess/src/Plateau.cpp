@@ -30,9 +30,18 @@ const Piece& Plateau::GetPiece(const int x, const int y)
     return NULL;
 }
 
-bool Plateau::Bouger(const int dx, const int dy, const int ax, const int ay);
+bool Plateau::Bouger(const int dx, const int dy, const int ax, const int ay)
+{
+    if((dx < 0)
+       || (dx > 7)
+       || (dy < 0)
+       || (dy > 7)
+       || (m_pieces[dx][dy] == NULL))
+        return false;
 
-string ToStr()
+}
+
+string Plateau::ToStr()
 {
     string str("");
     for(int i(0); i < 8; i++)
