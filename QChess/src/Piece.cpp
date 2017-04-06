@@ -96,4 +96,3 @@ const bool Piece::Accessible(const int ligne, const int colonne, const vector<De
     }
     return test;
 }
-
