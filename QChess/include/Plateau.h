@@ -5,16 +5,18 @@
 #include <assert.h>
 
 #include "Roi.h"
-#include "Reine.h"
+#include "Fou.h"
 #include "Tour.h"
 #include "Cavalier.h"
 #include "Pion.h"
 
-//Nombre de piece jouee par chaque joueur
-#define _NB_PIECES  8
+//Nombre de piece jouee pour chaque joueur
+#define _NB_PIECES  12
 //Largeur et hauteur du plateau
 #define _LARGEUR_PLATEAU    8
 #define _HAUTEUR_PLATEAU    8
+//Index du roi dans le tableau de pieces
+#define _INDEX_ROI  2
 
 class Plateau
 {
@@ -23,6 +25,8 @@ class Plateau
         Plateau();
         //Destructeur
         virtual ~Plateau();
+        //Initialisation
+        void InitialiserPieces();
         //Accesseur
         Piece& GetPiece(const Couleur, const int);
         //Mutateur

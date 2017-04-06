@@ -9,7 +9,12 @@ Tour::Tour() : Piece()
 
 Tour::Tour(const Couleur c) : Piece(c)
 {
-    //
+    //ctor
+}
+
+Tour::Tour(const Couleur c, const int ligne, const int colonne) : Piece(c, ligne, colonne)
+{
+    //ctor
 }
 
 Tour::~Tour()

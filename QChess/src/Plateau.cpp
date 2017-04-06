@@ -10,6 +10,29 @@ Plateau::~Plateau()
     //dtor
 }
 
+void Plateau::InitialiserPieces()
+{
+    //Blancs
+    Tour tBl(_BLANC, 0, 0);
+    Fou fBl(_BLANC, 0, 2);
+    Roi rBl(_BLANC, 0, 4);
+    Cavalier cBl(_BLANC, 0, 6);
+    Pion pBl[8];
+    for(int i = 0; i < 8; i++)
+    {
+        int l = (i < 4) ? 1 : 2;
+        int c = (2 - l) + (i % 4);
+        pBl[i].SetPosition(l, c);
+        pBl[i].SetCouleur(_BLANC);
+    }
+    m_pieces[_BLANC][0] = tBl;
+    m_pieces[_BLANC][1] = fBl;
+    m_pieces[_BLANC][2] = rBl;
+    m_pieces[_BLANC][3] = cBl;
+    for(int i = 0; i < 8; i++)
+        m_pieces[4 + i] = pBl[i];
+}
+
 Piece& Plateau::GetPiece(const Couleur c, const int index)
 {
     assert(0 <= index);
