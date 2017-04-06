@@ -1,4 +1,4 @@
-#include "Pion.h"
+#include "../include/Pion.h"
 
 Pion::Pion()
 {
