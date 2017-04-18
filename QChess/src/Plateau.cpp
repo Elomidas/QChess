@@ -30,7 +30,7 @@ void Plateau::InitialiserPieces()
     m_pieces[_BLANC][2] = rBl;
     m_pieces[_BLANC][3] = cBl;
     for(int i = 0; i < 8; i++)
-        m_pieces[4 + i] = pBl[i];
+        m_pieces[_BLANC][4 + i] = pBl[i];
 }
 
 Piece& Plateau::GetPiece(const Couleur c, const int index)
