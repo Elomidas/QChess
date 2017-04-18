@@ -13,6 +13,9 @@ class Fou : public Piece
         Fou(const Couleur, const int, const int);
         //Destructeur
         virtual ~Fou();
+        //Initialisation
+        void Init(const Couleur, const int, const int);
+
     protected:
         static vector<Deplacement*> m_deplacements;
         //Initialisation

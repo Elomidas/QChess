@@ -88,7 +88,7 @@ const bool Piece::Accessible(const int ligne, const int colonne, const vector<De
     bool test = false;
     int l = ligne - m_ligne;
     int c = colonne - m_colonne;
-    for(int i(0); (i < vect.size()) && !test; i++)
+    for(unsigned int i(0); (i < vect.size()) && !test; i++)
     {
         Deplacement * d = vect[i];
         if(d != 0)

@@ -8,8 +8,18 @@ class Roi : public Piece
 {
     public:
         Roi();
+        Roi(const Couleur);
+        Roi(const Couleur, const int, const int);
+        //Destructeurs
         virtual ~Roi();
+        //Initialisation
+        void Init(const Couleur, const int, const int);
+
     protected:
+        static vector<Deplacement*> m_deplacements;
+        //Initialisation
+        static vector<Deplacement*> InitDeplacements();
+
     private:
 };
 

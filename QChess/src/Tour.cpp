@@ -2,19 +2,19 @@
 
 vector<Deplacement*> Tour::m_deplacements = Tour::InitDeplacements();
 
-Tour::Tour() : Piece()
+Tour::Tour()
 {
-    //ctor
+    Init(_NOIR, -1, -1);
 }
 
-Tour::Tour(const Couleur c) : Piece(c)
+Tour::Tour(const Couleur c)
 {
-    //ctor
+    Init(c, -1, -1);
 }
 
-Tour::Tour(const Couleur c, const int ligne, const int colonne) : Piece(c, ligne, colonne)
+Tour::Tour(const Couleur c, const int ligne, const int colonne)
 {
-    //ctor
+    Init(c, ligne, colonne);
 }
 
 Tour::~Tour()
