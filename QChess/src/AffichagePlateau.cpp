@@ -21,10 +21,10 @@ AffichagePlateau::AffichagePlateau()
 
             //Sprite semi transparent
             m_sprites[c][_semi_transparent][j].setTexture(m_texPieces);
-            m_sprites[c][_semi_transparent][j].setTextureRect(sf::Rect<int>(offsets[0][j], offset + offsets[1][j], tailles[0][j], tailles[1][j]));
+            m_sprites[c][_semi_transparent][j].setTextureRect(sf::Rect<int>(offsets[1][j], offset + offsets[0][j], tailles[0][j], tailles[1][j]));
             m_sprites[c][_semi_transparent][j].scale(_RATIO, _RATIO);
             int modif = (c == _BLANC) ? 0 : 255;
-            m_sprites[c][_semi_transparent][j].setColor(sf::Color(modif, modif, modif, 192));
+            m_sprites[c][_semi_transparent][j].setColor(sf::Color(255, 255, 255, 128));
         }
     }
     //Fond
@@ -84,7 +84,6 @@ bool AffichagePlateau::Rafraichir(const sf::Vector2i &pos)
 void AffichagePlateau::Event()
 {
     int posSouris[2] = {0, 0};
-    int offsets[2][5] = {{_RX, _TX, _FX, _CX, _PX}, {_RY, _TY, _FY, _CY, _PY}};
     int tailles[2][5] = {{_RL, _TL, _FL, _CL, _PL}, {_RH, _TH, _FH, _CH, _PH}};
     while (m_fenetre.isOpen())
     {
@@ -101,8 +100,8 @@ void AffichagePlateau::Event()
                     break;
 
                 case sf::Event::MouseMoved :
-                    posSouris[0] = sf::Mouse::getPosition().x;
-                    posSouris[1] = sf::Mouse::getPosition().y;
+                    posSouris[0] = sf::Mouse::getPosition().x - m_fenetre.getPosition().x - 8;
+                    posSouris[1] = sf::Mouse::getPosition().y - m_fenetre.getPosition().y - 30;
                     break;
 
                 default :
@@ -110,7 +109,7 @@ void AffichagePlateau::Event()
             }
         }
         sf::Vector2i pos = GetPiece(posSouris[0], posSouris[1], tailles);
-        std::cout << pos.x << ", " << pos.y << std::endl;
+        std::cout << "c : " << pos.x << ", i : " << pos.y << std::endl;
         Rafraichir(pos);
         sf::sleep(sf::milliseconds(20));
     }
@@ -118,6 +117,8 @@ void AffichagePlateau::Event()
 
 sf::Sprite& AffichagePlateau::GetSprite(const char c, int &h, int &l, const bool transparent)
 {
+    if(transparent)
+        std::cout << c << ", " << transparent << std::endl;
     switch(c)
     {
         case 'R':
@@ -165,25 +166,38 @@ sf::Sprite& AffichagePlateau::GetSprite(const char c, int &h, int &l, const bool
 
 sf::Vector2i AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2][5])
 {
+    // x -> largeur : tailles[0]
+    // y -> hauteur : tailles[1]
     sf::Vector2i pos(-1, -1);
     for(int c(_BLANC); c <= _NOIR; c++)
     {
         for(int i(0); i < _NB_PIECES; i++)
         {
+            int index = (i < 4) ? i : 4;
             //Position de la case occuppée par la piece
             int px = m_plateau->GetPiece((Couleur)c, i)->GetColonne() * _TAILLE_CASE;
             int py = m_plateau->GetPiece((Couleur)c, i)->GetLigne() * _TAILLE_CASE;
             //Ecarts de position dus à la taille de la piece
-            int ex = (_TAILLE_CASE - (tailles[1][i] * _RATIO)) / 2;
-            int ey = (_TAILLE_CASE - (tailles[0][i] * _RATIO)) / 2;
-            if((x >= (px + ex))
-               && (y >= (py + ey))
-               && (x < (px + _TAILLE_CASE - ex))
-               && (y < (py + _TAILLE_CASE - ey)))
+            int ex = (_TAILLE_CASE - (tailles[0][index] * _RATIO)) / 2;
+            int ey = (_TAILLE_CASE - (tailles[1][index] * _RATIO)) / 2;
+            //Calcul des limites de la pièce
+            int xmin = px + ex;
+            int xmax = px + _TAILLE_CASE - ex;
+            int ymin = py + ey;
+            int ymax = py + _TAILLE_CASE - ey;
+            /*
+            std::cout << "Piece " << i << std::endl
+                      << "-> " << xmin << " & " << xmax << std::endl
+                      << "-> " << ymin << " & " << ymax << std::endl << std::endl;
+            */
+            if((x > xmin)
+               && (x <= xmax)
+               && (y > ymin)
+               && (y <= ymax))
             {
-                std::cout << "Enter " << std::endl;
-                if(Contains(c, i, y - (py + ey), x - (px + ex)))
+                if(Contains(c, i, x - xmin, y - ymin))
                 {
+                    std::cout << "OK" << std::endl;
                     pos.x = c;
                     pos.y = i;
                 }
@@ -196,8 +210,10 @@ sf::Vector2i AffichagePlateau::GetPiece(const int &x, const int &y, const int ta
 
 bool AffichagePlateau::Contains(const int &couleur, const int &piece, const int &x, const int &y)
 {
-    sf::Image im = m_sprites[couleur][0][piece].getTexture()->copyToImage();
-    int px = x / _RATIO;
-    int py = y / _RATIO;
+    int index = (piece < 4) ? piece : 4;
+    sf::Rect<int> rect = m_sprites[couleur][0][index].getTextureRect();
+    sf::Image im = m_sprites[couleur][0][index].getTexture()->copyToImage();
+    int px = (x / _RATIO) + rect.left;
+    int py = (y / _RATIO) + rect.top;
     return (im.getPixel(px, py).a != 0);
 }

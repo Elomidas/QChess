@@ -3,7 +3,9 @@
 #include "Jeu.h"
 
 using namespace std;
+
 void Ech();
+
 int main()
 {
     Jeu j;
