@@ -510,7 +510,7 @@
 	"Plateau.h"
 	"AffichagePlateau.h"
 
-1492550890 c:\users\victor\documents\programmation\c++\qchess\qchess\include\affichageplateau.h
+1493204028 c:\users\victor\documents\programmation\c++\qchess\qchess\include\affichageplateau.h
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 	<SFML/System.hpp>
@@ -520,7 +520,7 @@
 	"Jeu.h"
 	<iostream>
 
-1492550819 source:c:\users\victor\documents\programmation\c++\qchess\qchess\src\affichageplateau.cpp
+1493199534 source:c:\users\victor\documents\programmation\c++\qchess\qchess\src\affichageplateau.cpp
 	"AffichagePlateau.h"
 	<iostream>
 

@@ -10,6 +10,9 @@
 //Taille d'une case du plateau
 #define _TAILLE_CASE    80
 
+//Ratio entre la taille des sprite et celle des textures
+#define _RATIO  0.6
+
 //Dimensions de la fenêtre de jeu
 #define _LARGEUR_FENETRE    8 * _TAILLE_CASE
 #define _HAUTEUR_FENETRE    8 * _TAILLE_CASE
@@ -18,8 +21,8 @@
 #define _NOM_FENETRE    "QChess"
 
 //Offset de couleur
-#define _OffBlanc   156
-#define _OffNoir    357
+#define _OffNoir   156
+#define _OffBlanc  357
 
 //Taille des pièces
 //Roi
@@ -68,6 +71,7 @@ class AffichagePlateau
         void SetPlateau(Plateau*);
         //Autres fonctions
         bool Rafraichir();
+        bool Rafraichir(const sf::Vector2i&);
         void Event();
 
 
@@ -75,11 +79,14 @@ class AffichagePlateau
         enum{_opaque, _semi_transparent};
         enum{_roi, _tour, _fou, _cavalier, _pion};
         //Retourne la texture d'une piece
-        sf::Texture& GetTexture(const char, int&, int&);
+        sf::Sprite& GetSprite(const char, int&, int&, const bool);
+        bool Contains(const int&, const int&, const int&, const int&);
+        sf::Vector2i GetPiece(const int&, const int &, const int[2][5]);
         //Fenêtre
         sf::RenderWindow m_fenetre;
         //Elements graphiques
         sf::Texture m_textures[2][5];
+        sf::Texture m_texPieces;
         sf::Sprite m_sprites[2][2][5];
         sf::Texture m_tPlateau;
         sf::Sprite m_sPlateau;

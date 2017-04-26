@@ -15,6 +15,11 @@
 					<Add option="-g" />
 					<Add directory="include" />
 				</Compiler>
+				<Linker>
+					<Add library="sfml-graphics-d" />
+					<Add library="sfml-window-d" />
+					<Add library="sfml-system-d" />
+				</Linker>
 			</Target>
 			<Target title="Release">
 				<Option output="bin/Release/QChess" prefix_auto="1" extension_auto="1" />
@@ -23,30 +28,44 @@
 				<Option compiler="gcc" />
 				<Compiler>
 					<Add option="-O2" />
+					<Add option="-std=c++11" />
 					<Add directory="include" />
 				</Compiler>
 				<Linker>
 					<Add option="-s" />
+					<Add library="sfml-graphics" />
+					<Add library="sfml-window" />
+					<Add library="sfml-system" />
 				</Linker>
 			</Target>
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
+			<Add directory="sfml/include" />
 		</Compiler>
+		<Linker>
+			<Add directory="sfml/lib" />
+		</Linker>
+		<Unit filename="include/AffichagePlateau.h" />
 		<Unit filename="include/Cavalier.h" />
+		<Unit filename="include/Deplacement.h" />
+		<Unit filename="include/Fou.h" />
+		<Unit filename="include/Jeu.h" />
 		<Unit filename="include/Piece.h" />
 		<Unit filename="include/Pion.h" />
 		<Unit filename="include/Plateau.h" />
-		<Unit filename="include/Reine.h" />
 		<Unit filename="include/Roi.h" />
 		<Unit filename="include/Tour.h" />
 		<Unit filename="main.cpp" />
+		<Unit filename="src/AffichagePlateau.cpp" />
 		<Unit filename="src/Cavalier.cpp" />
+		<Unit filename="src/Deplacement.cpp" />
+		<Unit filename="src/Fou.cpp" />
+		<Unit filename="src/Jeu.cpp" />
 		<Unit filename="src/Piece.cpp" />
 		<Unit filename="src/Pion.cpp" />
 		<Unit filename="src/Plateau.cpp" />
-		<Unit filename="src/Reine.cpp" />
 		<Unit filename="src/Roi.cpp" />
 		<Unit filename="src/Tour.cpp" />
 		<Extensions>
