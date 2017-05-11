@@ -12,6 +12,7 @@ class Jeu
         Jeu();
         virtual ~Jeu();
         void Fin();
+        void Jouer();
 
     protected:
         Plateau m_plateau;

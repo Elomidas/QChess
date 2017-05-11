@@ -58,6 +58,12 @@
 #define _PX 14
 #define _PY 1199
 
+//Paramètres des pions
+#define _BORDURE_PION       2
+#define _RAYON_PION         (_TAILLE_CASE / 2) - (_BORDURE_PION + 1)
+#define _COULEUR_PION       sf::Color::Black
+#define _COULEUR_BORDURE    sf::Color::White
+
 class AffichagePlateau
 {
     public:
@@ -73,6 +79,10 @@ class AffichagePlateau
         bool Rafraichir();
         bool Rafraichir(const sf::Vector2i&);
         void Event();
+        //
+        void DelAlpha();
+        bool Test(int i, int j, int *tab);
+        void Parcours(int*);
 
 
     protected:
@@ -81,7 +91,8 @@ class AffichagePlateau
         //Retourne la texture d'une piece
         sf::Sprite& GetSprite(const char, int&, int&, const bool);
         bool Contains(const int&, const int&, const int&, const int&);
-        sf::Vector2i GetPiece(const int&, const int &, const int[2][5]);
+        sf::Vector2i GetPiece(const int&, const int&, const int[2][5]);
+        sf::Image GetPion();
         //Fenêtre
         sf::RenderWindow m_fenetre;
         //Elements graphiques

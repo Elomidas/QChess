@@ -14,3 +14,9 @@ void Jeu::Fin()
 {
     m_affichage.Event();
 }
+
+void Jeu::Jouer()
+{
+    //
+}
+
