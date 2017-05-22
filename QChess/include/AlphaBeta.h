@@ -1,7 +1,7 @@
 #ifndef ALPHABETA_H
 #define ALPHABETA_H
 
-#include "Plateau.h"
+struct Plateau;
 
 #define _NB_PIECES  12
 
@@ -22,11 +22,14 @@ class AlphaBeta
         Deplacement AlphaBetaDecision(Plateau state);
 
         int Eval(Plateau plateau);
+
+        bool TestFinal(Plateau plateau);
     protected:
 
     private:
         Plateau m_plateau;
         Couleur m_couleur;
+        bool m_gagne;
 };
 
 #endif // ALPHABETA_H
