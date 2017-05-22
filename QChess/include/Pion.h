@@ -15,11 +15,13 @@ class Pion : public Piece
         virtual ~Pion();
         //Initialisation
         void Init(const Couleur, const int, const int);
+        //Autres
+        const std::vector<int*> GetDeplacements(Plateau&);
 
     protected:
-        static vector<Deplacement*> m_deplacements;
+        static std::vector<const Deplacement*> m_deplacements;
         //Initialisation
-        static vector<Deplacement*> InitDeplacements();
+        static std::vector<const Deplacement*> InitDeplacements();
 
     private:
 };

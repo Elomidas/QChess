@@ -127,7 +127,7 @@
 
 1486739998 d:\code\c++\projets\qchess\qchess\sfml\include\sfml\system\vector3.inl
 
-1493227291 d:\code\c++\projets\qchess\qchess\include\plateau.h
+1495486636 d:\code\c++\projets\qchess\qchess\include\plateau.h
 	<string>
 	<assert.h>
 	"Roi.h"
@@ -136,31 +136,35 @@
 	"Cavalier.h"
 	"Pion.h"
 
-1493227291 d:\code\c++\projets\qchess\qchess\include\roi.h
+1495489816 d:\code\c++\projets\qchess\qchess\include\roi.h
 	"Piece.h"
 
-1493227291 d:\code\c++\projets\qchess\qchess\include\piece.h
+1495494976 d:\code\c++\projets\qchess\qchess\include\piece.h
 	<vector>
 	"Deplacement.h"
 
-1493227291 d:\code\c++\projets\qchess\qchess\include\deplacement.h
+1495490558 d:\code\c++\projets\qchess\qchess\include\deplacement.h
+	<vector>
+	<iostream>
 
-1493227291 d:\code\c++\projets\qchess\qchess\include\fou.h
+1495493443 d:\code\c++\projets\qchess\qchess\include\fou.h
 	"Piece.h"
 
-1493227291 d:\code\c++\projets\qchess\qchess\include\tour.h
+1495489808 d:\code\c++\projets\qchess\qchess\include\tour.h
 	"Piece.h"
 
-1493227291 d:\code\c++\projets\qchess\qchess\include\cavalier.h
+1495489797 d:\code\c++\projets\qchess\qchess\include\cavalier.h
+	"Piece.h"
+	"Plateau.h"
+
+1495489823 d:\code\c++\projets\qchess\qchess\include\pion.h
 	"Piece.h"
 
-1493227291 d:\code\c++\projets\qchess\qchess\include\pion.h
-	"Piece.h"
-
-1494538138 d:\code\c++\projets\qchess\qchess\include\affichageplateau.h
+1495478145 d:\code\c++\projets\qchess\qchess\include\affichageplateau.h
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 	<SFML/System.hpp>
+	<vector>
 	"Plateau.h"
 
 1486739998 d:\code\c++\projets\qchess\qchess\sfml\include\sfml\window.hpp
@@ -432,35 +436,35 @@
 	<string>
 	<vector>
 
-1493227291 source:d:\code\c++\projets\qchess\qchess\src\cavalier.cpp
+1495489983 source:d:\code\c++\projets\qchess\qchess\src\cavalier.cpp
 	"../include/Cavalier.h"
 
-1493227291 source:d:\code\c++\projets\qchess\qchess\src\deplacement.cpp
+1495488725 source:d:\code\c++\projets\qchess\qchess\src\deplacement.cpp
 	"Deplacement.h"
+	"Plateau.h"
 
-1493227291 source:d:\code\c++\projets\qchess\qchess\src\fou.cpp
+1495493457 source:d:\code\c++\projets\qchess\qchess\src\fou.cpp
 	"../include/Fou.h"
 
-1493234785 source:d:\code\c++\projets\qchess\qchess\src\jeu.cpp
+1495491073 source:d:\code\c++\projets\qchess\qchess\src\jeu.cpp
 	"Jeu.h"
 	<iostream>
 
-1493227291 source:d:\code\c++\projets\qchess\qchess\src\piece.cpp
+1495493666 source:d:\code\c++\projets\qchess\qchess\src\piece.cpp
 	"../include/Piece.h"
 
-1493227291 source:d:\code\c++\projets\qchess\qchess\src\pion.cpp
+1495490010 source:d:\code\c++\projets\qchess\qchess\src\pion.cpp
 	"../include/Pion.h"
 
-1493227291 source:d:\code\c++\projets\qchess\qchess\src\plateau.cpp
+1495490752 source:d:\code\c++\projets\qchess\qchess\src\plateau.cpp
 	"../include/Plateau.h"
 
-1493227291 source:d:\code\c++\projets\qchess\qchess\src\roi.cpp
+1495489896 source:d:\code\c++\projets\qchess\qchess\src\roi.cpp
 	"Roi.h"
 
-1493227291 source:d:\code\c++\projets\qchess\qchess\src\tour.cpp
+1495489872 source:d:\code\c++\projets\qchess\qchess\src\tour.cpp
 	"../include/Tour.h"
 
-1494537974 source:d:\code\c++\projets\qchess\qchess\src\affichageplateau.cpp
+1495491108 source:d:\code\c++\projets\qchess\qchess\src\affichageplateau.cpp
 	"AffichagePlateau.h"
-	<iostream>
 

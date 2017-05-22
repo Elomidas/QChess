@@ -29,11 +29,13 @@ class Plateau
         void InitialiserPieces();
         //Accesseur
         Piece* GetPiece(const Couleur, const int);
+        Piece* GetPiece(const int, const int);
+        bool Libre(const int, const int) const;
         //Mutateur
         bool Bouger(const Couleur, const int, const int, const int);
         bool Bouger(Piece&, const int, const int);
         //Affichage
-        string ToStr();
+        std::string ToStr();
 
     protected:
         Piece* m_pieces[2][_NB_PIECES];

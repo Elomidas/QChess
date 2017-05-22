@@ -46,11 +46,6 @@ const int Piece::GetColonne()
     return m_colonne;
 }
 
-const bool Piece::GetLigneVue()
-{
-    return true;
-}
-
 void Piece::SetCouleur(const Couleur c)
 {
     m_couleur = c;
@@ -72,18 +67,7 @@ void Piece::SetPosition(const int ligne, const int colonne)
     SetColonne(colonne);
 }
 
-void Piece::Vider(vector<Deplacement*>& vect)
-{
-    while(vect.size() > 0)
-    {
-        Deplacement * d = vect.back();
-        if(d != 0)
-            delete d;
-        vect.pop_back();
-    }
-}
-
-const bool Piece::Accessible(const int ligne, const int colonne, const vector<Deplacement*>& vect)
+const bool Piece::Accessible(const int ligne, const int colonne, const std::vector<Deplacement*>& vect)
 {
     bool test = false;
     int l = ligne - m_ligne;
@@ -96,3 +80,13 @@ const bool Piece::Accessible(const int ligne, const int colonne, const vector<De
     }
     return test;
 }
+const std::vector<int*> Piece::GetDeplacements(Plateau &p)
+{
+    std::vector<int*> vect;
+    return vect;
+}
+
+
+
+
+

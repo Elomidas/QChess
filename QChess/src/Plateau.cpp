@@ -71,14 +71,30 @@ Piece* Plateau::GetPiece(const Couleur c, const int index)
     return m_pieces[c][index];
 }
 
+Piece* Plateau::GetPiece(const int ligne, const int colonne)
+{
+    for(int i = 0; i < 2; i++)
+    {
+        for(int j = 0; j < _NB_PIECES; j++)
+        {
+            if((m_pieces[i][j]->GetLigne() == ligne)
+               && (m_pieces[i][j]->GetColonne() == colonne))
+            {
+                return m_pieces[i][j];
+            }
+        }
+    }
+    return NULL;
+}
+
 bool Plateau::Bouger(const Couleur couleur, const int index, const int newLigne, const int newColonne)
 {
     //
 }
 
-string Plateau::ToStr()
+std::string Plateau::ToStr()
 {
-    string str("");
+    std::string str("");
     char tab[_HAUTEUR_PLATEAU][_LARGEUR_PLATEAU];
 
     //Initialisation
@@ -115,3 +131,24 @@ string Plateau::ToStr()
     }
     return str;
 }
+
+//x ligne, y colonne
+bool Plateau::Libre(const int x, const int y) const
+{
+    for(int i = 0; i < 2; i++)
+    {
+        for(int j = 0; j < _NB_PIECES; j++)
+        {
+            Piece* p = m_pieces[i][j];
+            if((p != NULL)
+               && (p->GetColonne() == y)
+               && (p->GetLigne() == x))
+               return false;
+        }
+    }
+    return true;
+}
+
+
+
+

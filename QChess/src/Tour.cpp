@@ -1,6 +1,6 @@
 #include "../include/Tour.h"
 
-vector<Deplacement*> Tour::m_deplacements = Tour::InitDeplacements();
+std::vector<const Deplacement*> Tour::m_deplacements = Tour::InitDeplacements();
 
 Tour::Tour()
 {
@@ -19,7 +19,7 @@ Tour::Tour(const Couleur c, const int ligne, const int colonne)
 
 Tour::~Tour()
 {
-    Vider(m_deplacements);
+    //
 }
 
 void Tour::Init(const Couleur c, const int ligne, const int colonne)
@@ -28,22 +28,29 @@ void Tour::Init(const Couleur c, const int ligne, const int colonne)
     m_caractere = (c == _BLANC) ? 'T' : 't';
 }
 
-vector<Deplacement*> Tour::InitDeplacements()
+std::vector<const Deplacement*> Tour::InitDeplacements()
 {
-    vector<Deplacement*> vDep;
-    Deplacement * dep;
-    //Droite
-    dep = new Deplacement(1, 0, -1);
-    vDep.push_back(dep);
-    //Gauche
-    dep = new Deplacement(-1, 0, -1);
-    vDep.push_back(dep);
-    //Bas
-    dep = new Deplacement(0, 1, -1);
-    vDep.push_back(dep);
-    //Haut
-    dep = new Deplacement(0, -1, -1);
-    vDep.push_back(dep);
+    std::vector<const Deplacement*> vDep;
+    vDep.push_back(&Deplacement::LigneB);
+    vDep.push_back(&Deplacement::LigneG);
+    vDep.push_back(&Deplacement::LigneH);
+    vDep.push_back(&Deplacement::LigneD);
     return vDep;
+}
+
+const std::vector<int*> Tour::GetDeplacements(Plateau &p)
+{
+    std::vector<int*> vect;
+    for(unsigned int i = 0; i < m_deplacements.size(); i++)
+    {
+        std::vector<int*> vTemp = m_deplacements[i]->GetPossibles(m_colonne, m_ligne, p, m_couleur);
+        for(unsigned int j = 0; j < vTemp.size(); j++)
+        {
+            vect.push_back(vTemp[i]);
+        }
+        if(vTemp.size() > 0)
+            vTemp.clear();
+    }
+    return vect;
 }
 

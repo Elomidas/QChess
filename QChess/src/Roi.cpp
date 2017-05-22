@@ -1,6 +1,6 @@
 #include "Roi.h"
 
-vector<Deplacement*> Roi::m_deplacements = Roi::InitDeplacements();
+std::vector<const Deplacement*> Roi::m_deplacements = Roi::InitDeplacements();
 
 Roi::Roi()
 {
@@ -19,7 +19,7 @@ Roi::Roi(const Couleur c, const int ligne, const int colonne)
 
 Roi::~Roi()
 {
-    Vider(m_deplacements);
+    //
 }
 
 void Roi::Init(const Couleur c, const int ligne, const int colonne)
@@ -28,35 +28,34 @@ void Roi::Init(const Couleur c, const int ligne, const int colonne)
     m_caractere = (c == _BLANC) ? 'R' : 'r';
 }
 
-vector<Deplacement*> Roi::InitDeplacements()
+std::vector<const Deplacement*> Roi::InitDeplacements()
 {
-    vector<Deplacement*> vDep;
-    Deplacement * dep;
-    //Droite
-    dep = new Deplacement(1, 0, 1);
-    vDep.push_back(dep);
-    //Gauche
-    dep = new Deplacement(-1, 0, 1);
-    vDep.push_back(dep);
-    //Bas
-    dep = new Deplacement(0, 1, 1);
-    vDep.push_back(dep);
-    //Haut
-    dep = new Deplacement(0, -1, 1);
-    vDep.push_back(dep);
-    //Haut Gauche
-    dep = new Deplacement(-1, -1, 1);
-    vDep.push_back(dep);
-    //Haut Droite
-    dep = new Deplacement(1, -1, 1);
-    vDep.push_back(dep);
-    //Bas Gauche
-    dep = new Deplacement(-1, 1, 1);
-    vDep.push_back(dep);
-    //Bas Droite
-    dep = new Deplacement(1, 1, 1);
-    vDep.push_back(dep);
+    std::vector<const Deplacement*> vDep;
+    vDep.push_back(&Deplacement::SimpleB);
+    vDep.push_back(&Deplacement::SimpleBG);
+    vDep.push_back(&Deplacement::SimpleG);
+    vDep.push_back(&Deplacement::SimpleHG);
+    vDep.push_back(&Deplacement::SimpleH);
+    vDep.push_back(&Deplacement::SimpleHD);
+    vDep.push_back(&Deplacement::SimpleD);
+    vDep.push_back(&Deplacement::SimpleBD);
     return vDep;
+}
+
+const std::vector<int*> Roi::GetDeplacements(Plateau &p)
+{
+    std::vector<int*> vect;
+    for(unsigned int i = 0; i < m_deplacements.size(); i++)
+    {
+        std::vector<int*> vTemp = m_deplacements[i]->GetPossibles(m_colonne, m_ligne, p, m_couleur);
+        for(unsigned int j = 0; j < vTemp.size(); j++)
+        {
+            vect.push_back(vTemp[i]);
+        }
+        if(vTemp.size() > 0)
+            vTemp.clear();
+    }
+    return vect;
 }
 
 
