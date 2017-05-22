@@ -1,5 +1,6 @@
 #include <math.h> // std::max
-#include "Plateau.h"
+#include "../include/Plateau.h"
+#include "../include/Piece.h"
 #include "AlphaBeta.h"
 
 
@@ -85,7 +86,7 @@ Deplacement AlphaBeta::AlphaBetaDecision(Plateau plateau)
 
 }
 
-int Eval(Plateau plateau)
+int AlphaBeta::Eval(Plateau plateau)
 {
     int valeur;
     int c_act;
@@ -166,7 +167,7 @@ int Eval(Plateau plateau)
     return valeur;
 }
 
-bool TestFinal()
+bool AlphaBeta::TestFinal(Plateau plateau)
 {
     bool termine;
 

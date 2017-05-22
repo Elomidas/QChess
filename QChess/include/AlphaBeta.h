@@ -1,7 +1,7 @@
 #ifndef ALPHABETA_H
 #define ALPHABETA_H
 
-struct Plateau;
+
 
 #define _NB_PIECES  12
 
