@@ -133,6 +133,7 @@ int AlphaBeta::Eval(Plateau * plateau)
 
     for (j = 0; j< _NB_PIECES; j++)
         {
+            std::cout<<"\n" << j <<": ";
             if (pieces[c_act][j])
             {
                 if(!pieces[c_adv][j])
@@ -164,18 +165,22 @@ int AlphaBeta::Eval(Plateau * plateau)
                     switch(j)
                     {
                         case 1:
+                            std::cout<<"tour";
                             valeur -=  5;
                         break;
 
                         case 2:
+                            std::cout<<"cavalier";
                             valeur -=  3;
                         break;
 
                         case 3:
+                            std::cout<<"fou";
                             valeur -=  3;
                         break;
 
                         default:
+                            std::cout<<"pion";
                             valeur -= 1;
                     }
 
