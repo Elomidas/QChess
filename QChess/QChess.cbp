@@ -19,6 +19,9 @@
 					<Add library="sfml-graphics-d" />
 					<Add library="sfml-window-d" />
 					<Add library="sfml-system-d" />
+					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-graphics-d.a" />
+					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-window-d.a" />
+					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-system-d.a" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -36,6 +39,9 @@
 					<Add library="sfml-graphics" />
 					<Add library="sfml-window" />
 					<Add library="sfml-system" />
+					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-graphics.a" />
+					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-window.a" />
+					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-system.a" />
 				</Linker>
 			</Target>
 		</Build>
@@ -43,14 +49,19 @@
 			<Add option="-Wall" />
 			<Add option="-fexceptions" />
 			<Add directory="sfml/include" />
+			<Add directory="D:/Logiciels/SFML/SFML-2.4.2/include" />
+			<Add directory="D:/Logiciels/SFML/SFML-2.4.2/bin" />
 		</Compiler>
 		<Linker>
 			<Add directory="sfml/lib" />
+			<Add directory="D:/Logiciels/SFML/SFML-2.4.2/lib" />
 		</Linker>
 		<Unit filename="include/AffichagePlateau.h" />
+		<Unit filename="include/AlphaBeta.h" />
 		<Unit filename="include/Cavalier.h" />
 		<Unit filename="include/Deplacement.h" />
 		<Unit filename="include/Fou.h" />
+		<Unit filename="include/IA.h" />
 		<Unit filename="include/Jeu.h" />
 		<Unit filename="include/Piece.h" />
 		<Unit filename="include/Pion.h" />
@@ -59,9 +70,11 @@
 		<Unit filename="include/Tour.h" />
 		<Unit filename="main.cpp" />
 		<Unit filename="src/AffichagePlateau.cpp" />
+		<Unit filename="src/AlphaBeta.cpp" />
 		<Unit filename="src/Cavalier.cpp" />
 		<Unit filename="src/Deplacement.cpp" />
 		<Unit filename="src/Fou.cpp" />
+		<Unit filename="src/IA.cpp" />
 		<Unit filename="src/Jeu.cpp" />
 		<Unit filename="src/Piece.cpp" />
 		<Unit filename="src/Pion.cpp" />
