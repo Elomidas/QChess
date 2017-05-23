@@ -66,8 +66,11 @@ void Plateau::InitialiserPieces()
 
 Piece* Plateau::GetPiece(const Couleur c, const int index)
 {
-    assert(0 <= index);
-    assert(_NB_PIECES > index);
+    if((0 > index) || (_NB_PIECES <= index))
+    {
+        std::cout << "Index out of range : " << index << std::endl;
+        assert(false);
+    }
     return m_pieces[c][index];
 }
 

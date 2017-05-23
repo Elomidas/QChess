@@ -115,7 +115,10 @@ class AffichagePlateau
         bool m_tour;
         //Gestion des mouvements
         int m_cliquee; //index de la piece cliquee, -1 si aucune
-        std::vector<sf::Vector2i> m_dep; //Cases sur lesquelles on peut déplacer la pièce actuelle
+        std::vector<int*> *m_dep; //Cases sur lesquelles on peut déplacer la pièce actuelle
+        void SetDep(const std::vector<int*>);
+        void DelDep();
+        bool DepOK(const int, const int);
         //Piece actuellement pointée par le joueur
         int m_pointee;
         //Plateau de référence
