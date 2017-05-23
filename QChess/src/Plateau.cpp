@@ -95,6 +95,11 @@ bool Plateau::Bouger(const Couleur couleur, const int index, const int newLigne,
     //
 }
 
+bool Plateau::Bouger(Piece &p, const int ligne, const int clonne)
+{
+    //
+}
+
 std::string Plateau::ToStr()
 {
     std::string str("");
