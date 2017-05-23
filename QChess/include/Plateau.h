@@ -39,6 +39,7 @@ class Plateau
 
     protected:
         Piece* m_pieces[2][_NB_PIECES];
+        void SetPiece(Piece*, Piece*);
 
     private:
 };
