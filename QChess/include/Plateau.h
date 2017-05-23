@@ -33,7 +33,7 @@ class Plateau
         bool Libre(const int, const int) const;
         //Mutateur
         bool Bouger(const Couleur, const int, const int, const int);
-        bool Bouger(Piece&, const int, const int);
+        bool Bouger(Piece*, const int, const int);
         //Affichage
         std::string ToStr();
 
