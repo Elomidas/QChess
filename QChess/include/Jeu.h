@@ -2,7 +2,7 @@
 #define JEU_H
 
 #include <SFML/System.hpp>
-
+#include "AlphaBeta.h"
 #include "Plateau.h"
 #include "AffichagePlateau.h"
 

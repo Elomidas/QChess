@@ -5,6 +5,7 @@
 #include "Plateau.h"
 
 #define _NB_PIECES  12
+#define    _PROF    5
 
 class AlphaBeta
 {
@@ -26,9 +27,9 @@ class AlphaBeta
 
         bool TestFinal(Plateau plateau);
 
-        int* ABMinMax(Plateau* plateau, short int depth_limit);
-        int* ABMaxMove(Plateau* plateau, short int depth_limit, short int depth, int a, int b, int * move_env);
-        int* ABMinMove(Plateau* plateau, short int depth_limit, short int depth, int a, int b, int * move_env);
+        int* ABMinMax(Plateau* plateau);
+        int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env);
+        int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env);
     protected:
 
     private:

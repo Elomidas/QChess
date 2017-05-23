@@ -472,8 +472,9 @@
 	<iostream>
 	"Jeu.h"
 
-1495466214 d:\documents\apo2\qchess\qchess\include\jeu.h
+1495572806 d:\documents\apo2\qchess\qchess\include\jeu.h
 	<SFML/System.hpp>
+	"AlphaBeta.h"
 	"Plateau.h"
 	"AffichagePlateau.h"
 
@@ -596,7 +597,7 @@
 
 1486739998 d:\logiciels\sfml\sfml-2.4.2\include\sfml\system\vector3.inl
 
-1495531339 d:\documents\apo2\qchess\qchess\include\plateau.h
+1495571522 d:\documents\apo2\qchess\qchess\include\plateau.h
 	<string>
 	<assert.h>
 	"Roi.h"
@@ -918,9 +919,10 @@
 1495571098 source:d:\documents\apo2\qchess\qchess\src\fou.cpp
 	"../include/Fou.h"
 
-1495571098 source:d:\documents\apo2\qchess\qchess\src\jeu.cpp
+1495573276 source:d:\documents\apo2\qchess\qchess\src\jeu.cpp
 	"Jeu.h"
 	<iostream>
+	"../include/AlphaBeta.h"
 
 1495571098 source:d:\documents\apo2\qchess\qchess\src\piece.cpp
 	"../include/Piece.h"
@@ -928,7 +930,7 @@
 1495571098 source:d:\documents\apo2\qchess\qchess\src\pion.cpp
 	"../include/Pion.h"
 
-1495571098 source:d:\documents\apo2\qchess\qchess\src\plateau.cpp
+1495571522 source:d:\documents\apo2\qchess\qchess\src\plateau.cpp
 	"../include/Plateau.h"
 
 1495571098 source:d:\documents\apo2\qchess\qchess\src\roi.cpp
@@ -937,14 +939,14 @@
 1495571098 source:d:\documents\apo2\qchess\qchess\src\tour.cpp
 	"../include/Tour.h"
 
-1495570123 source:d:\documents\apo2\qchess\qchess\src\alphabeta.cpp
+1495573432 source:d:\documents\apo2\qchess\qchess\src\alphabeta.cpp
 	<math.h>
 	"../include/Plateau.h"
 	"../include/Piece.h"
 	"AlphaBeta.h"
 	"algorithm"
 
-1495570167 d:\documents\apo2\qchess\qchess\include\alphabeta.h
+1495572177 d:\documents\apo2\qchess\qchess\include\alphabeta.h
 	"Piece.h"
 	"Plateau.h"
 

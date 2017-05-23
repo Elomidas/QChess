@@ -104,7 +104,7 @@ int * AlphaBeta::AlphaBetaDecision(Plateau plateau)
 
 int AlphaBeta::Eval(Plateau * plateau)
 {
-    int valeur;
+    int valeur=0;
     Couleur c_act;
     Couleur c_adv;
     int i,j;
@@ -130,16 +130,15 @@ int AlphaBeta::Eval(Plateau * plateau)
     }
     //[0] roi [1] tour [2] fou [3] cavalier [4} -> [7] pion
 
-    for (i = 0; i< 2; i++)
-    {
-        for (j = 0; j< _NB_PIECES; j++)
+    for (j = 0; j< _NB_PIECES; j++)
         {
-            if (pieces[c_act][i])
+            if (pieces[c_act][j])
             {
-                if(!pieces[c_adv][i])
-                    switch(i)
+                if(!pieces[c_adv][j])
+                    switch(j)
                         {
                             case 1:
+                                //cout<<"+5";
                                 valeur += 5;
                             break;
 
@@ -157,8 +156,8 @@ int AlphaBeta::Eval(Plateau * plateau)
             }
             else
             {
-                if(pieces[c_adv][i])
-                    switch(i)
+                if(pieces[c_adv][j])
+                    switch(j)
                     {
                         case 1:
                             valeur -=  5;
@@ -178,7 +177,7 @@ int AlphaBeta::Eval(Plateau * plateau)
 
             }
         }
-    }
+
     return valeur;
 }
 
@@ -193,7 +192,7 @@ bool AlphaBeta::TestFinal(Plateau plateau)
 
 
 
-int* AlphaBeta::ABMaxMove(Plateau* plateau, short int depth_limit, short int depth, int a, int b,int *move_env) {
+int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *move_env) {
 	std::vector<int*> deplacements;
 	if(m_couleur == _BLANC)
     {
@@ -213,7 +212,7 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int depth_limit, short int dep
 	Plateau p_bestmove = *plateau;
 	Piece pieces[2][_NB_PIECES];
     int l;
-	if (TestFinal(p_act)) {//if depth limit is reached
+	if (prof >= _PROF) {//if depth limit is reached
 		return move_env;
 	} else {
 
@@ -233,19 +232,19 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int depth_limit, short int dep
                 int index = (*i)[0];
                 int x = (*i)[1];
                 int y = (*i)[2];
-                p_mod.Bouger(*(p_mod.GetPiece(m_couleur,index)),x,y);
+                p_mod.Bouger(p_mod.GetPiece(m_couleur,index),x,y);
 
-                move_mod = ABMinMove(&p_mod, depth_limit, depth+1, alpha, beta,*i);
+                move_mod = ABMinMove(&p_mod, prof+1, alpha, beta,*i);
 
                 index = move_mod[0];
                 x = move_mod[1];
                 y = move_mod[2];
-                p_movemod.Bouger(*(p_mod.GetPiece(m_couleur,index)),x,y);
+                p_movemod.Bouger(p_mod.GetPiece(m_couleur,index),x,y);
 
                 index = best_move[0];
                 x = best_move[1];
                 y = best_move[2];
-                p_bestmove.Bouger(*(p_mod.GetPiece(m_couleur,index)),x,y);
+                p_bestmove.Bouger(p_mod.GetPiece(m_couleur,index),x,y);
 
                 if (best_move == NULL ||
                         Eval(&p_bestmove) > Eval(&p_movemod))
@@ -264,7 +263,7 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int depth_limit, short int dep
 	}
 	//}
 }
-int* AlphaBeta::ABMinMove(Plateau* plateau, short int depth_limit, short int depth, int a, int b, int * move_env)
+int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env)
 {
     std::vector<int*> deplacements;
     if(m_couleur == _BLANC)
@@ -286,7 +285,7 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int depth_limit, short int dep
 	Piece pieces[2][_NB_PIECES];
     int l;
 
-	if (TestFinal(p_act)) {//if depth limit is reached
+	if (prof >= _PROF) {//if depth limit is reached
 		return move_env;
 	}
 	else
@@ -305,22 +304,23 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int depth_limit, short int dep
                 int index = (*i)[0];
                 int x = (*i)[1];
                 int y = (*i)[2];
-                p_mod.Bouger(*(p_mod.GetPiece(m_couleur,index)),x,y);
+                p_mod.Bouger(p_mod.GetPiece(m_couleur,index),x,y);
 
-                move_mod = ABMaxMove(&p_mod, depth_limit, depth+1, alpha, beta,*i);
+                move_mod = ABMaxMove(&p_mod, prof+1, alpha, beta,*i);
 
                 index = move_mod[0];
                 x = move_mod[1];
                 y = move_mod[2];
-                p_movemod.Bouger(*(p_mod.GetPiece(m_couleur,index)),x,y);
+                p_movemod.Bouger(p_mod.GetPiece(m_couleur,index),x,y);
 
                 index = best_move[0];
                 x = best_move[1];
                 y = best_move[2];
-                p_bestmove.Bouger(*(p_mod.GetPiece(m_couleur,index)),x,y);
+                p_bestmove.Bouger(p_mod.GetPiece(m_couleur,index),x,y);
 
-                if (best_move == NULL || Eval(&p_movemod)
-                        < Eval(&p_bestmove)) {
+                if (best_move == NULL ||
+                        Eval(&p_movemod) < Eval(&p_bestmove))
+                {
                     best_move = move_mod;
                     best_real_move = *i;
                     beta = Eval(&p_movemod);
@@ -334,7 +334,7 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int depth_limit, short int dep
 	}
 }
 
-int* AlphaBeta::ABMinMax(Plateau* plateau, short int depth_limit) {
+int* AlphaBeta::ABMinMax(Plateau* plateau) {
 	if(m_couleur == _BLANC)
     {
         m_couleur = _NOIR;
@@ -345,7 +345,7 @@ int* AlphaBeta::ABMinMax(Plateau* plateau, short int depth_limit) {
     }
     int * tab;
 
-	return ABMaxMove(plateau, depth_limit, 1, 0, 0,tab);
+	return ABMaxMove(plateau, 1, 0, 0,tab);
 }
 
 
