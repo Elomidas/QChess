@@ -905,36 +905,36 @@
 	<string>
 	<vector>
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\affichageplateau.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\affichageplateau.cpp
 	"AffichagePlateau.h"
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\cavalier.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\cavalier.cpp
 	"../include/Cavalier.h"
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\deplacement.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\deplacement.cpp
 	"Deplacement.h"
 	"Plateau.h"
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\fou.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\fou.cpp
 	"../include/Fou.h"
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\jeu.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\jeu.cpp
 	"Jeu.h"
 	<iostream>
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\piece.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\piece.cpp
 	"../include/Piece.h"
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\pion.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\pion.cpp
 	"../include/Pion.h"
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\plateau.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\plateau.cpp
 	"../include/Plateau.h"
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\roi.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\roi.cpp
 	"Roi.h"
 
-1495531339 source:d:\documents\apo2\qchess\qchess\src\tour.cpp
+1495571098 source:d:\documents\apo2\qchess\qchess\src\tour.cpp
 	"../include/Tour.h"
 
 1495570123 source:d:\documents\apo2\qchess\qchess\src\alphabeta.cpp
