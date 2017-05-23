@@ -4,8 +4,11 @@
 #include <SFML/Window.hpp>
 #include <SFML/Graphics.hpp>
 #include <SFML/System.hpp>
+#include <vector>
 
 #include "Plateau.h"
+
+//Les blacs sont tjrs en haut du plateau
 
 //Taille d'une case du plateau
 #define _TAILLE_CASE    80
@@ -75,6 +78,7 @@ class AffichagePlateau
         //Accesseurs
         //Mutateurs
         void SetPlateau(Plateau*);
+        void SetCouleur(Couleur);
         //Autres fonctions
         bool Rafraichir();
         bool Rafraichir(const sf::Vector2i&);
@@ -83,6 +87,9 @@ class AffichagePlateau
         void DelAlpha();
         bool Test(int i, int j, int *tab);
         void Parcours(int*);
+        //Gestion des mouvements
+        void ActiverJeu();
+        void BloquerJeu();
 
 
     protected:
@@ -91,8 +98,7 @@ class AffichagePlateau
         //Retourne la texture d'une piece
         sf::Sprite& GetSprite(const char, int&, int&, const bool);
         bool Contains(const int&, const int&, const int&, const int&);
-        sf::Vector2i GetPiece(const int&, const int&, const int[2][5]);
-        sf::Image GetPion();
+        void GetPiece(const int&, const int&, const int[2][5]);
         //Fenêtre
         sf::RenderWindow m_fenetre;
         //Elements graphiques
@@ -101,6 +107,17 @@ class AffichagePlateau
         sf::Sprite m_sprites[2][2][5];
         sf::Texture m_tPlateau;
         sf::Sprite m_sPlateau;
+        sf::Texture m_tBleu;
+        sf::Sprite m_sBleu;
+        //Couleur du joueur
+        Couleur m_joueur;
+        //Tour du joueur
+        bool m_tour;
+        //Gestion des mouvements
+        int m_cliquee; //index de la piece cliquee, -1 si aucune
+        std::vector<sf::Vector2i> m_dep; //Cases sur lesquelles on peut déplacer la pièce actuelle
+        //Piece actuellement pointée par le joueur
+        int m_pointee;
         //Plateau de référence
         Plateau * m_plateau;
 

@@ -1,4 +1,5 @@
 #include "Deplacement.h"
+#include "Plateau.h"
 
 Deplacement::Deplacement()
 {
@@ -70,3 +71,71 @@ const bool Deplacement::Accessible(const int ligne, const int colonne)
         return false;
     return true;
 }
+
+//x ligne, y colonne
+const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Plateau &p, const Couleur couleur) const
+{
+    std::vector<int*> vect;
+    if(m_couleur[couleur])
+    {
+        bool continuer = true;
+        int ite = 0;
+        while(continuer)
+        {
+            ite++;
+            if(ite > m_repetition)
+                continuer = false;
+            else
+            {
+                int y = (ite * px) + m_colonne;
+                int x = (ite * py) + m_ligne;
+                int tab[2] = {x, y};
+                if((x >= 8)
+                   || (x < 0)
+                   || (y >= 8)
+                   || (y < 0))
+                    continuer = false;
+                else
+                {
+                    if(p.Libre(x, y))
+                        vect.push_back(tab);
+                    else
+                    {
+                        Piece *pt = p.GetPiece(x, y);
+                        if((pt != NULL) && (pt->GetCouleur() != couleur))
+                            vect.push_back(tab);
+                        continuer = false;
+                    }
+                }
+            }
+        }
+    }
+    return vect;
+}
+
+Deplacement Deplacement::LigneH = Deplacement(0, -1, -1);
+Deplacement Deplacement::LigneB = Deplacement(0, 1, -1);
+Deplacement Deplacement::LigneD = Deplacement(1, 0, -1);
+Deplacement Deplacement::LigneG = Deplacement(-1, 0, -1);
+Deplacement Deplacement::DiagoHD = Deplacement(1, -1, -1);
+Deplacement Deplacement::DiagoBD = Deplacement(1, 1, -1);
+Deplacement Deplacement::DiagoBG = Deplacement(-1, 1, -1);
+Deplacement Deplacement::DiagoHG = Deplacement(-1, -1, -1);
+Deplacement Deplacement::CavalierHHG = Deplacement(-1, -2, 1);
+Deplacement Deplacement::CavalierHHD = Deplacement(1, -2, 1);
+Deplacement Deplacement::CavalierBBG = Deplacement(-1, 2, 1);
+Deplacement Deplacement::CavalierBBD = Deplacement(1, 2, 1);
+Deplacement Deplacement::CavalierGGH = Deplacement(-2, -1, 1);
+Deplacement Deplacement::CavalierGGB = Deplacement(-2, 1, 1);
+Deplacement Deplacement::CavalierDDH = Deplacement(2, -1, 1);
+Deplacement Deplacement::CavalierDDB = Deplacement(2, 1, 1);
+Deplacement Deplacement::PionB = Deplacement(0, -1, _BLANC, 2);
+Deplacement Deplacement::PionH = Deplacement(0, 1, _NOIR, 2);
+Deplacement Deplacement::SimpleH = Deplacement(0, -1, 1);
+Deplacement Deplacement::SimpleHD = Deplacement(1, -1, 1);
+Deplacement Deplacement::SimpleD = Deplacement(1, 0, 1);
+Deplacement Deplacement::SimpleBD = Deplacement(1, 1, 1);
+Deplacement Deplacement::SimpleB = Deplacement(0, 1, 1);
+Deplacement Deplacement::SimpleBG = Deplacement(-1, 1, 1);
+Deplacement Deplacement::SimpleG = Deplacement(-1, 0, 1);
+Deplacement Deplacement::SimpleHG = Deplacement(-1, -1, 1);

@@ -1,6 +1,6 @@
 #include "../include/Cavalier.h"
 
-vector<Deplacement*> Cavalier::m_deplacements = Cavalier::InitDeplacements();
+std::vector<const Deplacement*> Cavalier::m_deplacements = Cavalier::InitDeplacements();
 
 Cavalier::Cavalier()
 {
@@ -19,7 +19,7 @@ Cavalier::Cavalier(const Couleur c, const int ligne, const int colonne)
 
 Cavalier::~Cavalier()
 {
-    Vider(m_deplacements);
+    //
 }
 
 void Cavalier::Init(const Couleur c, const int ligne, const int colonne)
@@ -28,30 +28,32 @@ void Cavalier::Init(const Couleur c, const int ligne, const int colonne)
     m_caractere = (c == _BLANC) ? 'C' : 'c';
 }
 
-vector<Deplacement*> Cavalier::InitDeplacements()
+std::vector<const Deplacement*> Cavalier::InitDeplacements()
 {
-    vector<Deplacement*> vDep;
-    Deplacement * dep;
-    //Droite
-    dep = new Deplacement(2, -1, 1);
-    vDep.push_back(dep);
-    dep = new Deplacement(2, 1, 1);
-    vDep.push_back(dep);
-    //Gauche
-    dep = new Deplacement(-2, -1, 1);
-    vDep.push_back(dep);
-    dep = new Deplacement(-2, 1, 1);
-    vDep.push_back(dep);
-    //Bas
-    dep = new Deplacement(-1, 2, 1);
-    vDep.push_back(dep);
-    dep = new Deplacement(1, 2, 1);
-    vDep.push_back(dep);
-    //Haut
-    dep = new Deplacement(-1, -2, 1);
-    vDep.push_back(dep);
-    dep = new Deplacement(1, -2, 1);
-    vDep.push_back(dep);
+    std::vector<const Deplacement*> vDep;
+    vDep.push_back(&Deplacement::CavalierBBD);
+    vDep.push_back(&Deplacement::CavalierBBG);
+    vDep.push_back(&Deplacement::CavalierHHD);
+    vDep.push_back(&Deplacement::CavalierHHG);
+    vDep.push_back(&Deplacement::CavalierGGB);
+    vDep.push_back(&Deplacement::CavalierGGH);
+    vDep.push_back(&Deplacement::CavalierDDB);
+    vDep.push_back(&Deplacement::CavalierDDH);
     return vDep;
 }
 
+const std::vector<int*> Cavalier::GetDeplacements(Plateau &p)
+{
+    std::vector<int*> vect;
+    for(unsigned int i = 0; i < m_deplacements.size(); i++)
+    {
+        std::vector<int*> vTemp = m_deplacements[i]->GetPossibles(m_colonne, m_ligne, p, m_couleur);
+        for(unsigned int j = 0; j < vTemp.size(); j++)
+        {
+            vect.push_back(vTemp[i]);
+        }
+        if(vTemp.size() > 0)
+            vTemp.clear();
+    }
+    return vect;
+}

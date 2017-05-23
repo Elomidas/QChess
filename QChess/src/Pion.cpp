@@ -1,6 +1,6 @@
 #include "../include/Pion.h"
 
-vector<Deplacement*> Pion::m_deplacements = Pion::InitDeplacements();
+std::vector<const Deplacement*> Pion::m_deplacements = Pion::InitDeplacements();
 
 Pion::Pion()
 {
@@ -19,7 +19,7 @@ Pion::Pion(const Couleur c, const int ligne, const int colonne)
 
 Pion::~Pion()
 {
-    Vider(m_deplacements);
+    //
 }
 
 void Pion::Init(const Couleur c, const int ligne, const int colonne)
@@ -28,22 +28,27 @@ void Pion::Init(const Couleur c, const int ligne, const int colonne)
     m_caractere = (c == _BLANC) ? 'P' : 'p';
 }
 
-vector<Deplacement*> Pion::InitDeplacements()
+std::vector<const Deplacement*> Pion::InitDeplacements()
 {
-    vector<Deplacement*> vDep;
-    Deplacement * dep;
-    //Droite
-    dep = new Deplacement(1, 0, -1);
-    vDep.push_back(dep);
-    //Gauche
-    dep = new Deplacement(-1, 0, -1);
-    vDep.push_back(dep);
-    //Bas
-    dep = new Deplacement(0, 1, -1);
-    vDep.push_back(dep);
-    //Haut
-    dep = new Deplacement(0, -1, -1);
-    vDep.push_back(dep);
+    std::vector<const Deplacement*> vDep;
+    vDep.push_back(&Deplacement::PionB);
+    vDep.push_back(&Deplacement::PionH);
     return vDep;
+}
+
+const std::vector<int*> Pion::GetDeplacements(Plateau &p)
+{
+    std::vector<int*> vect;
+    for(unsigned int i = 0; i < m_deplacements.size(); i++)
+    {
+        std::vector<int*> vTemp = m_deplacements[i]->GetPossibles(m_colonne, m_ligne, p, m_couleur);
+        for(unsigned int j = 0; j < vTemp.size(); j++)
+        {
+            vect.push_back(vTemp[i]);
+        }
+        if(vTemp.size() > 0)
+            vTemp.clear();
+    }
+    return vect;
 }
 

@@ -5,8 +5,6 @@
 
 #include "Deplacement.h"
 
-using namespace std;
-
 class Piece
 {
     public:
@@ -33,20 +31,22 @@ class Piece
         void SetColonne(const int);
         void SetPosition(const int, const int);
 
+        //Autres
+        //Retourne le liste des cases atteignables
+        virtual const std::vector<int*> GetDeplacements(Plateau&);
+
         //Fonctions statiques
         // Retourne 'true' si la position indiquee est accessible, faux sinon
         static const bool GetDeplacement(const int, const int);
-        //Indique si la piece a besoin d'une ligne de vue pour se deplacer ('false' indique que la piece peut "sauter" au-dessus des autres)
-        static const bool GetLigneVue();
 
     protected:
         Couleur m_couleur;
         char m_caractere;
         int m_ligne, m_colonne;
         //Vide le tableau de deplacements passe en parametre et libere la memoire
-        static void Vider(vector<Deplacement*>&);
+        static void Vider(std::vector<const Deplacement*>&);
         //Regarde si une case est accessible
-        const bool Accessible(const int, const int, const vector<Deplacement*>&);
+        const bool Accessible(const int, const int, const std::vector<Deplacement*>&);
 
     private:
 };

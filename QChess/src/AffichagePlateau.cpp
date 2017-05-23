@@ -1,10 +1,12 @@
 #include "AffichagePlateau.h"
-#include <iostream>
 
 AffichagePlateau::AffichagePlateau()
 {
     m_fini = false;
     m_plateau = 0;
+    m_tour = false;
+    m_pointee = -1;
+    m_cliquee = -1;
     //Chargement des textures
     int offsets[2][5] = {{_RX, _TX, _FX, _CX, _PX}, {_RY, _TY, _FY, _CY, _PY}};
     int tailles[2][5] = {{_RL, _TL, _FL, _CL, _PL}, {_RH, _TH, _FH, _CH, _PH}};
@@ -29,10 +31,25 @@ AffichagePlateau::AffichagePlateau()
             m_sprites[c][_semi_transparent][j].setColor(sf::Color(modif, modif, modif, alpha));
         }
     }
+    //Carre bleu
+    m_tBleu.create(_TAILLE_CASE, _TAILLE_CASE);
+    sf::Uint8* pixels = new sf::Uint8[_TAILLE_CASE * _TAILLE_CASE * 4];
+    for(int i = 0; i < _TAILLE_CASE; i++)
+    {
+        for(int j = 0; j < _TAILLE_CASE; j++)
+        {
+            pixels[4*i] = 0;
+            pixels[(4*i)+1] = 0;
+            pixels[(4*i)+2] = 200;
+            pixels[(4*i)+3] = 200;
+        }
+    }
+    m_tBleu.update(pixels);
+    m_sBleu.setTexture(m_tBleu);
+    m_sBleu.setTextureRect(sf::Rect<int>(0, 0, 80, 80));
     //Fond
     m_tPlateau.loadFromFile("img/plateau.jpg");
     m_sPlateau.setTexture(m_tPlateau);
-    std::cout << "OK" << std::endl;
 }
 
 AffichagePlateau::~AffichagePlateau()
@@ -46,13 +63,22 @@ void AffichagePlateau::SetPlateau(Plateau * plateau)
     m_fenetre.create(sf::VideoMode(_LARGEUR_FENETRE, _HAUTEUR_FENETRE), _NOM_FENETRE);
 }
 
-bool AffichagePlateau::Rafraichir()
+void AffichagePlateau::SetCouleur(Couleur joueur)
 {
-    sf::Vector2i pos(-1, -1);
-    return Rafraichir(pos);
+    m_joueur = joueur;
 }
 
-bool AffichagePlateau::Rafraichir(const sf::Vector2i &pos)
+void AffichagePlateau::ActiverJeu()
+{
+    m_tour = true;
+}
+
+void AffichagePlateau::BloquerJeu()
+{
+    m_tour = false;
+}
+
+bool AffichagePlateau::Rafraichir()
 {
     if(m_plateau == 0)
         return false;
@@ -70,7 +96,8 @@ bool AffichagePlateau::Rafraichir(const sf::Vector2i &pos)
             {
                 int h, l;
                 sf::Sprite s;
-                s = GetSprite(p->GetChar(), h, l, (c == pos.x) && (i == pos.y));
+                //Si la souris est sur le pion et que c'est le tour du joueur, on affiche le sprite modifié
+                s = GetSprite(p->GetChar(), h, l, (m_tour && (c == m_joueur) && (m_pointee == i)));
                 int px = p->GetLigne() * _TAILLE_CASE;
                 int py = p->GetColonne() * _TAILLE_CASE;
                 int dx = (_TAILLE_CASE - h) / 2;
@@ -78,6 +105,15 @@ bool AffichagePlateau::Rafraichir(const sf::Vector2i &pos)
                 s.setPosition(py + dy, px + dx);
                 m_fenetre.draw(s);
             }
+        }
+    }
+    if(m_cliquee)
+    {
+        //Affichage des cases possibles
+        for(unsigned int i = 0; i < m_dep.size(); i++)
+        {
+            m_sBleu.setPosition(m_dep[i].x * _TAILLE_CASE, m_dep[i].y);
+            m_fenetre.draw(m_sBleu);
         }
     }
     m_fenetre.display();
@@ -107,21 +143,24 @@ void AffichagePlateau::Event()
                     posSouris[1] = sf::Mouse::getPosition().y - m_fenetre.getPosition().y - 30;
                     break;
 
+                case sf::Event::MouseButtonReleased :
+                    //Clic de la souris
+                    if(m_cliquee == -1)
+                        m_cliquee = m_pointee;
+                    break;
+
                 default :
                     break;
             }
         }
-        sf::Vector2i pos = GetPiece(posSouris[0], posSouris[1], tailles);
-        //std::cout << "c : " << pos.x << ", i : " << pos.y << std::endl;
-        Rafraichir(pos);
+        GetPiece(posSouris[0], posSouris[1], tailles);
+        Rafraichir();
         sf::sleep(sf::milliseconds(20));
     }
 }
 
 sf::Sprite& AffichagePlateau::GetSprite(const char c, int &h, int &l, const bool transparent)
 {
-    if(transparent)
-        std::cout << c << ", " << transparent << std::endl;
     switch(c)
     {
         case 'R':
@@ -167,19 +206,17 @@ sf::Sprite& AffichagePlateau::GetSprite(const char c, int &h, int &l, const bool
     }
 }
 
-sf::Vector2i AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2][5])
+void AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2][5])
 {
-    // x -> largeur : tailles[0]
-    // y -> hauteur : tailles[1]
-    sf::Vector2i pos(-1, -1);
-    for(int c(_BLANC); c <= _NOIR; c++)
+    m_pointee = -1;
+    if(m_tour)
     {
         for(int i(0); i < _NB_PIECES; i++)
         {
             int index = (i < 4) ? i : 4;
             //Position de la case occuppée par la piece
-            int px = m_plateau->GetPiece((Couleur)c, i)->GetColonne() * _TAILLE_CASE;
-            int py = m_plateau->GetPiece((Couleur)c, i)->GetLigne() * _TAILLE_CASE;
+            int px = m_plateau->GetPiece((Couleur)m_joueur, i)->GetColonne() * _TAILLE_CASE;
+            int py = m_plateau->GetPiece((Couleur)m_joueur, i)->GetLigne() * _TAILLE_CASE;
             //Ecarts de position dus à la taille de la piece
             int ex = (_TAILLE_CASE - (tailles[0][index] * _RATIO)) / 2;
             int ey = (_TAILLE_CASE - (tailles[1][index] * _RATIO)) / 2;
@@ -188,177 +225,28 @@ sf::Vector2i AffichagePlateau::GetPiece(const int &x, const int &y, const int ta
             int xmax = px + _TAILLE_CASE - ex;
             int ymin = py + ey;
             int ymax = py + _TAILLE_CASE - ey;
-            /*
-            std::cout << "Piece " << i << std::endl
-                      << "-> " << xmin << " & " << xmax << std::endl
-                      << "-> " << ymin << " & " << ymax << std::endl << std::endl;
-            */
             if((x > xmin)
                && (x <= xmax)
                && (y > ymin)
                && (y <= ymax))
             {
-                if(Contains(c, i, x - xmin, y - ymin))
-                {
-                    pos.x = c;
-                    pos.y = i;
-                }
-                return pos;
+                if(Contains(m_joueur, i, x - xmin, y - ymin))
+                    m_pointee = i;
+                return;
             }
         }
     }
-    return pos;
 }
 
 bool AffichagePlateau::Contains(const int &couleur, const int &piece, const int &x, const int &y)
 {
-    std::cout << "Test 1" << std::endl;
     int index = (piece < 4) ? piece : 4;
     sf::Rect<int> rect = m_sprites[couleur][0][index].getTextureRect();
     sf::Image im = m_sprites[couleur][0][index].getTexture()->copyToImage();
-    std::cout << "Test 2" << std::endl;
     int px = (x / _RATIO) + rect.left;
     int py = (y / _RATIO) + rect.top;
-    std::cout << "Test 3" << std::endl;
     bool b = (im.getPixel(px, py).a != 0);
-    std::cout << "Test 4" << std::endl;
     return b;
-}
-
-#define _H 1280
-/*
-bool AffichagePlateau::Test(int i, int j, int *tab)
-{
-    //1 -> transparent
-    //2 -> noir
-    //0 -> blanc
-    std::cout << i << ", " << j << std::endl;
-    if(tab[(j * _H) + i] != 0)
-        return;
-    if(m_imPieces.getPixel(i, j).a != 0)
-    {
-        tab[(j * _H) + i] = 2;
-        return;
-    }
-    tab[(j * _H) + i] = 1;
-    if(i > 0)
-        Test(i-1, j, tab);
-    if(i < 1279)
-        Test(i+1, j, tab);
-    if(j > 0)
-        Test(i, j-1, tab);
-    if(j < 639)
-        Test(i, j+1, tab);
-}*/
-/*
-void AffichagePlateau::Parcours(int* tab)
-{
-    //1 -> transparent
-    //2 -> noir
-    //0 -> blanc
-
-    //Parcours de haut en bas, de gauche à droite
-    for(int i = 0; i < _H; i++)
-    {
-        for(int j = 0; j < 640; j++)
-        {
-            if((i == 0)
-               || (i == (_H - 1))
-               || (j == 0)
-               || (j == (639)))
-                tab[i + (_H * j)] = 1;
-            else if(m_imPieces.getPixel(i, j).a != 0)
-                tab[i + (_H * j)] = 2;
-            else if(((tab[(i - 1) + (_H * j)]) == 1)
-                    || ((tab[i + (_H * (j - 1))]) == 1))
-                tab[i + (_H * j)] = 1;
-        }
-    }
-
-    //Parcours de bas en haut, de droite à gauche
-    for(int i = (_H - 1); i >= 0; i--)
-    {
-        for(int j = 639; j >= 0; j--)
-        {
-            if(tab[i + (_H * j)] != 0);
-            else if((i == 0)
-               || (i == (_H - 1))
-               || (j == 0)
-               || (j == (639)))
-                tab[i + (_H * j)] = 1;
-            else if(m_imPieces.getPixel(i, j).a >= 128)
-                tab[i + (_H * j)] = 2;
-            else if(((tab[(i + 1) + (_H * j)]) == 1)
-                    || ((tab[i + (_H * (j + 1))]) == 1))
-                tab[i + (_H * j)] = 1;
-        }
-    }
-}
-
-void AffichagePlateau::DelAlpha()
-{
-    std::cout << "1" << std::endl;
-    m_imPieces = m_texPieces.copyToImage();
-    int *tab = new int[_H * 640];
-    for(int i = 0; i < _H; i++)
-    {
-        for(int j = 0; j < 640; j++)
-            tab[(j * _H) + i] = 0;
-    }
-
-    std::cout << "2" << std::endl;
-
-    //Test(0, 0, tab);
-    Parcours(tab);
-
-    std::cout << "3" << std::endl;
-
-    sf::Color c;
-    for(int i = 0; i < _H; i++)
-    {
-        for(int j = 0; j < 640; j++)
-        {
-            if((tab[(j * _H) + i] == 0))
-            {
-                std::cout << "Modif " << i << ", " << j << std::endl;
-                c = m_imPieces.getPixel(i, j);
-                int rgb = (c.a <= 128) ? 255 : 0;
-                c.r = c.b = c.g = rgb;
-                c.a = 255;
-                m_imPieces.setPixel(i, j, c);
-            }
-        }
-    }
-
-    delete tab;
-    std::cout << "4" << std::endl;
-
-    m_imPieces.saveToFile("img/tpieces.png");
-}
-*/
-
-sf::Image AffichagePlateau::GetPion()
-{
-    int r = _TAILLE_CASE / _RATIO;
-    sf::Image im;
-    im.create(r, r);
-
-    for(int i = 0; i < (_TAILLE_CASE / _RATIO); i++)
-    {
-        for(int j = 0; j < (_TAILLE_CASE / _RATIO); j++)
-        {
-            /*
-            double d = sqrt(pow(i - (_TAILLE_CASE / (_RATIO * 2.0)), j - (_TAILLE_CASE / (_RATIO * 2.0))));
-            if(d <= (_RAYON_PION * _RATIO))
-                im.setPixel(i, j, _COULEUR_PION);
-            else if(d <= ((_RAYON_PION + _BORDURE_PION) / _RATIO))
-                im.setPixel(i, j, _COULEUR_BORDURE);
-            else*/
-                im.setPixel(i, j, sf::Color::Transparent);
-        }
-    }
-    return im;
-
 }
 
 

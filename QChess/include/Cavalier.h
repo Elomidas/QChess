@@ -2,6 +2,7 @@
 #define CAVALIER_H
 
 #include "Piece.h"
+#include "Plateau.h"
 
 
 class Cavalier : public Piece
@@ -15,11 +16,14 @@ class Cavalier : public Piece
         virtual ~Cavalier();
         //Initialisation
         void Init(const Couleur, const int, const int);
+        //Autres
+        //Retourne le liste des cases atteignables
+        const std::vector<int*> GetDeplacements(Plateau&);
 
     protected:
-        static vector<Deplacement*> m_deplacements;
+        static std::vector<const Deplacement*> m_deplacements;
         //Initialisation
-        static vector<Deplacement*> InitDeplacements();
+        static std::vector<const Deplacement*> InitDeplacements();
     private:
 };
 
