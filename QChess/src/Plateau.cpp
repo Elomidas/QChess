@@ -90,12 +90,17 @@ Piece* Plateau::GetPiece(const int ligne, const int colonne)
     return NULL;
 }
 
-bool Plateau::Bouger(const Couleur couleur, const int index, const int newLigne, const int newColonne)
+bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, const int colonne)
 {
-    //
+    if((index < 0) || (index > _NB_PIECES))
+    {
+        std::cout << "Index out of range : " << index << std::endl;
+        assert(false);
+    }
+    Bouger(m_pieces[couleur][index], ligne, colonne);
 }
 
-bool Plateau::Bouger(Piece &p, const int ligne, const int clonne)
+bool Plateau::Bouger(Piece *p, const int ligne, const int clonne)
 {
     //
 }
