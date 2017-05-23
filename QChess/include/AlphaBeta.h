@@ -16,13 +16,6 @@ class AlphaBeta
         Plateau Getplateau() { return m_plateau; }
         void Setplateau(Plateau val) { m_plateau = val; }
 
-        //Min
-        int Min_Value(Plateau state,int alpha, int beta);
-        //Max
-        int Max_Value(Plateau state,int alpha, int beta);
-        //renvoie le mouvement optimal : tab[3] = {index piece, x,y}
-        int * AlphaBetaDecision(Plateau state);
-
         int Eval(Plateau * plateau);
 
         bool TestFinal(Plateau plateau);

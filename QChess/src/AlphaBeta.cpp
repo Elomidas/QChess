@@ -18,89 +18,6 @@ AlphaBeta::~AlphaBeta()
     //dtor
 }
 
-//Min
-int AlphaBeta::Min_Value(Plateau plateau, int alpha, int beta)
-{
-    int valeur;
-    if (TestFinal(plateau))
-    {
-        //return Eval(plateau);
-    }
-    valeur = 0;
-    //pour deplacement piece plus importante puis deuxieme mouvement ... puis deux eme piece la plus importante
-    //refaire la boucle
-    for(int i = 0; i <5; i++)
-    {
-        valeur = std::min(valeur,Max_Value(plateau, alpha, beta));
-        if (valeur >= alpha)
-            return valeur;
-        beta = std::max(beta, valeur);
-    }
-    return valeur;
-
-}
-//Max
-int AlphaBeta::Max_Value(Plateau plateau,int alpha, int beta)
-{
-    int valeur;
-    if (TestFinal(plateau))
-    {
-        //return Eval(plateau);
-    }
-    valeur = 0;
-    for(int i = 0; i <5; i++)
-    {
-        valeur = std::max(valeur,Min_Value(plateau, alpha, beta));
-        if (valeur >= beta)
-            return valeur;
-        alpha = std::max(alpha, valeur);
-    }
-    return valeur;
-}
-//Initialisation
-int * AlphaBeta::AlphaBetaDecision(Plateau plateau)
-{
-    int move_opt[3];
-    int * tab ;
-    tab[0] = 1;
-    tab[1] = 1;
-    tab[2] = 1;
-   //https://fr.wikipedia.org/wiki/%C3%89lagage_alpha-b%C3%AAta
-   //http://www.math-info.univ-paris5.fr/~bouzy/Doc/IAL3/04_IA_jeux_BB.pdf
-   //https://github.com/dogukancagatay/terminal_chess/blob/master/tchess_algorithms.hpp
-
-    if(TestFinal(plateau))
-    {
-
-    }
-    return tab;
-    /*
-    si P est une feuille alors
-       retourner la valeur de P
-   sinon
-       si P est un nœud Min alors
-           Val = infini
-           pour tout enfant Pi de P faire
-               Val = Min(Val, ALPHABETA(Pi, alpha, beta))
-               si alpha ≥ Val alors  /* coupure alpha
-                   retourner Val
-               finsi
-               beta = Min(beta, Val)
-           finpour
-       sinon
-           Val = -infini
-           pour tout enfant Pi de P faire
-               Val = Max(Val, ALPHABETA(Pi, alpha, beta))
-               si Val ≥ beta alors /* coupure beta
-                   retourner Val
-               finsi
-               alpha = Max(alpha, Val)
-           finpour
-       finsi
-   retourner Val
-   finsi*/
-
-}
 
 int AlphaBeta::Eval(Plateau * plateau)
 {
@@ -125,13 +42,15 @@ int AlphaBeta::Eval(Plateau * plateau)
     {
         for(j = 0; j < _NB_PIECES ; j++)
         {
-            pieces[i][j] = ((*plateau).GetPiece(i,j)!= NULL);
-            std::cout << "piece rentree \n";
+            pieces[i][j] = (((*plateau).GetPiece(i,j))!= NULL);
+
+            if (pieces[i][j])
+                std::cout <<"i: " <<i <<" j: " << j << " piece rentree \n";
         }
     }
     //[0] roi [1] tour [2] fou [3] cavalier [4} -> [7] pion
 
-    for (j = 0; j< _NB_PIECES; j++)
+    for (j = 1; j< _NB_PIECES; j++)
         {
             std::cout<<"\n" << j <<": ";
             if (pieces[c_act][j])
@@ -140,22 +59,22 @@ int AlphaBeta::Eval(Plateau * plateau)
                     switch(j)
                         {
                             case 1:
-                                std::cout<<"tour";
+                                std::cout<<"+5";
                                 valeur += 5;
                             break;
 
                             case 2:
-                                std::cout<<"cavalier";
+                                std::cout<<"+3";
                                 valeur += 3;
                             break;
 
                             case 3:
-                                std::cout<<"fou";
+                                std::cout<<"+3";
                                 valeur += 3;
                             break;
 
                             default:
-                                std::cout<<"pion";
+                                std::cout<<"+1";
                                 valeur += 1;
                         }
             }
@@ -165,22 +84,22 @@ int AlphaBeta::Eval(Plateau * plateau)
                     switch(j)
                     {
                         case 1:
-                            std::cout<<"tour";
+                            std::cout<<"-5";
                             valeur -=  5;
                         break;
 
                         case 2:
-                            std::cout<<"cavalier";
+                            std::cout<<"-3";
                             valeur -=  3;
                         break;
 
                         case 3:
-                            std::cout<<"fou";
+                            std::cout<<"-3";
                             valeur -=  3;
                         break;
 
                         default:
-                            std::cout<<"pion";
+                            std::cout<<"-1";
                             valeur -= 1;
                     }
 

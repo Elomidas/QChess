@@ -23,6 +23,6 @@ void Jeu::Jouer()
     //
     /*AlphaBeta al = AlphaBeta(m_plateau,_NOIR);
     int b = al.Eval(&m_plateau);
-    std::cout << b;*/
+    std::cout <<" \n\n" <<b;*/
 }
 
