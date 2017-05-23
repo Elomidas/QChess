@@ -126,6 +126,7 @@ int AlphaBeta::Eval(Plateau * plateau)
         for(j = 0; j < _NB_PIECES ; j++)
         {
             pieces[i][j] = ((*plateau).GetPiece(i,j)!= NULL);
+            std::cout << "piece rentree \n";
         }
     }
     //[0] roi [1] tour [2] fou [3] cavalier [4} -> [7] pion
