@@ -3,7 +3,7 @@
 Jeu::Jeu() : m_plateau(), m_affichage()
 {
     m_affichage.SetPlateau(&m_plateau);
-    m_affichage.SetCouleur(_BLANC);
+    m_affichage.SetCouleur(_NOIR);
     m_affichage.ActiverJeu();
 }
 

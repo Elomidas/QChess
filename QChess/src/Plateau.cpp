@@ -66,8 +66,11 @@ void Plateau::InitialiserPieces()
 
 Piece* Plateau::GetPiece(const Couleur c, const int index)
 {
-    assert(0 <= index);
-    assert(_NB_PIECES > index);
+    if((0 > index) || (_NB_PIECES <= index))
+    {
+        std::cout << "Index out of range : " << index << std::endl;
+        assert(false);
+    }
     return m_pieces[c][index];
 }
 
@@ -88,6 +91,11 @@ Piece* Plateau::GetPiece(const int ligne, const int colonne)
 }
 
 bool Plateau::Bouger(const Couleur couleur, const int index, const int newLigne, const int newColonne)
+{
+    //
+}
+
+bool Plateau::Bouger(Piece &p, const int ligne, const int clonne)
 {
     //
 }

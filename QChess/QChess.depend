@@ -629,7 +629,7 @@
 1495531339 d:\documents\apo2\qchess\qchess\include\pion.h
 	"Piece.h"
 
-1495531339 d:\documents\apo2\qchess\qchess\include\affichageplateau.h
+1495571098 d:\documents\apo2\qchess\qchess\include\affichageplateau.h
 	<SFML/Window.hpp>
 	<SFML/Graphics.hpp>
 	<SFML/System.hpp>

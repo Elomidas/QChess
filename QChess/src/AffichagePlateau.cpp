@@ -7,6 +7,7 @@ AffichagePlateau::AffichagePlateau()
     m_tour = false;
     m_pointee = -1;
     m_cliquee = -1;
+    m_dep = NULL;
     //Chargement des textures
     int offsets[2][5] = {{_RX, _TX, _FX, _CX, _PX}, {_RY, _TY, _FY, _CY, _PY}};
     int tailles[2][5] = {{_RL, _TL, _FL, _CL, _PL}, {_RH, _TH, _FH, _CH, _PH}};
@@ -32,29 +33,36 @@ AffichagePlateau::AffichagePlateau()
         }
     }
     //Carre bleu
-    m_tBleu.create(_TAILLE_CASE, _TAILLE_CASE);
-    sf::Uint8* pixels = new sf::Uint8[_TAILLE_CASE * _TAILLE_CASE * 4];
-    for(int i = 0; i < _TAILLE_CASE; i++)
-    {
-        for(int j = 0; j < _TAILLE_CASE; j++)
-        {
-            pixels[4*i] = 0;
-            pixels[(4*i)+1] = 0;
-            pixels[(4*i)+2] = 200;
-            pixels[(4*i)+3] = 200;
-        }
-    }
-    m_tBleu.update(pixels);
+    m_tBleu.loadFromFile("img/case.png");
     m_sBleu.setTexture(m_tBleu);
-    m_sBleu.setTextureRect(sf::Rect<int>(0, 0, 80, 80));
+    m_sBleu.setColor(sf::Color(0, 162, 232, 150));
     //Fond
     m_tPlateau.loadFromFile("img/plateau.jpg");
     m_sPlateau.setTexture(m_tPlateau);
+    std::cout << "Init OK" << std::endl << std::endl;
 }
 
 AffichagePlateau::~AffichagePlateau()
 {
-    //dtor
+    DelDep();
+}
+
+void AffichagePlateau::DelDep()
+{
+    if(m_dep != NULL)
+    {
+        for(unsigned int i = 0; i < m_dep->size(); i++)
+            delete (*m_dep)[i];
+        m_dep = NULL;
+    }
+}
+
+void AffichagePlateau::SetDep(const std::vector<int*> vect)
+{
+    DelDep();
+    m_dep = new std::vector<int*>();
+    for(unsigned int i = 0; i < vect.size(); i++)
+        m_dep->push_back(vect[i]);
 }
 
 void AffichagePlateau::SetPlateau(Plateau * plateau)
@@ -98,8 +106,8 @@ bool AffichagePlateau::Rafraichir()
                 sf::Sprite s;
                 //Si la souris est sur le pion et que c'est le tour du joueur, on affiche le sprite modifié
                 s = GetSprite(p->GetChar(), h, l, (m_tour && (c == m_joueur) && (m_pointee == i)));
-                int px = p->GetLigne() * _TAILLE_CASE;
-                int py = p->GetColonne() * _TAILLE_CASE;
+                int py = p->GetLigne() * _TAILLE_CASE;
+                int px = p->GetColonne() * _TAILLE_CASE;
                 int dx = (_TAILLE_CASE - h) / 2;
                 int dy = (_TAILLE_CASE - l) / 2;
                 s.setPosition(py + dy, px + dx);
@@ -107,12 +115,12 @@ bool AffichagePlateau::Rafraichir()
             }
         }
     }
-    if(m_cliquee)
+    if((m_cliquee != -1) && (m_dep != NULL))
     {
         //Affichage des cases possibles
-        for(unsigned int i = 0; i < m_dep.size(); i++)
+        for(unsigned int i = 0; i < m_dep->size(); i++)
         {
-            m_sBleu.setPosition(m_dep[i].x * _TAILLE_CASE, m_dep[i].y);
+            m_sBleu.setPosition((*m_dep)[i][0] * _TAILLE_CASE, (*m_dep)[i][1] * _TAILLE_CASE);
             m_fenetre.draw(m_sBleu);
         }
     }
@@ -122,6 +130,7 @@ bool AffichagePlateau::Rafraichir()
 
 void AffichagePlateau::Event()
 {
+    int x = -1, y = -1;
     int posSouris[2] = {0, 0};
     int tailles[2][5] = {{_RL, _TL, _FL, _CL, _PL}, {_RH, _TH, _FH, _CH, _PH}};
     while (m_fenetre.isOpen())
@@ -145,8 +154,19 @@ void AffichagePlateau::Event()
 
                 case sf::Event::MouseButtonReleased :
                     //Clic de la souris
-                    if(m_cliquee == -1)
+                    x = posSouris[0] / _TAILLE_CASE;
+                    y = posSouris[1] / _TAILLE_CASE;
+                    if(DepOK(x, y))
+                    {
+                        std::cout << "Dep OK" << std::endl;
+                    }
+                    else
+                    {
                         m_cliquee = m_pointee;
+                        if(m_pointee != -1)
+                            SetDep(m_plateau->GetPiece(m_joueur, m_pointee)->GetDeplacements(*m_plateau));
+                        else DelDep();
+                    }
                     break;
 
                 default :
@@ -157,6 +177,18 @@ void AffichagePlateau::Event()
         Rafraichir();
         sf::sleep(sf::milliseconds(20));
     }
+}
+
+bool AffichagePlateau::DepOK(const int x, const int y)
+{
+    if(m_dep == NULL)
+        return false;
+    for(unsigned int i = 0; i < m_dep->size(); i++)
+    {
+        if((x == (*m_dep)[i][0]) && (y == (*m_dep)[i][1]))
+            return true;
+    }
+    return false;
 }
 
 sf::Sprite& AffichagePlateau::GetSprite(const char c, int &h, int &l, const bool transparent)
@@ -215,8 +247,8 @@ void AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2]
         {
             int index = (i < 4) ? i : 4;
             //Position de la case occuppée par la piece
-            int px = m_plateau->GetPiece((Couleur)m_joueur, i)->GetColonne() * _TAILLE_CASE;
-            int py = m_plateau->GetPiece((Couleur)m_joueur, i)->GetLigne() * _TAILLE_CASE;
+            int px = m_plateau->GetPiece((Couleur)m_joueur, i)->GetLigne() * _TAILLE_CASE;
+            int py = m_plateau->GetPiece((Couleur)m_joueur, i)->GetColonne() * _TAILLE_CASE;
             //Ecarts de position dus à la taille de la piece
             int ex = (_TAILLE_CASE - (tailles[0][index] * _RATIO)) / 2;
             int ey = (_TAILLE_CASE - (tailles[1][index] * _RATIO)) / 2;
