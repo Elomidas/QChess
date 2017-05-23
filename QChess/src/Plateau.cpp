@@ -80,8 +80,9 @@ Piece* Plateau::GetPiece(const int ligne, const int colonne)
     {
         for(int j = 0; j < _NB_PIECES; j++)
         {
-            if((m_pieces[i][j]->GetLigne() == ligne)
-               && (m_pieces[i][j]->GetColonne() == colonne))
+            if((m_pieces[i][j] != NULL)
+                && (m_pieces[i][j]->GetLigne() == ligne)
+                && (m_pieces[i][j]->GetColonne() == colonne))
             {
                 return m_pieces[i][j];
             }
@@ -92,17 +93,50 @@ Piece* Plateau::GetPiece(const int ligne, const int colonne)
 
 bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, const int colonne)
 {
-    if((index < 0) || (index > _NB_PIECES))
+
+    if((index < 0) || (index >= _NB_PIECES))
     {
         std::cout << "Index out of range : " << index << std::endl;
         assert(false);
     }
-    Bouger(m_pieces[couleur][index], ligne, colonne);
+    return Bouger(m_pieces[couleur][index], ligne, colonne);
 }
 
-bool Plateau::Bouger(Piece *p, const int ligne, const int clonne)
+bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
 {
-    //
+    if((ligne < 0) || (ligne > 7))
+    {
+        std::cout << "Ligne incorrecte : " << ligne << std::endl;
+        assert(false);
+    }
+    if((colonne < 0) || (colonne > 7))
+    {
+        std::cout << "Colonne incorrecte : " << colonne << std::endl;
+        assert(false);
+    }
+    Piece *np = GetPiece(ligne, colonne);
+    if(np != NULL)
+        SetPiece(np, NULL);
+    p->SetLigne(ligne);
+    p->SetColonne(colonne);
+    return true;
+}
+
+void Plateau::SetPiece(Piece *oldP, Piece *newP)
+{
+    bool b = true;
+    for(int i = 0; b && (i < 2); i++)
+    {
+        for(int j = 0; b && (j < _NB_PIECES); j++)
+        {
+            if(m_pieces[i][j] == oldP)
+            {
+                delete m_pieces[i][j];
+                m_pieces[i][j] = newP;
+                b = false;
+            }
+        }
+    }
 }
 
 std::string Plateau::ToStr()

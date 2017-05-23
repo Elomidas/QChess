@@ -158,7 +158,10 @@ void AffichagePlateau::Event()
                     y = posSouris[1] / _TAILLE_CASE;
                     if(DepOK(x, y))
                     {
-                        std::cout << "Dep OK" << std::endl;
+                        m_plateau->Bouger(m_joueur, m_cliquee, x, y);
+                        m_pointee = -1;
+                        m_cliquee = -1;
+                        DelDep();
                     }
                     else
                     {
