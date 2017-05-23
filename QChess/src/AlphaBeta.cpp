@@ -138,19 +138,22 @@ int AlphaBeta::Eval(Plateau * plateau)
                     switch(j)
                         {
                             case 1:
-                                //cout<<"+5";
+                                std::cout<<"tour";
                                 valeur += 5;
                             break;
 
                             case 2:
+                                std::cout<<"cavalier";
                                 valeur += 3;
                             break;
 
                             case 3:
+                                std::cout<<"fou";
                                 valeur += 3;
                             break;
 
                             default:
+                                std::cout<<"pion";
                                 valeur += 1;
                         }
             }
