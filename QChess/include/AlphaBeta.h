@@ -16,13 +16,11 @@ class AlphaBeta
         Plateau Getplateau() { return m_plateau; }
         void Setplateau(Plateau val) { m_plateau = val; }
 
-        int Eval(Plateau * plateau);
-
-        bool TestFinal(Plateau plateau);
+        int Eval(Plateau * plateau, Couleur couleur);
 
         int* ABMinMax(Plateau* plateau);
-        int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env);
-        int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env);
+        int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
+        int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
     protected:
 
     private:
