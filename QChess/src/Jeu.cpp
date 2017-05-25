@@ -21,8 +21,8 @@ void Jeu::Fin()
 void Jeu::Jouer()
 {
     //
-    AlphaBeta al = AlphaBeta(m_plateau,_NOIR);
-    int b = al.Eval(&m_plateau,_NOIR);
-    std::cout <<" \n\n" <<b;
+    /*AlphaBeta al = AlphaBeta(m_plateau,_NOIR);
+    int b = al.Eval(&m_plateau);
+    std::cout <<" \n\n" <<b;*/
 }
 

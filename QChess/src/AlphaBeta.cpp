@@ -216,7 +216,7 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
                     return best_real_move;
                 }
             }
-            deplacements.
+
         }
 
 		return best_real_move;
