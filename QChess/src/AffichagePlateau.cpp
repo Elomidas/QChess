@@ -4,10 +4,10 @@ AffichagePlateau::AffichagePlateau()
 {
     m_fini = false;
     m_plateau = 0;
-    m_tour = false;
     m_pointee = -1;
     m_cliquee = -1;
     m_dep = NULL;
+    m_gui[_BLANC] = m_gui[_NOIR] = true;
     //Chargement des textures
     int offsets[2][5] = {{_RX, _TX, _FX, _CX, _PX}, {_RY, _TY, _FY, _CY, _PY}};
     int tailles[2][5] = {{_RL, _TL, _FL, _CL, _PL}, {_RH, _TH, _FH, _CH, _PH}};
@@ -76,16 +76,6 @@ void AffichagePlateau::SetCouleur(Couleur joueur)
     m_joueur = joueur;
 }
 
-void AffichagePlateau::ActiverJeu()
-{
-    m_tour = true;
-}
-
-void AffichagePlateau::BloquerJeu()
-{
-    m_tour = false;
-}
-
 bool AffichagePlateau::Rafraichir()
 {
     if(m_plateau == 0)
@@ -105,7 +95,7 @@ bool AffichagePlateau::Rafraichir()
                 int h, l;
                 sf::Sprite s;
                 //Si la souris est sur le pion et que c'est le tour du joueur, on affiche le sprite modifié
-                s = GetSprite(p->GetChar(), h, l, (m_tour && (c == m_joueur) && (m_pointee == i)));
+                s = GetSprite(p->GetChar(), h, l, (c == m_joueur) && (m_pointee == i));
                 int py = p->GetLigne() * _TAILLE_CASE;
                 int px = p->GetColonne() * _TAILLE_CASE;
                 int dx = (_TAILLE_CASE - h) / 2;
@@ -154,27 +144,36 @@ void AffichagePlateau::Event()
 
                 case sf::Event::MouseButtonReleased :
                     //Clic de la souris
-                    x = posSouris[0] / _TAILLE_CASE;
-                    y = posSouris[1] / _TAILLE_CASE;
-                    if(DepOK(x, y))
+                    //On ne traite l'action que si le joueur a la main
+                    if(m_gui[m_joueur])
                     {
-                        m_plateau->Bouger(m_joueur, m_cliquee, x, y);
-                        m_pointee = -1;
-                        m_cliquee = -1;
-                        DelDep();
-                    }
-                    else
-                    {
-                        m_cliquee = m_pointee;
-                        if(m_pointee != -1)
-                            SetDep(m_plateau->GetPiece(m_joueur, m_pointee)->GetDeplacements(*m_plateau));
-                        else DelDep();
+                        x = posSouris[0] / _TAILLE_CASE;
+                        y = posSouris[1] / _TAILLE_CASE;
+                        if(DepOK(x, y))
+                        {
+                            m_plateau->Bouger(m_joueur, m_cliquee, x, y);
+                            m_pointee = -1;
+                            m_cliquee = -1;
+                            DelDep();
+                        }
+                        else
+                        {
+                            m_cliquee = m_pointee;
+                            if(m_pointee != -1)
+                                SetDep(m_plateau->GetPiece(m_joueur, m_pointee)->GetDeplacements(*m_plateau));
+                            else DelDep();
+                        }
                     }
                     break;
 
                 default :
                     break;
             }
+        }
+        if(m_plateau->GetAction())
+        {
+            m_joueur = Couleur(_NOIR - m_joueur);
+            m_plateau->Reset();
         }
         GetPiece(posSouris[0], posSouris[1], tailles);
         Rafraichir();
@@ -244,30 +243,34 @@ sf::Sprite& AffichagePlateau::GetSprite(const char c, int &h, int &l, const bool
 void AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2][5])
 {
     m_pointee = -1;
-    if(m_tour)
+    if(m_gui[m_joueur])
     {
         for(int i(0); i < _NB_PIECES; i++)
         {
             int index = (i < 4) ? i : 4;
-            //Position de la case occuppée par la piece
-            int px = m_plateau->GetPiece((Couleur)m_joueur, i)->GetLigne() * _TAILLE_CASE;
-            int py = m_plateau->GetPiece((Couleur)m_joueur, i)->GetColonne() * _TAILLE_CASE;
-            //Ecarts de position dus à la taille de la piece
-            int ex = (_TAILLE_CASE - (tailles[0][index] * _RATIO)) / 2;
-            int ey = (_TAILLE_CASE - (tailles[1][index] * _RATIO)) / 2;
-            //Calcul des limites de la pièce
-            int xmin = px + ex;
-            int xmax = px + _TAILLE_CASE - ex;
-            int ymin = py + ey;
-            int ymax = py + _TAILLE_CASE - ey;
-            if((x > xmin)
-               && (x <= xmax)
-               && (y > ymin)
-               && (y <= ymax))
+            Piece *p = m_plateau->GetPiece((Couleur)m_joueur, i);
+            if(p != NULL)
             {
-                if(Contains(m_joueur, i, x - xmin, y - ymin))
-                    m_pointee = i;
-                return;
+                //Position de la case occuppée par la piece
+                int px = m_plateau->GetPiece((Couleur)m_joueur, i)->GetLigne() * _TAILLE_CASE;
+                int py = m_plateau->GetPiece((Couleur)m_joueur, i)->GetColonne() * _TAILLE_CASE;
+                //Ecarts de position dus à la taille de la piece
+                int ex = (_TAILLE_CASE - (tailles[0][index] * _RATIO)) / 2;
+                int ey = (_TAILLE_CASE - (tailles[1][index] * _RATIO)) / 2;
+                //Calcul des limites de la pièce
+                int xmin = px + ex;
+                int xmax = px + _TAILLE_CASE - ex;
+                int ymin = py + ey;
+                int ymax = py + _TAILLE_CASE - ey;
+                if((x > xmin)
+                   && (x <= xmax)
+                   && (y > ymin)
+                   && (y <= ymax))
+                {
+                    if(Contains(m_joueur, i, x - xmin, y - ymin))
+                        m_pointee = i;
+                    return;
+                }
             }
         }
     }

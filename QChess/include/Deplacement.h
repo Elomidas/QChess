@@ -13,11 +13,11 @@ class Deplacement
     public:
         //Constructeurs
         Deplacement(const int, const int, const int);
-        Deplacement(const int, const int, const Couleur, const int, const bool, const bool, const bool = true);
+        Deplacement(const int, const int, const Couleur, const int, const bool, const bool, const bool = true, const bool = false);
         //Destructeur
         virtual ~Deplacement();
         //Initialisation
-        void Init(const int, const int, const int, const int, const bool, const bool, const bool);
+        void Init(const int, const int, const int, const int, const bool, const bool, const bool, const bool);
         //Fonctions de test
         const bool Accessible(const int, const int);
         //Set/Get
@@ -69,7 +69,7 @@ class Deplacement
         //Disponnibilite du deplacement selon la couleur
         bool m_couleur[2];
         //Disponnibilité selon la case visée
-        bool m_libre, m_occupee, m_limitee;
+        bool m_libre, m_occupee, m_limitee, m_ligneVue;
 
     private:
 };

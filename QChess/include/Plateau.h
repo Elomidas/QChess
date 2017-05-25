@@ -31,15 +31,18 @@ class Plateau
         Piece* GetPiece(const Couleur, const int);
         Piece* GetPiece(const int, const int);
         bool Libre(const int, const int) const;
+        bool GetAction() {return m_action;}
         //Mutateur
         bool Bouger(const Couleur, const int, const int, const int);
         bool Bouger(Piece*, const int, const int);
+        void Reset() {m_action = false;}
         //Affichage
         std::string ToStr();
 
     protected:
         Piece* m_pieces[2][_NB_PIECES];
         void SetPiece(Piece*, Piece*);
+        bool m_action;
 
     private:
 };
