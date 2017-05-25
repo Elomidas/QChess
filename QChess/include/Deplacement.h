@@ -12,22 +12,19 @@ class Deplacement
 {
     public:
         //Constructeurs
-        Deplacement();
-        Deplacement(const int, const int);
-        Deplacement(const int, const int, const Couleur);
         Deplacement(const int, const int, const int);
-        Deplacement(const int, const int, const Couleur, const int);
+        Deplacement(const int, const int, const Couleur, const int, const bool, const bool, const bool = true);
         //Destructeur
         virtual ~Deplacement();
         //Initialisation
-        void Init(const int, const int, const int, const int);
+        void Init(const int, const int, const int, const int, const bool, const bool, const bool);
         //Fonctions de test
         const bool Accessible(const int, const int);
         //Set/Get
         int GetRepetition();
         const int X() {return m_ligne;};
         const int Y() {return m_colonne;};
-        const std::vector<int*> GetPossibles(const int, const int, Plateau&, const Couleur) const;
+        const std::vector<int*> GetPossibles(const int, const int, Plateau&, const Couleur, const bool = false) const;
         //Déplacements
         static Deplacement LigneH,
                            LigneB,
@@ -45,8 +42,14 @@ class Deplacement
                            CavalierGGB,
                            CavalierDDH,
                            CavalierDDB,
+                           PionBB,
                            PionB,
+                           PionHH,
                            PionH,
+                           PionBG,
+                           PionBD,
+                           PionHG,
+                           PionHD,
                            SimpleH,
                            SimpleHD,
                            SimpleD,
@@ -54,7 +57,9 @@ class Deplacement
                            SimpleB,
                            SimpleBG,
                            SimpleG,
-                           SimpleHG;
+                           SimpleHG,
+                           RoqueG,
+                           RoqueD;
 
     protected:
         //Deplacement sur les ligne et colonnes
@@ -63,6 +68,8 @@ class Deplacement
         int m_repetition;
         //Disponnibilite du deplacement selon la couleur
         bool m_couleur[2];
+        //Disponnibilité selon la case visée
+        bool m_libre, m_occupee, m_limitee;
 
     private:
 };

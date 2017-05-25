@@ -1,29 +1,14 @@
 #include "Deplacement.h"
 #include "Plateau.h"
 
-Deplacement::Deplacement()
-{
-    Init(0, 0, -1, 1);
-}
-
-Deplacement::Deplacement(const int ligne, const int colonne)
-{
-    Init(ligne, colonne, -1, 1);
-}
-
-Deplacement::Deplacement(const int ligne, const int colonne, const Couleur couleur)
-{
-    Init(ligne, colonne, couleur, 1);
-}
-
 Deplacement::Deplacement(const int ligne, const int colonne, const int repetition)
 {
-    Init(ligne, colonne, -1, repetition);
+    Init(ligne, colonne, -1, repetition, false, false, true);
 }
 
-Deplacement::Deplacement(const int ligne, const int colonne, const Couleur couleur, const int repetition)
+Deplacement::Deplacement(const int ligne, const int colonne, const Couleur couleur, const int repetition, const bool libre, const bool pion, const bool limitee)
 {
-    Init(ligne, colonne, couleur, repetition);
+    Init(ligne, colonne, couleur, repetition, libre, pion, limitee);
 }
 
 Deplacement::~Deplacement()
@@ -31,7 +16,7 @@ Deplacement::~Deplacement()
     //dtor
 }
 
-void Deplacement::Init(const int ligne, const int colonne, const int couleur, const int repetition)
+void Deplacement::Init(const int ligne, const int colonne, const int couleur, const int repetition, const bool libre, const bool pion, const bool limitee)
 {
     m_ligne = ligne;
     m_colonne = colonne;
@@ -42,6 +27,9 @@ void Deplacement::Init(const int ligne, const int colonne, const int couleur, co
     }
     else m_couleur[0] = m_couleur[1] = true;
     m_repetition = repetition;
+    m_occupee = pion;
+    m_libre= libre;
+    m_limitee = limitee;
 }
 
 const bool Deplacement::Accessible(const int ligne, const int colonne)
@@ -73,10 +61,10 @@ const bool Deplacement::Accessible(const int ligne, const int colonne)
 }
 
 //x ligne, y colonne
-const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Plateau &p, const Couleur couleur) const
+const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Plateau &p, const Couleur couleur, const bool limite) const
 {
     std::vector<int*> vect;
-    if(m_couleur[couleur])
+    if(m_couleur[couleur] && (m_limitee || limite))
     {
         bool continuer = true;
         int ite = 0;
@@ -97,12 +85,12 @@ const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Pl
                 else
                 {
                     bool enreg = false;
-                    if(p.Libre(x, y))
+                    if(p.Libre(x, y) && (!m_occupee))
                         enreg = true;
                     else
                     {
                         Piece *pt = p.GetPiece(x, y);
-                        if((pt != NULL) && (pt->GetCouleur() != couleur))
+                        if((pt != NULL) && (!m_libre) && (pt->GetCouleur() != couleur))
                             enreg = true;;
                         continuer = false;
                     }
@@ -136,8 +124,14 @@ Deplacement Deplacement::CavalierGGH = Deplacement(-2, -1, 1);
 Deplacement Deplacement::CavalierGGB = Deplacement(-2, 1, 1);
 Deplacement Deplacement::CavalierDDH = Deplacement(2, -1, 1);
 Deplacement Deplacement::CavalierDDB = Deplacement(2, 1, 1);
-Deplacement Deplacement::PionB = Deplacement(0, 1, _BLANC, 2);
-Deplacement Deplacement::PionH = Deplacement(0, -1, _NOIR, 2);
+Deplacement Deplacement::PionBB = Deplacement(0, 1, _BLANC, 2, true, false, false);
+Deplacement Deplacement::PionB = Deplacement(0, 1, _BLANC, 1, true, false, true);
+Deplacement Deplacement::PionHH = Deplacement(0, -1, _NOIR, 2, true, false, false);
+Deplacement Deplacement::PionH = Deplacement(0, -1, _NOIR, 1, true, false, true);
+Deplacement Deplacement::PionBG = Deplacement(-1, 1, _BLANC, 1, false, true);
+Deplacement Deplacement::PionBD = Deplacement(1, 1, _BLANC, 1, false, true);
+Deplacement Deplacement::PionHG = Deplacement(-1, -1, _NOIR, 1, false, true);
+Deplacement Deplacement::PionHD = Deplacement(1, -1, _NOIR, 1, false, true);
 Deplacement Deplacement::SimpleH = Deplacement(0, -1, 1);
 Deplacement Deplacement::SimpleHD = Deplacement(1, -1, 1);
 Deplacement Deplacement::SimpleD = Deplacement(1, 0, 1);
@@ -146,3 +140,5 @@ Deplacement Deplacement::SimpleB = Deplacement(0, 1, 1);
 Deplacement Deplacement::SimpleBG = Deplacement(-1, 1, 1);
 Deplacement Deplacement::SimpleG = Deplacement(-1, 0, 1);
 Deplacement Deplacement::SimpleHG = Deplacement(-1, -1, 1);
+Deplacement Deplacement::RoqueG = Deplacement(-2, 0, _BLANC, 1, true, false, false);
+Deplacement Deplacement::RoqueD = Deplacement(2, 0, _NOIR, 1, true, false, false);

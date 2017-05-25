@@ -34,6 +34,7 @@ class Piece
         //Autres
         //Retourne le liste des cases atteignables
         virtual const std::vector<int*> GetDeplacements(Plateau&);
+        virtual void Bouge() {};
 
         //Fonctions statiques
         // Retourne 'true' si la position indiquee est accessible, faux sinon

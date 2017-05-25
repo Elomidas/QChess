@@ -104,6 +104,7 @@ bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, co
 
 bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
 {
+    assert(p != NULL);
     if((ligne < 0) || (ligne > 7))
     {
         std::cout << "Ligne incorrecte : " << ligne << std::endl;
@@ -119,6 +120,11 @@ bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
         SetPiece(np, NULL);
     p->SetLigne(ligne);
     p->SetColonne(colonne);
+    p->Bouge();
+    char c = p->GetChar();
+    //Si c'est la tour qui a été bougée, on empêche le roi de roquer
+    if((c == 't') || (c == 'T'))
+        m_pieces[p->GetCouleur()][0]->Bouge();
     return true;
 }
 
