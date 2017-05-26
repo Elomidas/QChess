@@ -5,6 +5,51 @@ Plateau::Plateau()
     InitialiserPieces();
 }
 
+Plateau::Plateau(Plateau &p)
+{
+    for(int i = 0; i < _NB_PIECES; i++)
+    {
+        m_pieces[_BLANC][i] = NULL;
+        m_pieces[_NOIR][i] = NULL;
+    }
+    m_action = false;
+
+    //Blancs
+    Couleur c = _BLANC;
+    Tour* pt = new Tour(c, p.GetPiece(c, 1)->GetColonne(), p.GetPiece(c, 1)->GetLigne());
+    Fou* pf = new Fou(c, p.GetPiece(c, 2)->GetColonne(), p.GetPiece(c, 2)->GetLigne());
+    Roi* pr = new Roi(c, p.GetPiece(c, 0)->GetColonne(), p.GetPiece(c, 0)->GetLigne());
+    Cavalier* pc = new Cavalier(c, p.GetPiece(c, 3)->GetColonne(), p.GetPiece(c, 3)->GetLigne());
+    Pion* pp[8];
+    for(int i = 0; i < 8; i++)
+    {
+        pp[i] = new Pion(c, p.GetPiece(c, 4+i)->GetColonne(), p.GetPiece(c, 4+i)->GetLigne());
+    }
+    m_pieces[c][0] = pr;
+    m_pieces[c][1] = pt;
+    m_pieces[c][2] = pf;
+    m_pieces[c][3] = pc;
+    for(int i = 0; i < 8; i++)
+        m_pieces[c][4 + i] = pp[i];
+
+    //Noirs
+    c = _NOIR;
+    pt = new Tour(c, p.GetPiece(c, 1)->GetColonne(), p.GetPiece(c, 1)->GetLigne());
+    pf = new Fou(c, p.GetPiece(c, 2)->GetColonne(), p.GetPiece(c, 2)->GetLigne());
+    pr = new Roi(c, p.GetPiece(c, 0)->GetColonne(), p.GetPiece(c, 0)->GetLigne());
+    pc = new Cavalier(c, p.GetPiece(c, 3)->GetColonne(), p.GetPiece(c, 3)->GetLigne());
+    for(int i = 0; i < 8; i++)
+    {
+        pp[i] = new Pion(c, p.GetPiece(c, 4+i)->GetColonne(), p.GetPiece(c, 4+i)->GetLigne());
+    }
+    m_pieces[c][0] = pr;
+    m_pieces[c][1] = pt;
+    m_pieces[c][2] = pf;
+    m_pieces[c][3] = pc;
+    for(int i = 0; i < 8; i++)
+        m_pieces[c][4 + i] = pp[i];
+}
+
 Plateau::~Plateau()
 {
     for(int i = 0; i < _NB_PIECES; i++)
@@ -20,8 +65,8 @@ void Plateau::InitialiserPieces()
 {
     for(int i = 0; i < _NB_PIECES; i++)
     {
-        m_pieces[_BLANC][i] = 0;
-        m_pieces[_NOIR][i] = 0;
+        m_pieces[_BLANC][i] = NULL;
+        m_pieces[_NOIR][i] = NULL;
     }
     m_action = false;
 
