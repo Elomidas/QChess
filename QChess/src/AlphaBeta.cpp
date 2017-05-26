@@ -4,13 +4,20 @@
 #include "AlphaBeta.h"
 #include "algorithm"
 
+AlphaBeta::AlphaBeta()
+{
+    //ctor
+
+   // m_plateau = NULL;
+   // m_couleur = NULL;
+}
 
 AlphaBeta::AlphaBeta(Plateau plateau, Couleur couleur)
 {
     //ctor
 
     m_plateau = plateau;
-    m_couleur = couleur;
+    m_couleur = _BLANC;
 }
 
 AlphaBeta::~AlphaBeta()
@@ -39,7 +46,7 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
     {
         for(j = 0; j < _NB_PIECES ; j++)
         {
-            pieces[i][j] = (((*plateau).GetPiece(i,j))!= NULL);
+            pieces[i][j] = ((plateau->GetPiece(i,j))!= NULL);
             std::cout
                 << "Piece: " << (*plateau).GetPiece(i,j)->GetChar()
                 <<" Couleur :" << (*plateau).GetPiece(i,j)->GetCouleur()
@@ -136,10 +143,12 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
 	if(c_act == _BLANC)
     {
         c_adv = _NOIR;
+        std::cout <<"c_act: BLANC\n";
     }
     else
     {
          c_adv = _BLANC;
+         std::cout <<"c_act: NOIR\n";
     }
     //Definition des mouvements
 	int* best_move = NULL;
@@ -157,17 +166,22 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
 	//declaration iterateur
     int l;
 
+    std::cout <<"Debut Max \n";
 
 	if (prof >= _PROF) {//si on se retrouve à la profondeur max demandée
 		//retourne dernier mouvement effectué
+		assert(move_env != NULL);
 		return move_env;
 	}
 	else
     {
+         std::cout <<"pas la prof max \n";
         //On recupere toutes les pieces de la couleur actuelle
         for(l = 0; l < _NB_PIECES ; l++)
         {
-            pieces[c_act][l] = *(p_act.GetPiece(c_act,l));
+            std::cout <<"rentredans le for\n";
+            pieces[c_act][l] = *(plateau->GetPiece(c_adv,l));
+            std::cout <<"Piece ok";
         }
 
         //pour chasque piece une par une
@@ -239,10 +253,13 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
     if(c_act == _BLANC)
     {
         c_adv = _NOIR;
+        std::cout <<"c_act: BLANC\n";
     }
     else
     {
          c_adv = _BLANC;
+
+         std::cout <<"c_act: NOIR\n";
     }
 	int* best_move = NULL;
 	int* best_real_move = NULL;
@@ -255,12 +272,14 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
 	Piece pieces[2][_NB_PIECES];
     int l;
 
+     std::cout <<"DébutMin\n";
+
 	if (prof >= _PROF) {//if depth limit is reached
 		return move_env;
 	}
 	else
     {
-
+        std::cout <<"Pas la prof max \n";
 	    for(l = 0; l < _NB_PIECES ; l++)
         {
             pieces[c_act][l] = *(p_act.GetPiece(c_act,l));
@@ -304,11 +323,11 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
 	}
 }
 
-int* AlphaBeta::ABMinMax(Plateau* plateau) {
+int* AlphaBeta::ABMinMax(Plateau plateau) {
 
     int * tab;
-
-	return ABMaxMove(plateau, 1, 0, 0,tab,m_couleur);
+    std::cout <<"Rentre ici\n\n";
+	return ABMaxMove(&plateau, 1, 0, 0,tab,m_couleur);
 }
 
 

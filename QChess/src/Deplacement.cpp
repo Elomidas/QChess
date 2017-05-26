@@ -3,12 +3,12 @@
 
 Deplacement::Deplacement(const int ligne, const int colonne, const int repetition)
 {
-    Init(ligne, colonne, -1, repetition, false, false, true);
+    Init(ligne, colonne, -1, repetition, false, false, true, false);
 }
 
-Deplacement::Deplacement(const int ligne, const int colonne, const Couleur couleur, const int repetition, const bool libre, const bool pion, const bool limitee)
+Deplacement::Deplacement(const int ligne, const int colonne, const Couleur couleur, const int repetition, const bool libre, const bool pion, const bool limitee, const bool ligneVue)
 {
-    Init(ligne, colonne, couleur, repetition, libre, pion, limitee);
+    Init(ligne, colonne, couleur, repetition, libre, pion, limitee, ligneVue);
 }
 
 Deplacement::~Deplacement()
@@ -16,7 +16,7 @@ Deplacement::~Deplacement()
     //dtor
 }
 
-void Deplacement::Init(const int ligne, const int colonne, const int couleur, const int repetition, const bool libre, const bool pion, const bool limitee)
+void Deplacement::Init(const int ligne, const int colonne, const int couleur, const int repetition, const bool libre, const bool pion, const bool limitee, const bool ligneVue)
 {
     m_ligne = ligne;
     m_colonne = colonne;
@@ -30,6 +30,7 @@ void Deplacement::Init(const int ligne, const int colonne, const int couleur, co
     m_occupee = pion;
     m_libre= libre;
     m_limitee = limitee;
+    m_ligneVue = ligneVue;
 }
 
 const bool Deplacement::Accessible(const int ligne, const int colonne)
@@ -82,7 +83,22 @@ const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Pl
                    || (y >= 8)
                    || (y < 0))
                     continuer = false;
-                else
+
+                else if(m_ligneVue)
+                {
+                    //On s'assure de respecter la ligne de vue
+                    int mod = (m_ligne > 0) ? 1 : -1;
+                    for(int i = (((ite - 1) * m_ligne) + py); (i != (x + mod)) && continuer; i += mod)
+                    {
+                        std::cout << i + mod << std::endl;
+                        if(!p.Libre(i + mod, y))
+                        {
+                            continuer = false;
+                            std::cout << i + mod << " occupee" << std::endl;
+                        }
+                    }
+                }
+                if(continuer)
                 {
                     bool enreg = false;
                     if(p.Libre(x, y) && (!m_occupee))
@@ -140,5 +156,5 @@ Deplacement Deplacement::SimpleB = Deplacement(0, 1, 1);
 Deplacement Deplacement::SimpleBG = Deplacement(-1, 1, 1);
 Deplacement Deplacement::SimpleG = Deplacement(-1, 0, 1);
 Deplacement Deplacement::SimpleHG = Deplacement(-1, -1, 1);
-Deplacement Deplacement::RoqueG = Deplacement(-2, 0, _BLANC, 1, true, false, false);
-Deplacement Deplacement::RoqueD = Deplacement(2, 0, _NOIR, 1, true, false, false);
+Deplacement Deplacement::RoqueG = Deplacement(-2, 0, _BLANC, 1, true, false, false, true);
+Deplacement Deplacement::RoqueD = Deplacement(2, 0, _NOIR, 1, true, false, false, true);

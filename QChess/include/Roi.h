@@ -17,6 +17,7 @@ class Roi : public Piece
         //Autres
         const std::vector<int*> GetDeplacements(Plateau&);
         void Bouge();
+        bool GetRoque() {return m_roque;};
 
     protected:
         static std::vector<const Deplacement*> m_deplacements;

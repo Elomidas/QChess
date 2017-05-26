@@ -7,6 +7,7 @@
 #include <vector>
 
 #include "Plateau.h"
+#include "AlphaBeta.h"
 
 //Les blacs sont tjrs en haut du plateau
 
@@ -76,17 +77,15 @@ class AffichagePlateau
         //Destructeur
         virtual ~AffichagePlateau();
         //Accesseurs
+        Couleur GetCouleur() {return m_joueur;}
         //Mutateurs
         void SetPlateau(Plateau*);
         void SetCouleur(Couleur);
+        void SetActif(const Couleur c, bool b) {m_gui[c] = b;}
         //Autres fonctions
         bool Rafraichir();
         bool Rafraichir(const sf::Vector2i&);
         void Event();
-        //
-        void DelAlpha();
-        bool Test(int i, int j, int *tab);
-        void Parcours(int*);
         //Gestion des mouvements
         void ActiverJeu();
         void BloquerJeu();
@@ -112,7 +111,6 @@ class AffichagePlateau
         //Couleur du joueur
         Couleur m_joueur;
         //Tour du joueur
-        bool m_tour;
         //Gestion des mouvements
         int m_cliquee; //index de la piece cliquee, -1 si aucune
         std::vector<int*> *m_dep; //Cases sur lesquelles on peut déplacer la pièce actuelle
@@ -123,6 +121,10 @@ class AffichagePlateau
         int m_pointee;
         //Plateau de référence
         Plateau * m_plateau;
+        //Couleurs pouvant être jouées par l'humain
+        bool m_gui[2];
+
+        AlphaBeta * m_alphabeta;
 
     private:
 };

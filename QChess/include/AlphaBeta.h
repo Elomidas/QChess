@@ -10,6 +10,7 @@
 class AlphaBeta
 {
     public:
+        AlphaBeta();
         AlphaBeta(Plateau plateau, Couleur couleur);
         virtual ~AlphaBeta();
 
@@ -18,7 +19,7 @@ class AlphaBeta
 
         int Eval(Plateau * plateau, Couleur couleur);
 
-        int* ABMinMax(Plateau* plateau);
+        int* ABMinMax(Plateau plateau);
         int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
         int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
     protected:

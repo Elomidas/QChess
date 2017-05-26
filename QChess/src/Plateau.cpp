@@ -23,6 +23,7 @@ void Plateau::InitialiserPieces()
         m_pieces[_BLANC][i] = 0;
         m_pieces[_NOIR][i] = 0;
     }
+    m_action = false;
 
     //Blancs
     Couleur c = _BLANC;
@@ -93,7 +94,6 @@ Piece* Plateau::GetPiece(const int ligne, const int colonne)
 
 bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, const int colonne)
 {
-
     if((index < 0) || (index >= _NB_PIECES))
     {
         std::cout << "Index out of range : " << index << std::endl;
@@ -115,16 +115,34 @@ bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
         std::cout << "Colonne incorrecte : " << colonne << std::endl;
         assert(false);
     }
+    char c = p->GetChar();
+    bool roque[2] = {false, false};
+    //Cas du roque d'un roi
+    if((c == 'R')
+       && (((Roi*)p)->GetRoque())
+       && (colonne == 0)
+       && (ligne == 2))
+            roque[_BLANC] = true;
+    else if((c == 'r')
+       && (((Roi*)p)->GetRoque())
+       && (colonne == 7)
+       && (ligne == 5))
+            roque[_NOIR] = true;
     Piece *np = GetPiece(ligne, colonne);
     if(np != NULL)
         SetPiece(np, NULL);
     p->SetLigne(ligne);
     p->SetColonne(colonne);
     p->Bouge();
-    char c = p->GetChar();
     //Si c'est la tour qui a été bougée, on empêche le roi de roquer
     if((c == 't') || (c == 'T'))
         m_pieces[p->GetCouleur()][0]->Bouge();
+    //Si un roi vient de faire un roque, on déplace la tour
+    if(roque[_BLANC])
+        Bouger(m_pieces[_BLANC][1], 3, 0);
+    else if(roque[_NOIR])
+        Bouger(m_pieces[_NOIR][1], 4, 7);
+    m_action = true;
     return true;
 }
 
