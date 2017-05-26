@@ -155,6 +155,15 @@ Piece* Plateau::GetPiece(const int ligne, const int colonne)
     return NULL;
 }
 
+void Plateau::GetPieces(Piece* tab[2][_NB_PIECES])
+{
+    for(int i = 0; i < _NB_PIECES; i++)
+    {
+        tab[0][i] = m_pieces[0][i];
+        tab[1][i] = m_pieces[1][i];
+    }
+}
+
 bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, const int colonne)
 {
     if((index < 0) || (index >= _NB_PIECES))
