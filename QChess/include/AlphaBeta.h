@@ -22,6 +22,8 @@ class AlphaBeta
         int* ABMinMax(Plateau plateau);
         int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
         int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
+
+        void VerifAssertMove(int* move);
     protected:
 
     private:

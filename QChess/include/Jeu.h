@@ -13,10 +13,11 @@ class Jeu
         virtual ~Jeu();
         void Fin();
         void Jouer();
-
+        int * TourIA();
     protected:
         Plateau m_plateau;
         AffichagePlateau m_affichage;
+        AlphaBeta m_alphabeta;
 
     private:
 };

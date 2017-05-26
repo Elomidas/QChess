@@ -124,8 +124,6 @@ class AffichagePlateau
         //Couleurs pouvant être jouées par l'humain
         bool m_gui[2];
 
-        AlphaBeta * m_alphabeta;
-
     private:
 };
 

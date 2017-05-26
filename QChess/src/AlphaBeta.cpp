@@ -25,6 +25,18 @@ AlphaBeta::~AlphaBeta()
     //dtor
 }
 
+void AlphaBeta::VerifAssertMove(int * moveAB)
+{
+    assert(moveAB!= NULL);
+    std::cout <<"ligne: "<<moveAB[1] <<std::endl;
+    std::cout <<"colonne: "<<moveAB[2] <<std::endl;
+
+    assert(moveAB[0] > 0);
+    assert(moveAB[0] < 8);
+    assert(moveAB[1] > 0);
+    assert(moveAB[1] < 8);
+}
+
 
 int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
 {
@@ -32,41 +44,36 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
     Couleur c_act = couleur;
     Couleur c_adv ;
 
+    std::cout<< "\n \n Debut Eval: \n c_act= " << c_act << "\n";
+
     if(c_act == _BLANC)
         c_adv = _NOIR;
     else
         c_adv = _BLANC;
 
     int i,j;
-    bool  pieces[2][_NB_PIECES];
-
+    std::cout<< "Apres if c_act= " << c_act <<std::endl;
+    Piece *  pieces[2][_NB_PIECES];
+    std::cout<< "Apres piece * c_act= " << c_act <<std::endl;
     //On recupere toutes les pieces du tableau et on mets un boolean selon leur existence dans deux lignes distinctes suivant la couleur;
     //[0] roi, [1] tour, [2] fou, [3] cavalier, [4} -> [7] pion.
-    for (i = 0; i < 2 ; i++)
-    {
-        for(j = 0; j < _NB_PIECES ; j++)
-        {
-            pieces[i][j] = ((plateau->GetPiece(i,j))!= NULL);
-            std::cout
-                << "Piece: " << (*plateau).GetPiece(i,j)->GetChar()
-                <<" Couleur :" << (*plateau).GetPiece(i,j)->GetCouleur()
-                << " Colonne : " << (*plateau).GetPiece(i,j)->GetColonne()
-                << " Ligne: " << (*plateau).GetPiece(i,j)->GetLigne() <<"\n";
-            if (pieces[i][j])
-                std::cout <<"i: " <<i <<" j: " << j << " piece rentree \n";
-        }
-    }
-
-    //On traite chasue type de piece un par un et on calcule la différence entre les pieces de la couleur actuelle(c_act)
+    plateau->GetPieces(pieces);
+    std::cout<< "Après plateau->GetPieces c_act= " << c_act <<std::endl;
+    //On traite chaque type de piece un par un et on calcule la différence entre les pieces de la couleur actuelle(c_act)
     // avec celles de l'adversaire(c_adv)
     for (j = 1; j< _NB_PIECES; j++)
         {
-            std::cout<<"\n" << j <<": ";
+            std::cout<<"\n indice:" << j <<": \n";
+            assert(c_act >= 0);
+            std::cout<< "c_act= " << c_act <<std::endl;
+            assert(c_act < 2);
+            assert(c_adv >= 0);
+            assert(c_adv < 2);
             //Si la j ème piece existe chez la couleur actuelle
-            if (pieces[c_act][j])
+            if (&pieces[c_act][j] != NULL)
             {
                 //Si la j ème piece n'existe pas chez la couleur adversaire -> on gagne des points d'évaluation
-                if(!pieces[c_adv][j])
+                if(&pieces[c_adv][j] == NULL)
                     switch(j)
                         {
                             //cas roi couleur actuelle
@@ -99,7 +106,7 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
             else
             {
                 //Mais la jème piece existe chez l'adversaire --> On perd des points d'évaluation
-                if(pieces[c_adv][j])
+                if(&pieces[c_adv][j] != NULL)
                     switch(j)
                     {
                         //cas roi adverse
@@ -143,13 +150,15 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
 	if(c_act == _BLANC)
     {
         c_adv = _NOIR;
-        std::cout <<"c_act: BLANC\n";
+
     }
     else
     {
          c_adv = _BLANC;
-         std::cout <<"c_act: NOIR\n";
+
     }
+    std::cout <<"c_adv: "<<c_adv << " BLANC\n";
+    std::cout <<"c_act: "<<c_act << " NOIR\n";
     //Definition des mouvements
 	int* best_move = NULL;
 	int* best_real_move = NULL;
@@ -162,9 +171,9 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
 	Plateau p_mod = *plateau;
 	Plateau p_movemod = *plateau;
 	Plateau p_bestmove = *plateau;
-	Piece pieces[2][_NB_PIECES];
+	Piece * pieces[2][_NB_PIECES];
 	//declaration iterateur
-    int l;
+    int index;
 
     std::cout <<"Debut Max \n";
 
@@ -177,55 +186,50 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
     {
          std::cout <<"pas la prof max \n";
         //On recupere toutes les pieces de la couleur actuelle
-        for(l = 0; l < _NB_PIECES ; l++)
-        {
-            std::cout <<"rentredans le for\n" <<c_act;
-            pieces[c_act][l] = *(plateau->GetPiece(c_adv,l));
-            std::cout <<"Piece ok";
-        }
-
+        p_act.GetPieces(pieces);
+        std::cout <<"pieces récuperees\n";
         //pour chasque piece une par une
-        for(l= 0 ; l< _NB_PIECES; l++)
+        for(index= 0 ; index< _NB_PIECES; index++)
         {
+            std::cout <<"dans le for des pieces";
+            std::cout <<"c_adv: "<<c_adv ;
+            std::cout <<"c_act: "<<c_act ;
             //on stocke ses deplacements possibles
-            deplacements = (p_act.GetPiece(c_act,l))->GetDeplacements(p_act);
+            deplacements = (p_act.GetPiece(c_act,index))->GetDeplacements(p_act);
             //assert(deplacements);
-
+            std::cout <<"deplacements recup" <<std::endl ;
             //Pour chaque deplacement possiblze de la piece
             for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
             {
+                VerifAssertMove(*i);
                 //on recupere les informations du mouvement de la boucle
-                //index de la piece
-                int index = (*i)[0];
                 //position x de la piece
-                int x = (*i)[1];
+                int ligne = (*i)[0];
                 //position y de la piece
-                int y = (*i)[2];
+                int colonne = (*i)[1];
                 //on fait effectuer le mouvement à cette piece sur le plateau p_mod
-                p_mod.Bouger(p_mod.GetPiece(c_act,index),x,y);
+                p_mod.Bouger(p_mod.GetPiece(c_act,index),ligne,colonne);
 
                 //Appelle de la methode ABMinMovee(mouvement de l'adversaire sur le plateau que l'on vient de modifier(p_mod))
                 //le mouvement qui en resortira sera stocke dans move_mod
                 move_mod = ABMinMove(&p_mod, prof+1, alpha, beta,*i,c_adv);
 
                 //on recupere les informations du mouvement recupere
-                //index de la piece
-                index = move_mod[0];
                 //position x de la piece
-                x = move_mod[1];
+                ligne = move_mod[0];
                 //position y de la piece
-                y = move_mod[2];
+                colonne = move_mod[1];
                 //on fait effectuer le mouvement à cette piece sur le plateau p_movemod
-                p_movemod.Bouger(p_movemod.GetPiece(c_act,index),x,y);
+                p_movemod.Bouger(p_movemod.GetPiece(c_act,index),ligne,colonne);
 
                 //Si aucun best_move n'a été enregistré pour une autre pièce
                 if(best_move != NULL)
                  {
                     //on recupere les informations du best_move
-                    index = best_move[0];
-                    x = best_move[1];
-                    y = best_move[2];
-                    p_bestmove.Bouger(p_mod.GetPiece(c_act,index),x,y);
+
+                    ligne = best_move[0];
+                    colonne = best_move[1];
+                    p_bestmove.Bouger(p_mod.GetPiece(c_act,index),ligne,colonne);
                  }
                  //si il existe  et que son evaluation est meilleur que celle du mouvement recupere de ABMinMove
                 if (best_move == NULL ||
@@ -269,8 +273,8 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
 	Plateau p_mod = *plateau;
 	Plateau p_movemod = *plateau;
 	Plateau p_bestmove = *plateau;
-	Piece pieces[2][_NB_PIECES];
-    int l;
+	Piece * pieces[2][_NB_PIECES];
+    int index;
 
      std::cout <<"DébutMin\n";
 
@@ -280,32 +284,38 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
 	else
     {
         std::cout <<"Pas la prof max \n";
-	    for(l = 0; l < _NB_PIECES ; l++)
+        //On recupere toutes les pieces de la couleur actuelle
+        p_act.GetPieces(pieces);
+        std::cout <<"pieces récuperees\n";
+
+        for(index= 0 ; index< _NB_PIECES; index++)
         {
-            pieces[c_act][l] = *(p_act.GetPiece(c_act,l));
-        }
-        for(l= 0 ; l< _NB_PIECES; l++)
-        {
-            deplacements = (p_act.GetPiece(c_act,l))->GetDeplacements(p_act);
+            //on stocke ses deplacements possibles
+            deplacements = (p_act.GetPiece(c_act,index))->GetDeplacements(p_act);
 
             for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
             {
-                int index = (*i)[0];
-                int x = (*i)[1];
-                int y = (*i)[2];
-                p_mod.Bouger(p_mod.GetPiece(c_act,index),x,y);
+                VerifAssertMove(*i);
+                int ligne = (*i)[0];
+                int colonne = (*i)[1];
+                p_mod.Bouger(p_mod.GetPiece(c_act,index),ligne,colonne);
 
                 move_mod = ABMaxMove(&p_mod, prof+1, alpha, beta,*i,c_adv);
 
-                index = move_mod[0];
-                x = move_mod[1];
-                y = move_mod[2];
-                p_movemod.Bouger(p_mod.GetPiece(c_act,index),x,y);
+                VerifAssertMove(move_mod);
+                ligne = move_mod[0];
+                colonne = move_mod[1];
 
-                index = best_move[0];
-                x = best_move[1];
-                y = best_move[2];
-                p_bestmove.Bouger(p_mod.GetPiece(c_act,index),x,y);
+                p_movemod.Bouger(p_mod.GetPiece(c_act,index),ligne,colonne);
+
+                if(best_move!= NULL)
+                {
+                    VerifAssertMove(best_move);
+                    ligne = best_move[0];
+                    colonne = best_move[1];
+                    p_bestmove.Bouger(p_mod.GetPiece(c_act,index),ligne,colonne);
+                }
+
 
                 if (best_move == NULL ||
                         Eval(&p_movemod,c_act) < Eval(&p_bestmove,c_act))
@@ -329,6 +339,8 @@ int* AlphaBeta::ABMinMax(Plateau plateau) {
     std::cout <<"Rentre ici\n\n";
 	return ABMaxMove(&plateau, 1, 0, 0,tab,m_couleur);
 }
+
+
 
 
 

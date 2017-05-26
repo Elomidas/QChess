@@ -40,7 +40,7 @@ AffichagePlateau::AffichagePlateau()
     m_tPlateau.loadFromFile("img/plateau.jpg");
     m_sPlateau.setTexture(m_tPlateau);
 
-    //m_alphabeta->Setplateau(*m_plateau);
+
 
     std::cout << "Init OK" << std::endl << std::endl;
 }
@@ -167,19 +167,7 @@ void AffichagePlateau::Event()
                             else DelDep();
                         }
                     }
-                    else
-                    {
-                        int * moveAB = m_alphabeta->ABMinMax(*m_plateau);
-                        assert(moveAB!= NULL);
-                        assert(moveAB[0] > 0);
-                        assert(moveAB[0] < 12);
-                        assert(moveAB[1] > 0);
-                        assert(moveAB[1] < 8);
-                        assert(moveAB[2] > 0);
-                        assert(moveAB[2] < 8);
-                        Piece * piec = m_plateau->GetPiece(Couleur(_NOIR-m_joueur),moveAB[0]);
-                        m_plateau->Bouger(piec,moveAB[1],moveAB[2]);
-                    }
+
                     break;
 
                 default :
