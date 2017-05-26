@@ -179,7 +179,7 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
         //On recupere toutes les pieces de la couleur actuelle
         for(l = 0; l < _NB_PIECES ; l++)
         {
-            std::cout <<"rentredans le for\n";
+            std::cout <<"rentredans le for\n" <<c_act;
             pieces[c_act][l] = *(plateau->GetPiece(c_adv,l));
             std::cout <<"Piece ok";
         }
