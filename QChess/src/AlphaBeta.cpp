@@ -207,6 +207,8 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
                 int ligne = (*i)[0];
                 //position y de la piece
                 int colonne = (*i)[1];
+                //index de la piece
+                (*i)[2] = index;
                 //on fait effectuer le mouvement à cette piece sur le plateau p_mod
                 p_mod.Bouger(p_mod.GetPiece(c_act,index),ligne,colonne);
 
