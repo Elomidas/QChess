@@ -62,6 +62,11 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
                 if(!pieces[c_adv][j])
                     switch(j)
                         {
+                            //cas roi couleur actuelle
+                            case 0:
+                                std::cout<<"+30";
+                                valeur += 30;
+                            break;
                             //cas tour couleur actuelle
                             case 1:
                                 std::cout<<"+5";
@@ -90,6 +95,10 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
                 if(pieces[c_adv][j])
                     switch(j)
                     {
+                        //cas roi adverse
+                        case 0:
+                            std::cout<<"-30";
+                            valeur -=  30;
                         //cas tour adverse
                         case 1:
                             std::cout<<"-5";
