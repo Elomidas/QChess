@@ -85,7 +85,8 @@ class AffichagePlateau
         //Autres fonctions
         bool Rafraichir();
         bool Rafraichir(const sf::Vector2i&);
-        void Event();
+        bool Event();
+        bool Open() {return m_fenetre.isOpen();}
         //Gestion des mouvements
         void ActiverJeu();
         void BloquerJeu();
@@ -119,6 +120,7 @@ class AffichagePlateau
         bool DepOK(const int, const int);
         //Piece actuellement pointée par le joueur
         int m_pointee;
+        int posSouris[2];
         //Plateau de référence
         Plateau * m_plateau;
         //Couleurs pouvant être jouées par l'humain

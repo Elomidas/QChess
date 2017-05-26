@@ -13,10 +13,15 @@ class Jeu
         virtual ~Jeu();
         void Fin();
         void Jouer();
+        void ModeJeu(const Couleur, const bool);
+        void SetActu(const Couleur);
 
     protected:
         Plateau m_plateau;
         AffichagePlateau m_affichage;
+        Couleur m_actu;
+        bool m_gui[2];
+        bool m_continuer;
 
     private:
 };

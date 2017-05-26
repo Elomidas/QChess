@@ -7,6 +7,7 @@ AffichagePlateau::AffichagePlateau()
     m_pointee = -1;
     m_cliquee = -1;
     m_dep = NULL;
+    posSouris[0] = posSouris[1] = 0;
     /*m_gui[_BLANC] = */m_gui[_NOIR] = true;
     //Chargement des textures
     int offsets[2][5] = {{_RX, _TX, _FX, _CX, _PX}, {_RY, _TY, _FY, _CY, _PY}};
@@ -41,8 +42,6 @@ AffichagePlateau::AffichagePlateau()
     m_sPlateau.setTexture(m_tPlateau);
 
     //m_alphabeta->Setplateau(*m_plateau);
-
-    std::cout << "Init OK" << std::endl << std::endl;
 }
 
 AffichagePlateau::~AffichagePlateau()
@@ -121,12 +120,12 @@ bool AffichagePlateau::Rafraichir()
     return true;
 }
 
-void AffichagePlateau::Event()
+bool AffichagePlateau::Event()
 {
     int x = -1, y = -1;
-    int posSouris[2] = {0, 0};
+    bool retour = false;
     int tailles[2][5] = {{_RL, _TL, _FL, _CL, _PL}, {_RH, _TH, _FH, _CH, _PH}};
-    while (m_fenetre.isOpen())
+    if (m_fenetre.isOpen())
     {
         // on inspecte tous les évènements de la fenêtre qui ont été émis depuis la précédente itération
         sf::Event event;
@@ -188,13 +187,15 @@ void AffichagePlateau::Event()
         }
         if(m_plateau->GetAction())
         {
-            m_joueur = Couleur(_NOIR - m_joueur);
+            retour = true;
             m_plateau->Reset();
         }
         GetPiece(posSouris[0], posSouris[1], tailles);
         Rafraichir();
-        sf::sleep(sf::milliseconds(20));
+        if(!retour)
+            sf::sleep(sf::milliseconds(20));
     }
+    return retour;
 }
 
 bool AffichagePlateau::DepOK(const int x, const int y)
