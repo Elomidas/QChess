@@ -19,9 +19,13 @@ class AlphaBeta
 
         int Eval(Plateau * plateau, Couleur couleur);
 
+        //Retourne le mouvement à faire
+        //contient [2] l'index de la piece, [1] la ligne [2] la colonne
         int* ABMinMax(Plateau plateau);
         int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
         int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
+
+        void VerifAssertMove(int* move);
     protected:
 
     private:

@@ -15,6 +15,7 @@ class Jeu
         void Jouer();
         void ModeJeu(const Couleur, const bool);
         void SetActu(const Couleur);
+        int * TourIA();
 
     protected:
         Plateau m_plateau;
@@ -22,6 +23,7 @@ class Jeu
         Couleur m_actu;
         bool m_gui[2];
         bool m_continuer;
+        AlphaBeta m_alphabeta;
 
     private:
 };
