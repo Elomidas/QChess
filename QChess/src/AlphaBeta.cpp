@@ -252,6 +252,9 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
 	}
 	//}
 }
+
+
+//Lamême à l'inverse pour alpha et beta dans ABMinMove
 int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env, Couleur c_act)
 {
     std::vector<int*> deplacements;
@@ -318,6 +321,7 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
                     VerifAssertMove(best_move);
                     ligne = best_move[0];
                     colonne = best_move[1];
+                    best_move[2] = index;
                     p_bestmove.Bouger(p_mod.GetPiece(c_act,index),ligne,colonne);
                 }
 
