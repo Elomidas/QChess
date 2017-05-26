@@ -18,6 +18,7 @@ class Pion : public Piece
         //Autres
         const std::vector<int*> GetDeplacements(Plateau&);
         void Bouge();
+        bool GetFirst() {return m_first;}
 
     protected:
         static std::vector<const Deplacement*> m_deplacements;

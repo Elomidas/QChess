@@ -33,6 +33,7 @@ class Plateau
         Piece* GetPiece(const int, const int);
         bool Libre(const int, const int) const;
         bool GetAction() {return m_action;}
+        void GetPieces(Piece* tab[2][_NB_PIECES]);
         //Mutateur
         bool Bouger(const Couleur, const int, const int, const int);
         bool Bouger(Piece*, const int, const int);
