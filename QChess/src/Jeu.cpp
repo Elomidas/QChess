@@ -45,6 +45,7 @@ int * Jeu::TourIA()
     assert(moveAB[0] < 8);
     assert(moveAB[1] >= 0);
     assert(moveAB[1] < 8);
+
     return moveAB;
 
 }

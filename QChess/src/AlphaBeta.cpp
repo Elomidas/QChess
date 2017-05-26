@@ -279,6 +279,8 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
      std::cout <<"DébutMin\n";
 
 	if (prof >= _PROF) {//if depth limit is reached
+
+		assert(move_env != NULL);
 		return move_env;
 	}
 	else
@@ -298,6 +300,7 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
                 VerifAssertMove(*i);
                 int ligne = (*i)[0];
                 int colonne = (*i)[1];
+                *i[2] = index;
                 p_mod.Bouger(p_mod.GetPiece(c_act,index),ligne,colonne);
 
                 move_mod = ABMaxMove(&p_mod, prof+1, alpha, beta,*i,c_adv);
