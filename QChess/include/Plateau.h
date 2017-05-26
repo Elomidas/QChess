@@ -23,6 +23,7 @@ class Plateau
     public:
         //Constructeur
         Plateau();
+        Plateau(Plateau&);
         //Destructeur
         virtual ~Plateau();
         //Initialisation

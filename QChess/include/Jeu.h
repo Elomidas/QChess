@@ -15,7 +15,7 @@ class Jeu
         void Jouer();
 
     protected:
-        Plateau m_plateau;
+        Plateau m_plateau, m_p2;
         AffichagePlateau m_affichage;
 
     private:
