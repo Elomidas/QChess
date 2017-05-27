@@ -17,6 +17,9 @@ class AlphaBeta
         Plateau Getplateau() { return m_plateau; }
         void Setplateau(Plateau val) { m_plateau = val; }
 
+        Couleur Getcouleur() { return m_couleur; }
+        void Setcouleur(Couleur couleur) { m_couleur = couleur; }
+
         int Eval(Plateau * plateau, Couleur couleur);
 
         //Retourne le mouvement à faire

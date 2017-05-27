@@ -15,9 +15,10 @@ AlphaBeta::AlphaBeta()
 AlphaBeta::AlphaBeta(Plateau plateau, Couleur couleur)
 {
     //ctor
-
+    std::cout <<"Couleur rentrée dans le constructeur : " << couleur <<std::endl;
     m_plateau = plateau;
     m_couleur = couleur;
+    std::cout<<"Couleur de m_alphabeta finc constructeur Alphabeta: " << Getcouleur()<<std::endl;
 }
 
 AlphaBeta::~AlphaBeta()
@@ -28,9 +29,9 @@ AlphaBeta::~AlphaBeta()
 void AlphaBeta::VerifAssertMove(int * moveAB)
 {
     assert(moveAB!= NULL);
-    std::cout <<"ligne: "<<moveAB[1] <<std::endl;
-    std::cout <<"colonne: "<<moveAB[2] <<std::endl;
-
+    std::cout <<"ligne: "<<moveAB[0] <<std::endl;
+    std::cout <<"colonne: "<<moveAB[1] <<std::endl;
+    std::cout <<"Index! " <<moveAB[2] <<std::endl;
     assert(moveAB[0] > 0);
     assert(moveAB[0] < 8);
     assert(moveAB[1] > 0);
