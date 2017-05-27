@@ -29,9 +29,9 @@ AlphaBeta::~AlphaBeta()
 void AlphaBeta::VerifAssertMove(int * moveAB)
 {
     assert(moveAB!= NULL);
-    std::cout <<"ligne: "<<moveAB[0] <<std::endl;
-    std::cout <<"colonne: "<<moveAB[1] <<std::endl;
-    std::cout <<"Index! " <<moveAB[2] <<std::endl;
+    std::cout <<"ligne : "<<moveAB[0] <<std::endl;
+    std::cout <<"colonne : "<<moveAB[1] <<std::endl;
+    //std::cout <<"Index : " <<moveAB[2] <<std::endl;
     assert(moveAB[0] > 0);
     assert(moveAB[0] < 8);
     assert(moveAB[1] > 0);
@@ -64,9 +64,9 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
     // avec celles de l'adversaire(c_adv)
     for (j = 1; j < _NB_PIECES; j++)
         {
-            std::cout<<"\n indice:" << j <<": \n";
+            std::cout<<"\n indice : " << j <<" : \n";
             assert(c_act >= 0);
-            std::cout<< "c_act= " << c_act <<std::endl;
+            std::cout<< "c_act = " << c_act <<std::endl;
             assert(c_act < 2);
             assert(c_adv >= 0);
             assert(c_adv < 2);
