@@ -57,7 +57,8 @@ void Jeu::Jouer()
         {
             //Tour de l'IA
             //std::cout<<"Couleur de m_alphabeta C8 " << m_alphabeta.Getcouleur()<<std::endl;
-            int * movementIA = m_alphabeta.ABMinMax(m_plateau);
+            int movementIA[3];
+            m_alphabeta.ABMinMax(m_plateau,movementIA);
             m_alphabeta.VerifAssertMove(movementIA,"CoteJeu");
             m_plateau.Bouger(m_actu,movementIA[2],movementIA[0],movementIA[1]);
             //On repasse la main à l'adversaire
@@ -69,7 +70,7 @@ void Jeu::Jouer()
     int b = al.Eval(&m_plateau);
     std::cout <<" \n\n" <<b;*/
 }
-
+/*
 int * Jeu::TourIA()
 {
     int * moveAB = m_alphabeta.ABMinMax(m_plateau);
@@ -83,4 +84,4 @@ int * Jeu::TourIA()
     return moveAB;
 
 }
-
+*/

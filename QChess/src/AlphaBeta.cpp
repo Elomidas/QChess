@@ -189,7 +189,7 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
     return beta;
 }
 
-int* AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur)
+void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur,int (&tab)[3])
 {
     std::cout <<"Rentre dans ABBigMax: "<< prof<<std::endl;
 
@@ -226,24 +226,26 @@ int* AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
 
             plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
             score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
-            if (score <score_temp)
+            if (score <=score_temp)
             {
                 score = score_temp;
-                first_movement[0] = *(i[0]);
-                first_movement[1] = *(i[1]);
+                first_movement[0] = (*i)[0];
+                first_movement[1] = (*i)[1];
                 first_movement[2] = index;
+                std::cout << "ligne: " << first_movement[0]<< " colonne: " << first_movement[1] <<" index: "<< first_movement[2]<<std::endl;
                 VerifAssertMove(first_movement,"first_movement");
             }
         }
     }
-
-    return first_movement;
+    tab[0] = first_movement[0];
+    tab[1] = first_movement[1];
+    tab[2] = first_movement[2];
 }
 
-int* AlphaBeta::ABMinMax(Plateau plateau) {
+void AlphaBeta::ABMinMax(Plateau plateau,int (&tab)[3]) {
 
 
     std::cout <<"Rentre dans ABMinMax \n\n\n";
-	return AlphaBetaBigMax(plateau, -100, +100, 1,m_couleur);
+	AlphaBetaBigMax(plateau, -100, +100, 1,m_couleur,tab);
 
 }

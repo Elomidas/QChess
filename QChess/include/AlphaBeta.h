@@ -24,14 +24,14 @@ class AlphaBeta
 
         //Retourne le mouvement à faire
         //contient [2] l'index de la piece, [1] la ligne [2] la colonne
-        int* ABMinMax(Plateau plateau);
+        void ABMinMax(Plateau plateauint,int (&tab)[3]);
         int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env,int &index_move,Couleur couleur);
         int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env,int &index_move,Couleur couleur);
 
 
         int AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Couleur couleur );
         int AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Couleur couleur );
-        int *AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur);
+        void AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleurint,int (&tab)[3]);
         void VerifAssertMove(int* move, std::string titre);
     protected:
 
