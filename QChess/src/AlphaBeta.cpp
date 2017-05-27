@@ -113,16 +113,18 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
 
     if ( prof >= _PROF )
         return Eval(plateau,(Couleur) (_NOIR - couleur));
+    //Pour chaque piece une par une
     for (int index = 0;index<_NB_PIECES; index++)
     {
         //std::cout <<"Piece : " <<index <<std::endl;
         //on stocke ses deplacements possibles
         deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
 
+        //pour chaque deplacement de la piece un par un
         for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
         {
 
-            //on recupere les informations du mouvement de la boucle
+            //on recupere les informations du déplacement
             //position x de la piece
             int ligne = (*i)[0];
             //position y de la piece
@@ -132,8 +134,11 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
             assert(ligne < 8);
             assert(colonne < 8);
             //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
+
+            //On effectue le déplacement sur le plateau plateau _mod
             plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
 
+            //On lance AlphaBetaMin sur le plateau ou la piece a été bougée
             score = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
 
             if( score >= beta )
@@ -142,10 +147,12 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
                alpha = score; // alpha acts like max in MiniMax
         }
    }
+   //On nettoie le vecteur de déplacement
     NettoieVecteur(deplacements);
     return alpha;
 }
 
+//La meme chose que ABMax en inverse  pour ABMin
 int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Couleur couleur )  {
     int score;
     std::vector<int*> deplacements;
@@ -191,30 +198,40 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
     return beta;
 }
 
+//Lors du premier appel --> permet de sauvegarder le tout premier deplacement (celui qui compte pour l'IA)
+//la fonction ne sera plus appeler par la suite , on appelera ABMAx dans ABMin
 void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur,int (&tab)[3])
 {
     std::cout <<"Rentre dans ABBigMax: "<< prof<<std::endl;
 
-    int score;
-    int score_temp;
-    int first_movement[3];
+
+    int score; //meilleur score enregistré
+    int score_temp; //score recueilli à partir d'ABMin
+    int first_movement[3]; //tableau du mouvement final comprenant [0] ligne [1] colonne [2] index de la piece
+
+    //initialisation du mouvement
     first_movement[0] = 0;
     first_movement[1] = 0;
     first_movement[2] = 0;
+
+    //déclaration du vecteur
     std::vector<int*> deplacements;
+
 
     Plateau plateau_mod(plateau);
 
+    //pour chaque piece une par une du plateau
     for (int index = 0;index<_NB_PIECES; index++)
     {
         std::cout <<"Piece : " <<index <<std::endl;
         //on stocke ses deplacements possibles
         deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
 
+        //pour chaque deplacement de la piece d'index index
         for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
         {
 
-            //on recupere les informations du mouvement de la boucle
+            //on recupere les informations du mouvement
             //position x de la piece
             int ligne = (*i)[0];
             //position y de la piece
@@ -225,26 +242,37 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
             assert(colonne < 8);
             //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
 
-
+            //on effectue le deplacement de la piece d'indice index sur le plateau plateau.mod
             plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+
+            //score_temp recevra le score de ABMin
             score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+
+            //Si le score obtenue est meilleur que celui actuellement enregistré
             if (score <=score_temp)
             {
+                //on le retiens
                 score = score_temp;
+
+                //on recupere l'indice de la piece du nouveau meilleur score ainsi que son déplacement(ligne,colonne)
                 first_movement[0] = (*i)[0];
                 first_movement[1] = (*i)[1];
                 first_movement[2] = index;
                 std::cout << "ligne: " << first_movement[0]<< " colonne: " << first_movement[1] <<" index: "<< first_movement[2]<<std::endl;
+                //On verifie qu'il n'y a pas d'erreur
                 VerifAssertMove(first_movement,"first_movement");
             }
         }
     }
+    //Nettoie le vecteur deplacement
     NettoieVecteur(deplacements);
+    //le tableau passé en reference prend les valeur du meilleur mouvement
     tab[0] = first_movement[0];
     tab[1] = first_movement[1];
     tab[2] = first_movement[2];
 }
 
+//fonction principale qui appelle ABMax (appelée dans Jeu) qui lance la recheche du mouvement avec les variable initialisées.
 void AlphaBeta::ABMinMax(Plateau plateau,int (&tab)[3]) {
 
 
@@ -254,6 +282,8 @@ void AlphaBeta::ABMinMax(Plateau plateau,int (&tab)[3]) {
 
 }
 
+
+//Fonction a verifier!!!!
 void AlphaBeta::NettoieVecteur(std::vector<int *> &v)
 {
 
