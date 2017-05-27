@@ -31,7 +31,7 @@ void Pion::Init(const Couleur c, const int ligne, const int colonne)
 
 void Pion::Bouge()
 {
-    std::cout << "Bouge" << std::endl;
+    //std::cout << "Bouge" << std::endl;
     m_first = false;
 }
 

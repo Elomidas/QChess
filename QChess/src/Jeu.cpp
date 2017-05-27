@@ -52,6 +52,7 @@ void Jeu::Jouer()
         {
             if(m_affichage.Event())
                 SetActu((Couleur)(1 - m_actu));
+
         }
         else
         {
@@ -64,6 +65,7 @@ void Jeu::Jouer()
             std::cout<<"ON est icccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccci \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             //On repasse la main à l'adversaire
             SetActu((Couleur)(1 - m_actu));
+            m_plateau.Reset();
         }
     }
     //
