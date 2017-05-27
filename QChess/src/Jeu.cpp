@@ -61,6 +61,7 @@ void Jeu::Jouer()
             m_alphabeta.ABMinMax(m_plateau,movementIA);
             m_alphabeta.VerifAssertMove(movementIA,"CoteJeu");
             m_plateau.Bouger(m_actu,movementIA[2],movementIA[0],movementIA[1]);
+            std::cout<<"ON est icccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccci \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             //On repasse la main à l'adversaire
             SetActu((Couleur)(1 - m_actu));
         }

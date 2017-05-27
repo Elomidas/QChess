@@ -29,10 +29,10 @@ AlphaBeta::~AlphaBeta()
 void AlphaBeta::VerifAssertMove(int * moveAB, std::string titre)
 {
     assert(moveAB!= NULL);
-    std::cout << titre <<std::endl;
-    std::cout <<"ligne : "<<moveAB[0] <<std::endl;
-    std::cout <<"colonne : "<<moveAB[1] <<std::endl;
-    std::cout <<"Index : " <<moveAB[2] <<std::endl;
+    //std::cout << titre <<std::endl;
+    //std::cout <<"ligne : "<<moveAB[0] <<std::endl;
+    //std::cout <<"colonne : "<<moveAB[1] <<std::endl;
+    //std::cout <<"Index : " <<moveAB[2] <<std::endl;
     assert(moveAB[0] >= 0);
     assert(moveAB[0] < 8);
     assert(moveAB[1] >= 0);
@@ -47,7 +47,7 @@ int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
     int valeur=0;
     Couleur c_act = couleur;
 
-    std::cout<< "\n \n Debut Eval: " <<std::endl;
+    //std::cout<< "\n \n Debut Eval: " <<std::endl;
 
     int i,j;
     Piece *  pieces[2][_NB_PIECES];
@@ -98,13 +98,13 @@ int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
         }
 
 
-    std::cout << "Valeur sorti du Eval : " << valeur <<"\n"<<std::endl;
+    //std::cout << "Valeur sorti du Eval : " << valeur <<"\n"<<std::endl;
     return valeur;
 }
 
 int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Couleur couleur ) {
 
-    std::cout <<"Rentre dans ABMax: "<< prof<<std::endl;
+    //std::cout <<"Rentre dans ABMax: "<< prof<<std::endl;
 
     int score;
     std::vector<int*> deplacements;
@@ -115,7 +115,7 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
         return Eval(plateau,(Couleur) (_NOIR - couleur));
     for (int index = 0;index<_NB_PIECES; index++)
     {
-        std::cout <<"Piece : " <<index <<std::endl;
+        //std::cout <<"Piece : " <<index <<std::endl;
         //on stocke ses deplacements possibles
         deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
 
@@ -151,12 +151,12 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
 
     Plateau plateau_mod(plateau);
 
-    std::cout <<"Rentre dans ABMin: "<< prof<<std::endl;
+    //std::cout <<"Rentre dans ABMin: "<< prof<<std::endl;
     if ( prof >=_PROF )
         return -Eval(plateau,(Couleur) (_NOIR - couleur));
     for (int index = 0;index<_NB_PIECES; index++)
     {
-        std::cout <<"Piece : " <<index <<std::endl;
+        //std::cout <<"Piece : " <<index <<std::endl;
 
         //on stocke ses deplacements possibles
         deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
@@ -247,5 +247,6 @@ void AlphaBeta::ABMinMax(Plateau plateau,int (&tab)[3]) {
 
     std::cout <<"Rentre dans ABMinMax \n\n\n";
 	AlphaBetaBigMax(plateau, -100, +100, 1,m_couleur,tab);
+	std::cout <<"Coup fini mother fuckerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
 }
