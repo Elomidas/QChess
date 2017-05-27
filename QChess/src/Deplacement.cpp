@@ -90,11 +90,11 @@ const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Pl
                     int mod = (m_ligne > 0) ? 1 : -1;
                     for(int i = (((ite - 1) * m_ligne) + py); (i != (x + mod)) && continuer; i += mod)
                     {
-                        std::cout << i + mod << std::endl;
+                        //std::cout << i + mod << std::endl;
                         if(!p.Libre(i + mod, y))
                         {
                             continuer = false;
-                            std::cout << i + mod << " occupee" << std::endl;
+                            //std::cout << i + mod << " occupee" << std::endl;
                         }
                     }
                 }

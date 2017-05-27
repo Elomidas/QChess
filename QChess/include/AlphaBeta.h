@@ -5,7 +5,7 @@
 #include "Plateau.h"
 
 #define _NB_PIECES  12
-#define    _PROF    2
+#define    _PROF    3
 
 class AlphaBeta
 {
@@ -20,7 +20,7 @@ class AlphaBeta
         Couleur Getcouleur() { return m_couleur; }
         void Setcouleur(Couleur couleur) { std::cout << "Couleur changee : " << couleur; m_couleur = couleur; }
 
-        int Eval(Plateau * plateau, Couleur couleur);
+        int Eval(Plateau plateau, Couleur couleur);
 
         //Retourne le mouvement à faire
         //contient [2] l'index de la piece, [1] la ligne [2] la colonne

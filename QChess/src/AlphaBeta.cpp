@@ -16,9 +16,9 @@ AlphaBeta::AlphaBeta()
 AlphaBeta::AlphaBeta(Plateau &plateau, Couleur couleur) : m_plateau(plateau)
 {
     //ctor
-    std::cout <<"Couleur rentree dans le constructeur : " << couleur <<std::endl;
+
     m_couleur = couleur;
-    std::cout<<"Couleur de m_alphabeta fin constructeur Alphabeta: " << Getcouleur() <<std::endl;
+
 }
 
 AlphaBeta::~AlphaBeta()
@@ -42,33 +42,25 @@ void AlphaBeta::VerifAssertMove(int * moveAB, std::string titre)
 
 }
 
-int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
+int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
 {
     int valeur=0;
     Couleur c_act = couleur;
-    Couleur c_adv ;
 
     std::cout<< "\n \n Debut Eval: " <<std::endl;
-
-    if(c_act == _BLANC)
-        c_adv = _NOIR;
-    else
-        c_adv = _BLANC;
 
     int i,j;
     Piece *  pieces[2][_NB_PIECES];
     //On recupere toutes les pieces du tableau et on mets un boolean selon leur existence dans deux lignes distinctes suivant la couleur;
     //[0] roi, [1] tour, [2] fou, [3] cavalier, [4} -> [7] pion.
-    plateau->GetPieces(pieces);
+    plateau.GetPieces(pieces);
     //On traite chaque type de piece un par un et on calcule la différence entre les pieces de la couleur actuelle(c_act)
     // avec celles de l'adversaire(c_adv)
-    for (j = 1; j < _NB_PIECES; j++)
+    for (j = 0; j < _NB_PIECES; j++)
     {
-        //std::cout<<"\n indice : " << j <<" : \n";
+
         assert(c_act >= 0);
         assert(c_act < 2);
-        assert(c_adv >= 0);
-        assert(c_adv < 2);
         //Si la j ème piece existe chez la couleur actuelle
         if (pieces[c_act][j] != NULL)
         {
@@ -79,76 +71,48 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
                 {
                     //cas roi couleur actuelle
                     case 0:
-                        //std::cout<<"+30";
+
                         valeur += 30;
                     break;
                     //cas tour couleur actuelle
                     case 1:
-                        //std::cout<<"+5";
+
                         valeur += 5;
                     break;
                     //cas fou couleur actuelle
                     case 2:
-                        //std::cout<<"+3";
+
                         valeur += 3;
                     break;
                     //cas cavalier couleur actuelle
                     case 3:
-                        //std::cout<<"+3";
+
                         valeur += 3;
                     break;
                     //cas pions couleur actuelle
                     default:
-                        //std::cout<<"+1";
+
                         valeur += 1;
                 }
             }
         }
-        //Si la j ème piece n'existe pas chez la couleur actuelle
-        //else
-        //{
-            //Mais la jème piece existe chez l'adversaire --> On perd des points d'évaluation
-            /*if(&pieces[c_adv][j] != NULL)
-                switch(j)
-                {
-                    //cas roi adverse
-                    case 0:
-                        //std::cout<<"-30";
-                        valeur -=  30;
-                    //cas tour adverse
-                    case 1:
-                        //std::cout<<"-5";
-                        valeur -=  5;
-                    break;
-                    //cas fou adverse
-                    case 2:
-                        //std::cout<<"-3";
-                        valeur -=  3;
-                    break;
-                    //cas cavalier adverse
-                    case 3:
-                        //std::cout<<"-3";
-                        valeur -=  3;
-                    break;
-                    //cas pion adverses
-                    default:
-                        //std::cout<<"-1";
-                        valeur -= 1;
-                }
 
-        }
-    }*/
 
     std::cout << "Valeur sorti du Eval : " << valeur <<"\n"<<std::endl;
     return valeur;
 }
 
 int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Couleur couleur ) {
+
+    std::cout <<"Rentre dans ABMax: "<< prof<<std::endl;
+
     int score;
     std::vector<int*> deplacements;
+
     Plateau plateau_mod(plateau);
+
     if ( prof >= _PROF )
-        return Eval(&plateau,(Couleur) (_NOIR - couleur));
+        return Eval(plateau,(Couleur) (_NOIR - couleur));
     for (int index = 0;index<_NB_PIECES; index++)
     {
         std::cout <<"Piece : " <<index <<std::endl;
@@ -163,6 +127,11 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
             int ligne = (*i)[0];
             //position y de la piece
             int colonne = (*i)[1];
+            assert(ligne >= 0);
+            assert(colonne >= 0);
+            assert(ligne < 8);
+            assert(colonne < 8);
+            //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
             plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
 
             score = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
@@ -179,28 +148,37 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
 int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Couleur couleur )  {
     int score;
     std::vector<int*> deplacements;
+
     Plateau plateau_mod(plateau);
 
+    std::cout <<"Rentre dans ABMin: "<< prof<<std::endl;
     if ( prof >=_PROF )
-        return -Eval(&plateau,(Couleur) (_NOIR - couleur));
+        return -Eval(plateau,(Couleur) (_NOIR - couleur));
     for (int index = 0;index<_NB_PIECES; index++)
     {
         std::cout <<"Piece : " <<index <<std::endl;
 
         //on stocke ses deplacements possibles
-        deplacements = (plateau_mod.GetPiece(couleur,index))->GetDeplacements(plateau_mod);
+        deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
 
         for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
         {
+
             //on recupere les informations du mouvement de la boucle
             //position x de la piece
             int ligne = (*i)[0];
             //position y de la piece
             int colonne = (*i)[1];
+            assert(ligne >= 0);
+            assert(colonne >= 0);
+            assert(ligne < 8);
+            assert(colonne < 8);
+            //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
+
 
             plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
 
-            score = AlphaBetaMax( plateau, alpha, beta, prof - 1 ,(Couleur) (_NOIR - couleur));
+            score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
 
             if( score <= alpha )
                 return alpha; // fail hard alpha-cutoff
@@ -213,6 +191,8 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
 
 int* AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur)
 {
+    std::cout <<"Rentre dans ABBigMax: "<< prof<<std::endl;
+
     int score;
     int score_temp;
     int first_movement[3];
@@ -220,6 +200,8 @@ int* AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
     first_movement[1] = 0;
     first_movement[2] = 0;
     std::vector<int*> deplacements;
+
+    Plateau plateau_mod(plateau);
 
     for (int index = 0;index<_NB_PIECES; index++)
     {
@@ -230,13 +212,25 @@ int* AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
         for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
         {
 
+            //on recupere les informations du mouvement de la boucle
+            //position x de la piece
+            int ligne = (*i)[0];
+            //position y de la piece
+            int colonne = (*i)[1];
+            assert(ligne >= 0);
+            assert(colonne >= 0);
+            assert(ligne < 8);
+            assert(colonne < 8);
+            //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
 
-            score_temp = AlphaBetaMin(plateau, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+
+            plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+            score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
             if (score <score_temp)
             {
                 score = score_temp;
-                first_movement[0] = (*i)[0];
-                first_movement[1] = (*i)[1];
+                first_movement[0] = *(i[0]);
+                first_movement[1] = *(i[1]);
                 first_movement[2] = index;
                 VerifAssertMove(first_movement,"first_movement");
             }
