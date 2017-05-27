@@ -56,9 +56,9 @@ void Jeu::Jouer()
         else
         {
             //Tour de l'IA
-            std::cout<<"Couleur de m_alphabeta C8 " << m_alphabeta.Getcouleur()<<std::endl;
+            //std::cout<<"Couleur de m_alphabeta C8 " << m_alphabeta.Getcouleur()<<std::endl;
             int * movementIA = m_alphabeta.ABMinMax(m_plateau);
-            m_alphabeta.VerifAssertMove(movementIA);
+            m_alphabeta.VerifAssertMove(movementIA,"CoteJeu");
             m_plateau.Bouger(m_actu,movementIA[2],movementIA[0],movementIA[1]);
             //On repasse la main à l'adversaire
             SetActu((Couleur)(1 - m_actu));

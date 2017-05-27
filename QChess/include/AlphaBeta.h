@@ -5,7 +5,7 @@
 #include "Plateau.h"
 
 #define _NB_PIECES  12
-#define    _PROF    5
+#define    _PROF    2
 
 class AlphaBeta
 {
@@ -25,16 +25,20 @@ class AlphaBeta
         //Retourne le mouvement à faire
         //contient [2] l'index de la piece, [1] la ligne [2] la colonne
         int* ABMinMax(Plateau plateau);
-        int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
-        int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env,Couleur couleur);
+        int* ABMaxMove(Plateau* plateau, short int prof, int a, int b, int * move_env,int &index_move,Couleur couleur);
+        int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env,int &index_move,Couleur couleur);
 
-        void VerifAssertMove(int* move);
+
+        int AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Couleur couleur );
+        int AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Couleur couleur );
+        int *AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur);
+        void VerifAssertMove(int* move, std::string titre);
     protected:
 
     private:
         Plateau m_plateau;
         Couleur m_couleur;
-        bool m_gagne;
 };
 
 #endif // ALPHABETA_H
+
