@@ -33,6 +33,8 @@ class AlphaBeta
         int AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Couleur couleur );
         void AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleurint,int (&tab)[3]);
         void VerifAssertMove(int* move, std::string titre);
+
+        void NettoieVecteur(std::vector<int*> &v);
     protected:
 
     private:

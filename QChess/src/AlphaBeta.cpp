@@ -142,7 +142,8 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
                alpha = score; // alpha acts like max in MiniMax
         }
    }
-   return alpha;
+    NettoieVecteur(deplacements);
+    return alpha;
 }
 
 int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Couleur couleur )  {
@@ -186,6 +187,7 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
                 beta = score; // beta acts like min in MiniMax
         }
     }
+    NettoieVecteur(deplacements);
     return beta;
 }
 
@@ -237,6 +239,7 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
             }
         }
     }
+    NettoieVecteur(deplacements);
     tab[0] = first_movement[0];
     tab[1] = first_movement[1];
     tab[2] = first_movement[2];
@@ -249,4 +252,14 @@ void AlphaBeta::ABMinMax(Plateau plateau,int (&tab)[3]) {
 	AlphaBetaBigMax(plateau, -100, +100, 1,m_couleur,tab);
 	std::cout <<"Coup fini mother fuckerrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrrr \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
 
+}
+
+void AlphaBeta::NettoieVecteur(std::vector<int *> &v)
+{
+
+     for (std::vector< int*>::iterator it = v.begin() ; it != v.end(); ++it)
+   {
+     delete (*it);
+   }
+   v.clear();
 }
