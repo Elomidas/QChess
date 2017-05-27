@@ -51,7 +51,9 @@ void Jeu::Jouer()
         else
         {
             //Tour de l'IA
-            //...
+            int * movementIA = m_alphabeta.ABMinMax(m_plateau);
+            m_alphabeta.VerifAssertMove(movementIA);
+            m_plateau.Bouger(m_actu,movementIA[2],movementIA[0],movementIA[1]);
             //On repasse la main à l'adversaire
             SetActu((Couleur)(1 - m_actu));
         }

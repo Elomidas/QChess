@@ -17,7 +17,7 @@ AlphaBeta::AlphaBeta(Plateau plateau, Couleur couleur)
     //ctor
 
     m_plateau = plateau;
-    m_couleur = _BLANC;
+    m_couleur = couleur;
 }
 
 AlphaBeta::~AlphaBeta()
@@ -167,10 +167,10 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
 	int alpha = a,beta = b;
 
 	//declaration des plateaux qui vont etre utilisés
-	Plateau p_act = *plateau;
-	Plateau p_mod = *plateau;
-	Plateau p_movemod = *plateau;
-	Plateau p_bestmove = *plateau;
+	Plateau p_act(*plateau);
+	Plateau p_mod(*plateau);
+	Plateau p_movemod(*plateau);
+	Plateau p_bestmove(*plateau);
 	Piece * pieces[2][_NB_PIECES];
 	//declaration iterateur
     int index;
@@ -187,7 +187,7 @@ int* AlphaBeta::ABMaxMove(Plateau* plateau, short int prof, int a, int b,int *mo
          std::cout <<"pas la prof max \n";
         //On recupere toutes les pieces de la couleur actuelle
         p_act.GetPieces(pieces);
-        std::cout <<"pieces récuperees\n";
+        std::cout <<"pieces recuperees\n";
         //pour chasque piece une par une
         for(index= 0 ; index< _NB_PIECES; index++)
         {
@@ -345,7 +345,7 @@ int* AlphaBeta::ABMinMove(Plateau* plateau, short int prof, int a, int b, int * 
 int* AlphaBeta::ABMinMax(Plateau plateau) {
 
     int * tab;
-    std::cout <<"Rentre ici\n\n";
+    std::cout <<"Rentre ici, c_act: " <<m_couleur <<"\n\n";
 	return ABMaxMove(&plateau, 1, 0, 0,tab,m_couleur);
 }
 
