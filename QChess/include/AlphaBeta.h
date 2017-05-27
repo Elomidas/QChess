@@ -11,14 +11,14 @@ class AlphaBeta
 {
     public:
         AlphaBeta();
-        AlphaBeta(Plateau plateau, Couleur couleur);
+        AlphaBeta(Plateau &plateau, Couleur couleur);
         virtual ~AlphaBeta();
 
         Plateau Getplateau() { return m_plateau; }
         void Setplateau(Plateau val) { m_plateau = val; }
 
         Couleur Getcouleur() { return m_couleur; }
-        void Setcouleur(Couleur couleur) { m_couleur = couleur; }
+        void Setcouleur(Couleur couleur) { std::cout << "Couleur changee : " << couleur; m_couleur = couleur; }
 
         int Eval(Plateau * plateau, Couleur couleur);
 

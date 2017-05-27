@@ -10,15 +10,15 @@ AlphaBeta::AlphaBeta()
 
    // m_plateau = NULL;
    // m_couleur = NULL;
+   m_couleur = _NOIR;
 }
 
-AlphaBeta::AlphaBeta(Plateau plateau, Couleur couleur)
+AlphaBeta::AlphaBeta(Plateau &plateau, Couleur couleur) : m_plateau(plateau)
 {
     //ctor
-    std::cout <<"Couleur rentrée dans le constructeur : " << couleur <<std::endl;
-    m_plateau = plateau;
+    std::cout <<"Couleur rentree dans le constructeur : " << couleur <<std::endl;
     m_couleur = couleur;
-    std::cout<<"Couleur de m_alphabeta finc constructeur Alphabeta: " << Getcouleur()<<std::endl;
+    std::cout<<"Couleur de m_alphabeta finc constructeur Alphabeta: " << Getcouleur() <<std::endl;
 }
 
 AlphaBeta::~AlphaBeta()
@@ -62,7 +62,7 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
     std::cout<< "Après plateau->GetPieces c_act= " << c_act <<std::endl;
     //On traite chaque type de piece un par un et on calcule la différence entre les pieces de la couleur actuelle(c_act)
     // avec celles de l'adversaire(c_adv)
-    for (j = 1; j< _NB_PIECES; j++)
+    for (j = 1; j < _NB_PIECES; j++)
         {
             std::cout<<"\n indice:" << j <<": \n";
             assert(c_act >= 0);
@@ -75,33 +75,35 @@ int AlphaBeta::Eval(Plateau * plateau, Couleur couleur)
             {
                 //Si la j ème piece n'existe pas chez la couleur adversaire -> on gagne des points d'évaluation
                 if(&pieces[c_adv][j] == NULL)
+                {
                     switch(j)
-                        {
-                            //cas roi couleur actuelle
-                            case 0:
-                                std::cout<<"+30";
-                                valeur += 30;
-                            break;
-                            //cas tour couleur actuelle
-                            case 1:
-                                std::cout<<"+5";
-                                valeur += 5;
-                            break;
-                            //cas fou couleur actuelle
-                            case 2:
-                                std::cout<<"+3";
-                                valeur += 3;
-                            break;
-                            //cas cavalier couleur actuelle
-                            case 3:
-                                std::cout<<"+3";
-                                valeur += 3;
-                            break;
-                            //cas pions couleur actuelle
-                            default:
-                                std::cout<<"+1";
-                                valeur += 1;
-                        }
+                    {
+                        //cas roi couleur actuelle
+                        case 0:
+                            std::cout<<"+30";
+                            valeur += 30;
+                        break;
+                        //cas tour couleur actuelle
+                        case 1:
+                            std::cout<<"+5";
+                            valeur += 5;
+                        break;
+                        //cas fou couleur actuelle
+                        case 2:
+                            std::cout<<"+3";
+                            valeur += 3;
+                        break;
+                        //cas cavalier couleur actuelle
+                        case 3:
+                            std::cout<<"+3";
+                            valeur += 3;
+                        break;
+                        //cas pions couleur actuelle
+                        default:
+                            std::cout<<"+1";
+                            valeur += 1;
+                    }
+                }
             }
             //Si la j ème piece n'existe pas chez la couleur actuelle
             else

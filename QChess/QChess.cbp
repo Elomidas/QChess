@@ -39,9 +39,6 @@
 					<Add library="sfml-graphics" />
 					<Add library="sfml-window" />
 					<Add library="sfml-system" />
-					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-graphics.a" />
-					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-window.a" />
-					<Add library="D:/Logiciels/SFML/SFML-2.4.2/lib/libsfml-system.a" />
 				</Linker>
 			</Target>
 		</Build>
