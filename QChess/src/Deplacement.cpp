@@ -62,7 +62,7 @@ const bool Deplacement::Accessible(const int ligne, const int colonne)
 }
 
 //x ligne, y colonne
-const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Plateau &p, const Couleur couleur, const bool limite) const
+const std::vector<int*> Deplacement::GetPossibles(const int ligne, const int colonne, Plateau &p, const Couleur couleur, const bool limite) const
 {
     std::vector<int*> vect;
     if(m_couleur[couleur] && (m_limitee || limite))
@@ -76,36 +76,39 @@ const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Pl
                 continuer = false;
             else
             {
-                int y = (ite * m_colonne) + px;
-                int x = (ite * m_ligne) + py;
-                if((x >= 8)
-                   || (x < 0)
-                   || (y >= 8)
-                   || (y < 0))
+                //Nouvelle ligne
+                int dLig = (ite * m_colonne) + ligne;
+                //Nouvelle colonne
+                int dCol = (ite * m_ligne) + m_colonne;
+                //On vérifie que l'on reste sur le plateau
+                if((dCol >= 8)
+                   || (dCol < 0)
+                   || (dLig >= 8)
+                   || (dLig < 0))
                     continuer = false;
 
                 else if(m_ligneVue)
                 {
                     //On s'assure de respecter la ligne de vue
+                    //Càd qu'il n'y ait aucune pièce entre le point de départ et celui d'arrivée
+                    //On ne regarde que les pièces sur la ligne car ce cas ne concerne que le roi qui roque
                     int mod = (m_ligne > 0) ? 1 : -1;
-                    for(int i = (((ite - 1) * m_ligne) + py); (i != (x + mod)) && continuer; i += mod)
+                    for(int i = (((ite - 1) * m_ligne) + colonne);
+                        (i != (dCol + mod)) && continuer;
+                        i += mod)
                     {
-                        //std::cout << i + mod << std::endl;
-                        if(!p.Libre(i + mod, y))
-                        {
+                        if(!p.Libre(dLig, i + mod))
                             continuer = false;
-                            //std::cout << i + mod << " occupee" << std::endl;
-                        }
                     }
                 }
                 if(continuer)
                 {
                     bool enreg = false;
-                    if(p.Libre(x, y) && (!m_occupee))
+                    if(p.Libre(dLig, dCol) && (!m_occupee))
                         enreg = true;
                     else
                     {
-                        Piece *pt = p.GetPiece(x, y);
+                        Piece *pt = p.GetPiece(dLig, dCol);
                         if((pt != NULL) && (!m_libre) && (pt->GetCouleur() != couleur))
                             enreg = true;;
                         continuer = false;
@@ -113,8 +116,8 @@ const std::vector<int*> Deplacement::GetPossibles(const int px, const int py, Pl
                     if(enreg)
                     {
                         int* ntab = new int[2];
-                        ntab[0] = x;
-                        ntab[1] = y;
+                        ntab[0] = dLig;
+                        ntab[1] = dCol;
                         vect.push_back(ntab);
                     }
                 }

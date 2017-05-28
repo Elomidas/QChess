@@ -255,8 +255,8 @@ void AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2]
             if(p != NULL)
             {
                 //Position de la case occuppée par la piece
-                int px = m_plateau->GetPieceI((Couleur)m_joueur, i)->GetLigne() * _TAILLE_CASE;
-                int py = m_plateau->GetPieceI((Couleur)m_joueur, i)->GetColonne() * _TAILLE_CASE;
+                int px = p->GetLigne() * _TAILLE_CASE;
+                int py = p->GetColonne() * _TAILLE_CASE;
                 //Ecarts de position dus à la taille de la piece
                 int ex = (_TAILLE_CASE - (tailles[0][index] * _RATIO)) / 2;
                 int ey = (_TAILLE_CASE - (tailles[1][index] * _RATIO)) / 2;

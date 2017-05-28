@@ -54,7 +54,7 @@ const std::vector<int*> Pion::GetDeplacements(Plateau &p)
     std::vector<int*> vect;
     for(unsigned int i = 0; i < m_deplacements.size(); i++)
     {
-        std::vector<int*> vTemp = m_deplacements[i]->GetPossibles(m_colonne, m_ligne, p, m_couleur, m_first);
+        std::vector<int*> vTemp = m_deplacements[i]->GetPossibles(m_ligne, m_colonne, p, m_couleur, m_first);
         for(unsigned int j = 0; j < vTemp.size(); j++)
             vect.push_back(vTemp[j]);
         if(vTemp.size() > 0)

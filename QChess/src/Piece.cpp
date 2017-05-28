@@ -80,6 +80,7 @@ const bool Piece::Accessible(const int ligne, const int colonne, const std::vect
     }
     return test;
 }
+
 const std::vector<int*> Piece::GetDeplacements(Plateau &p)
 {
     std::vector<int*> vect;
