@@ -146,7 +146,7 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
 
                     //On effectue le déplacement sur le plateau plateau _mod
                     //plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
-                    if(!plateau_mod.Bouger(couleur, index, ligne, colonne))
+                    if(!plateau_mod.Bouger((Couleur)couleur, index, ligne, colonne))
                     {
                         std::cout << "Mouvement impossible" << std::endl
                                   << "> Couleur : " << couleur << std::endl
@@ -165,11 +165,11 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
                        alpha = score; // alpha acts like max in MiniMax
                 }
             }
+           //On nettoie le vecteur de déplacement
+            NettoieVecteur(deplacements);
         }
    }
    //std::cout <<"on est sorti la 2222222222222222222222222222222" <<std::endl;
-   //On nettoie le vecteur de déplacement
-    NettoieVecteur(deplacements);
     return alpha;
 }
 
@@ -209,7 +209,8 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
                     assert(ligne < 8);
                     assert(colonne < 8);
                     //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
-                    if(!plateau_mod.Bouger(couleur, index, ligne, colonne))
+
+                    if(!plateau_mod.Bouger((Couleur)couleur, index, ligne, colonne))
                     {
                         std::cout << "Mouvement impossible" << std::endl
                                   << "> Couleur : " << couleur << std::endl
@@ -227,10 +228,10 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
 
                 }
             }
+            NettoieVecteur(deplacements);
         }
     }
     //std::cout <<"on est sorti la" <<std::endl;
-    NettoieVecteur(deplacements);
     return beta;
 }
 
@@ -288,7 +289,8 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
 
                     //on effectue le deplacement de la piece d'indice index sur le plateau plateau.mod
                     //plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
-                    if(!plateau_mod.Bouger(couleur, index, ligne, colonne))
+                    if(!plateau_mod.Bouger((Couleur)couleur, index, ligne, colonne))
+
                     {
                         std::cout << "Mouvement impossible" << std::endl
                                   << "> Couleur : " << couleur << std::endl
@@ -319,11 +321,11 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
                     }
                 }
             }
+            //Nettoie le vecteur deplacement
+            NettoieVecteur(deplacements);
         }
     }
     std::cout <<"Enregistre firstout"<<std::endl;
-    //Nettoie le vecteur deplacement
-    NettoieVecteur(deplacements);
     //le tableau passé en reference prend les valeur du meilleur mouvement
     tab[0] = first_movement[0];
     tab[1] = first_movement[1];
