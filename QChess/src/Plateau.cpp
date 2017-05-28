@@ -8,7 +8,7 @@ Plateau::Plateau()
 Plateau::Plateau(Plateau &p)
 {
     m_action = false;
-
+    m_fini = false;
     //Blancs
     Couleur c = _BLANC;
     Piece *piece = p.GetPieceI(c, 1);
@@ -82,6 +82,7 @@ void Plateau::InitialiserPieces()
         m_pieces[_NOIR][i] = NULL;
     }
     m_action = false;
+    m_fini = false;
 
     //Blancs
     Couleur c = _BLANC;
@@ -192,19 +193,26 @@ bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
             roque[_NOIR] = true;
     Piece *np = GetPiece(ligne, colonne);
     if(np != NULL)
+    {
+        if(np == m_pieces[np->GetCouleur()][0])
+            m_fini = true;
         SetPiece(np, NULL);
-    p->SetLigne(ligne);
-    p->SetColonne(colonne);
+    }
+    p->SetPosition(ligne, colonne);
     p->Bouge();
+    //std::cout << "Bouger 5" << std::endl;
+    //std::cout << "Couleur : " << p->GetCouleur() << std::endl;
     //Si c'est la tour qui a été bougée, on empêche le roi de roquer
     if((c == 't') || (c == 'T'))
-        m_pieces[p->GetCouleur()][0]->Bouge();
+        ((Roi*)(m_pieces[p->GetCouleur()][0]))->Bouge();
+    //std::cout << "Bouger 6" << std::endl;
     //Si un roi vient de faire un roque, on déplace la tour
     if(roque[_BLANC])
         Bouger(m_pieces[_BLANC][1], 0, 3);
     else if(roque[_NOIR])
         Bouger(m_pieces[_NOIR][1], 7, 4);
     m_action = true;
+    //std::cout << "Bouger 7" << std::endl;
     return true;
 }
 

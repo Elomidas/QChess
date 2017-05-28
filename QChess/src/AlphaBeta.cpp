@@ -28,7 +28,6 @@ void AlphaBeta::VerifAssertMove(int * moveAB, std::string titre)
     assert(moveAB[1] < 8);
     assert(moveAB[2] >= 0);
     assert(moveAB[2] < 12 );
-
 }
 
 int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
@@ -43,6 +42,7 @@ int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
     plateau.GetPieces(pieces);
     //On traite chaque type de piece un par un et on calcule la différence entre les pieces de la couleur actuelle(c_act)
     // avec celles de l'adversaire(c_adv)
+    //Fn Martial
     for (j = 0; j < _NB_PIECES; j++)
     {
 
@@ -79,9 +79,39 @@ int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
 
                     valeur += 1;
             }
-            }
         }
-
+    }
+    //Fn Victor
+    /*
+    //Roi
+    if(pieces[c_act][0] != NULL)
+        valeur += 100;
+    if(pieces[c_adv][0] != NULL)
+        valeur -= 100;
+    //Tour
+    if(pieces[c_act][1] != NULL)
+        valeur += 5;
+    if(pieces[c_adv][1] != NULL)
+        valeur -= 5;
+    //Fou
+    if(pieces[c_act][2] != NULL)
+        valeur += 3;
+    if(pieces[c_adv][2] != NULL)
+        valeur -= 3;
+    //Cavalier
+    if(pieces[c_act][3] != NULL)
+        valeur += 3;
+    if(pieces[c_adv][3] != NULL)
+        valeur -= 3;
+    for(int i = 4; i < 12; i++)
+    {
+        //Pion
+        if(pieces[c_act][i] != NULL)
+            valeur += 1;
+        if(pieces[c_adv][i] != NULL)
+            valeur -= 1;
+    }
+    */
     return valeur;
 }
 
@@ -98,7 +128,6 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
     {
         if( plateau.GetPieceI(couleur,index) != NULL )
         {
-
             //on stocke ses deplacements possibles
             deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
 
@@ -131,7 +160,9 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
                     }
 
                     //On lance AlphaBetaMin sur le plateau ou la piece a été bougée
-                    score = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+                    if(plateau_mod.Fin())
+                        score = Eval(plateau_mod, couleur);
+                    else score = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
 
                     if( score >= beta )
                        return beta;   // fail hard beta-cutoff
@@ -142,7 +173,7 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
            //On nettoie le vecteur de déplacement
             NettoieVecteur(deplacements);
         }
-   }
+    }
     return alpha;
 }
 
@@ -185,7 +216,9 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
                                   << "> Colonne : " << colonne << std::endl;
                         assert(false);
                     }
-                    score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+                    if(plateau_mod.Fin())
+                        score = Eval(plateau_mod, couleur);
+                    else score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
 
                     if( score <= alpha )
                         return alpha; // fail hard alpha-cutoff
@@ -201,7 +234,7 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
 }
 
 //Lors du premier appel --> permet de sauvegarder le tout premier deplacement (celui qui compte pour l'IA)
-//la fonction ne sera plus appeler par la suite , on appelera ABMAx dans ABMin
+//la fonction ne sera plus appelée par la suite , on appelera ABMax dans ABMin
 void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur,int (&tab)[3])
 {
     int score; //meilleur score enregistré
@@ -209,9 +242,9 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
     int first_movement[3]; //tableau du mouvement final comprenant [0] ligne [1] colonne [2] index de la piece
 
     //initialisation du mouvement
-    first_movement[0] = 0;
-    first_movement[1] = 0;
-    first_movement[2] = 0;
+    first_movement[0] = -1;
+    first_movement[1] = -1;
+    first_movement[2] = -1;
 
     //déclaration du vecteur
     std::vector<int*> deplacements;
@@ -257,7 +290,9 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
                     }
 
                     //score_temp recevra le score de ABMin
-                    score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+                    if(plateau_mod.Fin())
+                        score = Eval(plateau_mod, couleur);
+                    else score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
                     //Si le score obtenue est meilleur que celui actuellement enregistré
                     if (score <=score_temp)
                     {
