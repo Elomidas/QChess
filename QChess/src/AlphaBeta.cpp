@@ -117,36 +117,41 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
     for (int index = 0;index<_NB_PIECES; index++)
     {
         //std::cout <<"Piece : " <<index <<std::endl;
-        //on stocke ses deplacements possibles
-        deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
-
-        //pour chaque deplacement de la piece un par un
-        for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+        if( plateau.GetPiece(couleur,index) != NULL )
         {
 
-            //on recupere les informations du déplacement
-            //position x de la piece
-            int ligne = (*i)[0];
-            //position y de la piece
-            int colonne = (*i)[1];
-            assert(ligne >= 0);
-            assert(colonne >= 0);
-            assert(ligne < 8);
-            assert(colonne < 8);
-            //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
+            //on stocke ses deplacements possibles
+            deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
 
-            //On effectue le déplacement sur le plateau plateau _mod
-            plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+            //pour chaque deplacement de la piece un par un
+            for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+            {
+                assert ((*i)!= NULL);
+                //on recupere les informations du déplacement
+                //position x de la piece
+                int ligne = (*i)[0];
+                //position y de la piece
+                int colonne = (*i)[1];
+                assert(ligne >= 0);
+                assert(colonne >= 0);
+                assert(ligne < 8);
+                assert(colonne < 8);
+                //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
 
-            //On lance AlphaBetaMin sur le plateau ou la piece a été bougée
-            score = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+                //On effectue le déplacement sur le plateau plateau _mod
+                plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
 
-            if( score >= beta )
-               return beta;   // fail hard beta-cutoff
-            if( score > alpha )
-               alpha = score; // alpha acts like max in MiniMax
+                //On lance AlphaBetaMin sur le plateau ou la piece a été bougée
+                score = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+
+                if( score >= beta )
+                   return beta;   // fail hard beta-cutoff
+                if( score > alpha )
+                   alpha = score; // alpha acts like max in MiniMax
+            }
         }
    }
+   //std::cout <<"on est sorti la 2222222222222222222222222222222" <<std::endl;
    //On nettoie le vecteur de déplacement
     NettoieVecteur(deplacements);
     return alpha;
@@ -165,35 +170,39 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
     for (int index = 0;index<_NB_PIECES; index++)
     {
         //std::cout <<"Piece : " <<index <<std::endl;
-
-        //on stocke ses deplacements possibles
-        deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
-
-        for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+        if( plateau.GetPiece(couleur,index) != NULL )
         {
 
-            //on recupere les informations du mouvement de la boucle
-            //position x de la piece
-            int ligne = (*i)[0];
-            //position y de la piece
-            int colonne = (*i)[1];
-            assert(ligne >= 0);
-            assert(colonne >= 0);
-            assert(ligne < 8);
-            assert(colonne < 8);
-            //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
+            //on stocke ses deplacements possibles
+            deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
+
+            for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+            {
+                assert ((*i)!= NULL);
+                //on recupere les informations du mouvement de la boucle
+                //position x de la piece
+                int ligne = (*i)[0];
+                //position y de la piece
+                int colonne = (*i)[1];
+                assert(ligne >= 0);
+                assert(colonne >= 0);
+                assert(ligne < 8);
+                assert(colonne < 8);
+                //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
 
 
-            plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+                plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
 
-            score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+                score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
 
-            if( score <= alpha )
-                return alpha; // fail hard alpha-cutoff
-            if( score < beta )
-                beta = score; // beta acts like min in MiniMax
+                if( score <= alpha )
+                    return alpha; // fail hard alpha-cutoff
+                if( score < beta )
+                    beta = score; // beta acts like min in MiniMax
+            }
         }
     }
+    //std::cout <<"on est sorti la" <<std::endl;
     NettoieVecteur(deplacements);
     return beta;
 }
@@ -225,45 +234,50 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
     {
         std::cout <<"Piece : " <<index <<std::endl;
         //on stocke ses deplacements possibles
-        deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
 
-        //pour chaque deplacement de la piece d'index index
-        for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+        if( plateau.GetPiece(couleur,index) != NULL )
         {
+            deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
 
-            //on recupere les informations du mouvement
-            //position x de la piece
-            int ligne = (*i)[0];
-            //position y de la piece
-            int colonne = (*i)[1];
-            assert(ligne >= 0);
-            assert(colonne >= 0);
-            assert(ligne < 8);
-            assert(colonne < 8);
-            //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
-
-            //on effectue le deplacement de la piece d'indice index sur le plateau plateau.mod
-            plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
-
-            //score_temp recevra le score de ABMin
-            score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
-
-            //Si le score obtenue est meilleur que celui actuellement enregistré
-            if (score <=score_temp)
+            //pour chaque deplacement de la piece d'index index
+            for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
             {
-                //on le retiens
-                score = score_temp;
 
-                //on recupere l'indice de la piece du nouveau meilleur score ainsi que son déplacement(ligne,colonne)
-                first_movement[0] = (*i)[0];
-                first_movement[1] = (*i)[1];
-                first_movement[2] = index;
-                std::cout << "ligne: " << first_movement[0]<< " colonne: " << first_movement[1] <<" index: "<< first_movement[2]<<std::endl;
-                //On verifie qu'il n'y a pas d'erreur
-                VerifAssertMove(first_movement,"first_movement");
+                //on recupere les informations du mouvement
+                //position x de la piece
+                int ligne = (*i)[0];
+                //position y de la piece
+                int colonne = (*i)[1];
+                assert(ligne >= 0);
+                assert(colonne >= 0);
+                assert(ligne < 8);
+                assert(colonne < 8);
+                //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
+
+                //on effectue le deplacement de la piece d'indice index sur le plateau plateau.mod
+                plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+
+                //score_temp recevra le score de ABMin
+                score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
+                //std::cout <<"Onest sorti du ABMin"<<std::endl;
+                //Si le score obtenue est meilleur que celui actuellement enregistré
+                if (score <=score_temp)
+                {
+                    //on le retiens
+                    score = score_temp;
+
+                    //on recupere l'indice de la piece du nouveau meilleur score ainsi que son déplacement(ligne,colonne)
+                    first_movement[0] = (*i)[0];
+                    first_movement[1] = (*i)[1];
+                    first_movement[2] = index;
+                    std::cout << "ligne: " << first_movement[0]<< " colonne: " << first_movement[1] <<" index: "<< first_movement[2]<<std::endl;
+                    //On verifie qu'il n'y a pas d'erreur
+                    VerifAssertMove(first_movement,"first_movement");
+                }
             }
         }
     }
+    std::cout <<"Enregistre firstout"<<std::endl;
     //Nettoie le vecteur deplacement
     NettoieVecteur(deplacements);
     //le tableau passé en reference prend les valeur du meilleur mouvement
