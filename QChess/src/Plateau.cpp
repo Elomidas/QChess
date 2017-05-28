@@ -16,20 +16,20 @@ Plateau::Plateau(Plateau &p)
 
     //Blancs
     Couleur c = _BLANC;
-    Piece *piece = p.GetPiece(c, 1);
+    Piece *piece = p.GetPieceI(c, 1);
     Tour* pt = (piece == NULL) ? NULL : new Tour(c, piece->GetColonne(), piece->GetLigne());
-    piece = p.GetPiece(c, 2);
+    piece = p.GetPieceI(c, 2);
     Fou* pf = (piece == NULL) ? NULL : new Fou(c, piece->GetColonne(), piece->GetLigne());
-    Roi* r = (Roi*)p.GetPiece(c, 0);
+    Roi* r = (Roi*)p.GetPieceI(c, 0);
     Roi* pr = (r == NULL) ? NULL : new Roi(c, r->GetColonne(), r->GetLigne());
     if((r != NULL) && (!r->GetRoque()))
         pr->Bouge();
-    piece = p.GetPiece(c, 3);
+    piece = p.GetPieceI(c, 3);
     Cavalier* pc = (piece == NULL) ? NULL : new Cavalier(c, piece->GetColonne(), piece->GetLigne());
     Pion* pp[8];
     for(int i = 0; i < 8; i++)
     {
-        Pion* pi = (Pion*)p.GetPiece(c, 4+i);
+        Pion* pi = (Pion*)p.GetPieceI(c, 4+i);
         pp[i] = (pi == NULL) ? NULL : new Pion(c, pi->GetColonne(), pi->GetLigne());
         if((pi != NULL) && (!pi->GetFirst()))
             pp[i]->Bouge();
@@ -43,19 +43,19 @@ Plateau::Plateau(Plateau &p)
 
     //Noirs
     c = _NOIR;
-    piece = p.GetPiece(c, 1);
+    piece = p.GetPieceI(c, 1);
     pt = (piece == NULL) ? NULL : new Tour(c, piece->GetColonne(), piece->GetLigne());
-    piece = p.GetPiece(c, 2);
+    piece = p.GetPieceI(c, 2);
     pf = (piece == NULL) ? NULL : new Fou(c, piece->GetColonne(), piece->GetLigne());
-    r = (Roi*)p.GetPiece(c, 0);
+    r = (Roi*)p.GetPieceI(c, 0);
     pr = (r == NULL) ? NULL : new Roi(c, r->GetColonne(), r->GetLigne());
     if((r != NULL) && (!r->GetRoque()))
         pr->Bouge();
-    piece = p.GetPiece(c, 3);
+    piece = p.GetPieceI(c, 3);
     pc = (piece == NULL) ? NULL : new Cavalier(c, piece->GetColonne(), piece->GetLigne());
     for(int i = 0; i < 8; i++)
     {
-        Pion* pi = (Pion*)p.GetPiece(c, 4+i);
+        Pion* pi = (Pion*)p.GetPieceI(c, 4+i);
         pp[i] = (pi == NULL) ? NULL : new Pion(c, pi->GetColonne(), pi->GetLigne());
         if((pi != NULL) && (!pi->GetFirst()))
             pp[i]->Bouge();
@@ -128,7 +128,7 @@ void Plateau::InitialiserPieces()
         m_pieces[c][4 + i] = pp[i];
 }
 
-Piece* Plateau::GetPiece(const Couleur c, const int index)
+Piece* Plateau::GetPieceI(const Couleur c, const int index)
 {
     if((0 > index) || (_NB_PIECES <= index))
     {
@@ -166,12 +166,7 @@ void Plateau::GetPieces(Piece* tab[2][_NB_PIECES])
 
 bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, const int colonne)
 {
-    if((index < 0) || (index >= _NB_PIECES))
-    {
-        std::cout << "Index out of range : " << index << std::endl;
-        assert(false);
-    }
-    return Bouger(m_pieces[couleur][index], ligne, colonne);
+    return Bouger(GetPieceI(couleur, index), ligne, colonne);
 }
 
 bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)

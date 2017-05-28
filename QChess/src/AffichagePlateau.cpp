@@ -89,7 +89,7 @@ bool AffichagePlateau::Rafraichir()
     {
         for(int i = 0; i < _NB_PIECES; i++)
         {
-            Piece *p = m_plateau->GetPiece((Couleur)c, i);
+            Piece *p = m_plateau->GetPieceI((Couleur)c, i);
             if(p != 0)
             {
                 int h, l;
@@ -160,7 +160,7 @@ bool AffichagePlateau::Event()
                         {
                             m_cliquee = m_pointee;
                             if(m_pointee != -1)
-                                SetDep(m_plateau->GetPiece(m_joueur, m_pointee)->GetDeplacements(*m_plateau));
+                                SetDep(m_plateau->GetPieceI(m_joueur, m_pointee)->GetDeplacements(*m_plateau));
                             else DelDep();
                         }
                     }
@@ -251,12 +251,12 @@ void AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2]
         for(int i(0); i < _NB_PIECES; i++)
         {
             int index = (i < 4) ? i : 4;
-            Piece *p = m_plateau->GetPiece((Couleur)m_joueur, i);
+            Piece *p = m_plateau->GetPieceI((Couleur)m_joueur, i);
             if(p != NULL)
             {
                 //Position de la case occuppée par la piece
-                int px = m_plateau->GetPiece((Couleur)m_joueur, i)->GetLigne() * _TAILLE_CASE;
-                int py = m_plateau->GetPiece((Couleur)m_joueur, i)->GetColonne() * _TAILLE_CASE;
+                int px = m_plateau->GetPieceI((Couleur)m_joueur, i)->GetLigne() * _TAILLE_CASE;
+                int py = m_plateau->GetPieceI((Couleur)m_joueur, i)->GetColonne() * _TAILLE_CASE;
                 //Ecarts de position dus à la taille de la piece
                 int ex = (_TAILLE_CASE - (tailles[0][index] * _RATIO)) / 2;
                 int ey = (_TAILLE_CASE - (tailles[1][index] * _RATIO)) / 2;

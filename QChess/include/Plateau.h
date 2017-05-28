@@ -29,7 +29,7 @@ class Plateau
         //Initialisation
         void InitialiserPieces();
         //Accesseur
-        Piece* GetPiece(const Couleur, const int);
+        Piece* GetPieceI(const Couleur, const int);
         Piece* GetPiece(const int, const int);
         bool Libre(const int, const int) const;
         bool GetAction() {return m_action;}

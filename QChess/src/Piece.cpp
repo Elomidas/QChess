@@ -10,9 +10,9 @@ Piece::Piece(const Couleur c)
     Init(c, -1, -1);
 }
 
-Piece::Piece(const Couleur c, const int colonne, const int ligne)
+Piece::Piece(const Couleur c, const int ligne, const int colonne)
 {
-    Init(c, colonne, ligne);
+    Init(c, ligne, colonne);
 }
 
 Piece::~Piece()
@@ -20,10 +20,10 @@ Piece::~Piece()
     //dtor
 }
 
-void Piece::Init(const Couleur c, const int colonne, const int ligne)
+void Piece::Init(const Couleur c, const int ligne, const int colonne)
 {
     SetCouleur(c);
-    SetPosition(colonne, ligne);
+    SetPosition(ligne, colonne);
 }
 
 const char Piece::GetChar()
@@ -61,7 +61,7 @@ void Piece::SetColonne(const int colonne)
     m_colonne = colonne;
 }
 
-void Piece::SetPosition(const int colonne, const int ligne)
+void Piece::SetPosition(const int ligne, const int colonne)
 {
     SetLigne(ligne);
     SetColonne(colonne);

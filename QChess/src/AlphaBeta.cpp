@@ -117,11 +117,11 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
     for (int index = 0;index<_NB_PIECES; index++)
     {
         std::cout <<"Piece : " <<index <<std::endl;
-        if( plateau.GetPiece(couleur,index) != NULL )
+        if( plateau.GetPieceI(couleur,index) != NULL )
         {
 
             //on stocke ses deplacements possibles
-            deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
+            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
 
             if(!deplacements.empty())
             {
@@ -186,10 +186,10 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
     for (int index = 0;index<_NB_PIECES; index++)
     {
         std::cout <<"Piece : " <<index <<std::endl;
-        if( plateau.GetPiece(couleur,index) != NULL )
+        if( plateau.GetPieceI(couleur,index) != NULL )
         {
             //on stocke ses deplacements possibles
-            deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
+            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
                 //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
@@ -263,9 +263,9 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
         std::cout <<"Piece : " <<index <<std::endl;
         //on stocke ses deplacements possibles
 
-        if( plateau.GetPiece(couleur,index) != NULL )
+        if( plateau.GetPieceI(couleur,index) != NULL )
         {
-            deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
+            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
 
