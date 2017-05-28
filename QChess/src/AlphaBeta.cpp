@@ -126,14 +126,18 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
             if(!deplacements.empty())
             {
                 //pour chaque deplacement de la piece un par un
-                for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+                //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+                for(unsigned int i = 0; i < deplacements.size(); i++)
                 {
-                    assert ((*i)!= NULL);
+                    //assert ((*i)!= NULL);
+                    assert(deplacements[i] != NULL);
                     //on recupere les informations du déplacement
                     //position x de la piece
-                    int ligne = (*i)[0];
+                    //int ligne = (*i)[0];
+                    int ligne = deplacements[i][0];
                     //position y de la piece
-                    int colonne = (*i)[1];
+                    //int colonne = (*i)[1];
+                    int colonne = deplacements[i][1];
                     assert(ligne >= 0);
                     assert(colonne >= 0);
                     assert(ligne < 8);
@@ -141,7 +145,16 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
                     //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
 
                     //On effectue le déplacement sur le plateau plateau _mod
-                    plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+                    //plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+                    if!(plateau_mod.Bouger(couleur, index, ligne, colonne))
+                    {
+                        std::cout << "Mouvement impossible" << std::endl
+                                  << "> Couleur : " << couleur << std::endl
+                                  << "> Index : " << index << std::endl
+                                  << "> Ligne : " << ligne << std::endl
+                                  << "> Colonne : " << colonne << std::endl;
+                        assert(false);
+                    }
 
                     //On lance AlphaBetaMin sur le plateau ou la piece a été bougée
                     score = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
@@ -180,14 +193,18 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
             deplacements = (plateau.GetPiece(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
-                for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+                //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+                for(int i = 0; i < deplacements.size(); i++)
                 {
-                    assert ((*i)!= NULL);
+                    //assert ((*i)!= NULL);
+                    assert(deplacements[i] != NULL);
                     //on recupere les informations du mouvement de la boucle
                     //position x de la piece
-                    int ligne = (*i)[0];
+                    //int ligne = (*i)[0];
+                    int ligne = deplacements[i][0];
                     //position y de la piece
-                    int colonne = (*i)[1];
+                    //int colonne = (*i)[1];
+                    int colonne = deplacements[i][1];
                     assert(ligne >= 0);
                     assert(colonne >= 0);
                     assert(ligne < 8);
@@ -195,7 +212,15 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
                     //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
 
 
-                    plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+                    if!(plateau_mod.Bouger(couleur, index, ligne, colonne))
+                    {
+                        std::cout << "Mouvement impossible" << std::endl
+                                  << "> Couleur : " << couleur << std::endl
+                                  << "> Index : " << index << std::endl
+                                  << "> Ligne : " << ligne << std::endl
+                                  << "> Colonne : " << colonne << std::endl;
+                        assert(false);
+                    }
 
                     score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
 
@@ -247,14 +272,17 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
             {
 
                 //pour chaque deplacement de la piece d'index index
-                for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+                //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
+                for(int i = 0; i < deplacements.size(); i++)
                 {
-
+                    assert(deplacements[i] != NULL);
                     //on recupere les informations du mouvement
                     //position x de la piece
-                    int ligne = (*i)[0];
+                    //int ligne = (*i)[0];
+                    int ligne = deplacements[i][0];
                     //position y de la piece
-                    int colonne = (*i)[1];
+                    //int colonne = (*i)[1];
+                    int colonne = deplacements[i][1];
                     assert(ligne >= 0);
                     assert(colonne >= 0);
                     assert(ligne < 8);
@@ -262,7 +290,16 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
                     //std::cout << "ligne: " <<ligne << " colonne: " << colonne <<std::endl;
 
                     //on effectue le deplacement de la piece d'indice index sur le plateau plateau.mod
-                    plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+                    //plateau_mod.Bouger(plateau.GetPiece(couleur,index),ligne,colonne);
+                    if!(plateau_mod.Bouger(couleur, index, ligne, colonne))
+                    {
+                        std::cout << "Mouvement impossible" << std::endl
+                                  << "> Couleur : " << couleur << std::endl
+                                  << "> Index : " << index << std::endl
+                                  << "> Ligne : " << ligne << std::endl
+                                  << "> Colonne : " << colonne << std::endl;
+                        assert(false);
+                    }
 
                     //score_temp recevra le score de ABMin
                     score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
@@ -274,8 +311,10 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
                         score = score_temp;
 
                         //on recupere l'indice de la piece du nouveau meilleur score ainsi que son déplacement(ligne,colonne)
-                        first_movement[0] = (*i)[0];
-                        first_movement[1] = (*i)[1];
+                        //first_movement[0] = (*i)[0];
+                        first_movement[0] = deplacements[i][0];
+                        //first_movement[1] = (*i)[1];
+                        first_movement[1] = deplacements[i][1];
                         first_movement[2] = index;
                         std::cout << "ligne: " << first_movement[0]<< " colonne: " << first_movement[1] <<" index: "<< first_movement[2]<<std::endl;
                         //On verifie qu'il n'y a pas d'erreur
@@ -308,10 +347,18 @@ void AlphaBeta::ABMinMax(Plateau plateau,int (&tab)[3]) {
 //Fonction a verifier!!!!
 void AlphaBeta::NettoieVecteur(std::vector<int *> &v)
 {
-
-     for (std::vector< int*>::iterator it = v.begin() ; it != v.end(); ++it)
-   {
-     delete (*it);
-   }
-   v.clear();
+    /*
+    for (std::vector< int*>::iterator it = v.begin() ; it != v.end(); ++it)
+    {
+        delete (*it);
+    }
+    */
+    for(unsigned int i = 0; i < v.size(); i++)
+    {
+        if(v[i] != NULL)
+            delete v[i];
+        v[i] = NULL;
+    }
+    if(!v.empty())
+        v.clear();
 }
