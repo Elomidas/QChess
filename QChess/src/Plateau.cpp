@@ -7,11 +7,6 @@ Plateau::Plateau()
 
 Plateau::Plateau(Plateau &p)
 {
-    for(int i = 0; i < _NB_PIECES; i++)
-    {
-        m_pieces[_BLANC][i] = NULL;
-        m_pieces[_NOIR][i] = NULL;
-    }
     m_action = false;
 
     //Blancs
@@ -187,13 +182,13 @@ bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
     //Cas du roque d'un roi
     if((c == 'R')
        && (((Roi*)p)->GetRoque())
-       && (colonne == 0)
-       && (ligne == 2))
+       && (colonne == 2)
+       && (ligne == 0))
             roque[_BLANC] = true;
     else if((c == 'r')
        && (((Roi*)p)->GetRoque())
-       && (colonne == 7)
-       && (ligne == 5))
+       && (colonne == 5)
+       && (ligne == 7))
             roque[_NOIR] = true;
     Piece *np = GetPiece(ligne, colonne);
     if(np != NULL)
@@ -206,9 +201,9 @@ bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
         m_pieces[p->GetCouleur()][0]->Bouge();
     //Si un roi vient de faire un roque, on déplace la tour
     if(roque[_BLANC])
-        Bouger(m_pieces[_BLANC][1], 3, 0);
+        Bouger(m_pieces[_BLANC][1], 0, 3);
     else if(roque[_NOIR])
-        Bouger(m_pieces[_NOIR][1], 4, 7);
+        Bouger(m_pieces[_NOIR][1], 7, 4);
     m_action = true;
     return true;
 }

@@ -124,11 +124,11 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
 
             if(!deplacements.empty())
             {
-                Plateau plateau_mod(plateau);
                 //pour chaque deplacement de la piece un par un
                 //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
                 for(unsigned int i = 0; i < deplacements.size(); i++)
                 {
+                    Plateau plateau_mod(plateau);
                     //assert ((*i)!= NULL);
                     assert(deplacements[i] != NULL);
                     //on recupere les informations du déplacement
@@ -191,10 +191,10 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
             deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
-                Plateau plateau_mod(plateau);
                 //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
                 for(int i = 0; i < deplacements.size(); i++)
                 {
+                    Plateau plateau_mod(plateau);
                     //assert ((*i)!= NULL);
                     assert(deplacements[i] != NULL);
                     //on recupere les informations du mouvement de la boucle
@@ -267,12 +267,12 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
             deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
-                Plateau plateau_mod(plateau);
 
                 //pour chaque deplacement de la piece d'index index
                 //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
                 for(int i = 0; i < deplacements.size(); i++)
                 {
+                    Plateau plateau_mod(plateau);
                     assert(deplacements[i] != NULL);
                     //on recupere les informations du mouvement
                     //position x de la piece
