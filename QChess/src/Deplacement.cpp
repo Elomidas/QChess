@@ -79,7 +79,7 @@ const std::vector<int*> Deplacement::GetPossibles(const int ligne, const int col
                 //Nouvelle ligne
                 int dLig = (ite * m_colonne) + ligne;
                 //Nouvelle colonne
-                int dCol = (ite * m_ligne) + m_colonne;
+                int dCol = (ite * m_ligne) + colonne;
                 //On vérifie que l'on reste sur le plateau
                 if((dCol >= 8)
                    || (dCol < 0)
@@ -105,12 +105,14 @@ const std::vector<int*> Deplacement::GetPossibles(const int ligne, const int col
                 {
                     bool enreg = false;
                     if(p.Libre(dLig, dCol) && (!m_occupee))
+                    {
                         enreg = true;
+                    }
                     else
                     {
                         Piece *pt = p.GetPiece(dLig, dCol);
                         if((pt != NULL) && (!m_libre) && (pt->GetCouleur() != couleur))
-                            enreg = true;;
+                            enreg = true;
                         continuer = false;
                     }
                     if(enreg)
@@ -124,6 +126,7 @@ const std::vector<int*> Deplacement::GetPossibles(const int ligne, const int col
             }
         }
     }
+
     return vect;
 }
 

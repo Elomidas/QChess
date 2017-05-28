@@ -43,7 +43,7 @@ const std::vector<int*> Fou::GetDeplacements(Plateau &p)
     std::vector<int*> vect;
     for(unsigned int i = 0; i < m_deplacements.size(); i++)
     {
-        std::vector<int*> vTemp = m_deplacements[i]->GetPossibles(m_colonne, m_ligne, p, m_couleur);
+        std::vector<int*> vTemp = m_deplacements[i]->GetPossibles(m_ligne, m_colonne, p, m_couleur);
         for(unsigned int j = 0; j < vTemp.size(); j++)
         {
             vect.push_back(vTemp[j]);

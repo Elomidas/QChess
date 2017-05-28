@@ -3,20 +3,13 @@
 #include "../include/AlphaBeta.h"
 Jeu::Jeu() : m_plateau(), m_affichage(), m_alphabeta(m_plateau,_BLANC)
 {
-    std::cout<<"Couleur de m_alphabeta C0 " << m_alphabeta.Getcouleur()<<std::endl;
     m_affichage.SetPlateau(&m_plateau);
-    std::cout<<"Couleur de m_alphabeta C1 " << m_alphabeta.Getcouleur()<<std::endl;
-    //Les blancs jouent en premier
-    m_affichage.SetCouleur(_NOIR);
-    std::cout<<"Couleur de m_alphabeta C2 " << m_alphabeta.Getcouleur()<<std::endl;
     //Les couleurs sont jouées par l'humain (true) ou l'IA (false)
     ModeJeu(_NOIR, true);
     ModeJeu(_BLANC, false);
+    //Choix de la couleur qui commence
     SetActu(_BLANC);
     m_continuer = true;
-
-    std::cout << "Couleur envoyée C3 " <<_BLANC <<std::endl;
-    std::cout<<"Couleur de m_alphabeta C4 " << m_alphabeta.Getcouleur()<<std::endl;
 }
 
 Jeu::~Jeu()
@@ -31,21 +24,18 @@ void Jeu::Fin()
 
 void Jeu::ModeJeu(const Couleur couleur, const bool gui)
 {
-    std::cout<<"Couleur de m_alphabeta C5 " << m_alphabeta.Getcouleur()<<std::endl;
     m_gui[couleur] = gui;
     m_affichage.SetActif(couleur, gui);
 }
 
 void Jeu::SetActu(const Couleur c)
 {
-    std::cout<<"Couleur de m_alphabeta C6 " << m_alphabeta.Getcouleur()<<std::endl;
     m_actu = c;
     m_affichage.SetCouleur(c);
 }
 
 void Jeu::Jouer()
 {
-    std::cout<<"Couleur de m_alphabeta C7 " << m_alphabeta.Getcouleur()<<std::endl;
     while(m_continuer && m_affichage.Open())
     {
         if(m_gui[m_actu])
@@ -57,34 +47,14 @@ void Jeu::Jouer()
         else
         {
             //Tour de l'IA
-            //std::cout<<"Couleur de m_alphabeta C8 " << m_alphabeta.Getcouleur()<<std::endl;
             int movementIA[3];
             m_alphabeta.ABMinMax(m_plateau,movementIA);
             m_alphabeta.VerifAssertMove(movementIA,"CoteJeu");
             m_plateau.Bouger(m_actu,movementIA[2],movementIA[0],movementIA[1]);
-            std::cout<<"ON est icccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccci \n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n";
             //On repasse la main à l'adversaire
             SetActu((Couleur)(1 - m_actu));
             m_plateau.Reset();
         }
     }
-    //
-    /*AlphaBeta al = AlphaBeta(m_plateau,_NOIR);
-    int b = al.Eval(&m_plateau);
-    std::cout <<" \n\n" <<b;*/
 }
-/*
-int * Jeu::TourIA()
-{
-    int * moveAB = m_alphabeta.ABMinMax(m_plateau);
-    assert(moveAB!= NULL);
 
-    assert(moveAB[0] >= 0);
-    assert(moveAB[0] < 8);
-    assert(moveAB[1] >= 0);
-    assert(moveAB[1] < 8);
-
-    return moveAB;
-
-}
-*/

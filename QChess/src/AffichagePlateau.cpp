@@ -62,7 +62,10 @@ void AffichagePlateau::SetDep(const std::vector<int*> vect)
     DelDep();
     m_dep = new std::vector<int*>();
     for(unsigned int i = 0; i < vect.size(); i++)
+    {
         m_dep->push_back(vect[i]);
+        std::cout << "Val dep[" << i << "] : " << vect[i][0] << ", " << vect[i][1] << std::endl;
+    }
 }
 
 void AffichagePlateau::SetPlateau(Plateau * plateau)
@@ -110,7 +113,7 @@ bool AffichagePlateau::Rafraichir()
         //Affichage des cases possibles
         for(unsigned int i = 0; i < m_dep->size(); i++)
         {
-            m_sBleu.setPosition((*m_dep)[i][0] * _TAILLE_CASE, (*m_dep)[i][1] * _TAILLE_CASE);
+            m_sBleu.setPosition((*m_dep)[i][1] * _TAILLE_CASE, (*m_dep)[i][0] * _TAILLE_CASE);
             m_fenetre.draw(m_sBleu);
         }
     }
@@ -151,6 +154,7 @@ bool AffichagePlateau::Event()
                         y = posSouris[0] / _TAILLE_CASE;
                         if(DepOK(x, y))
                         {
+                            std::cout << "Deplacement : " << x << ", " << y << std::endl;
                             m_plateau->Bouger(m_joueur, m_cliquee, x, y);
                             m_pointee = -1;
                             m_cliquee = -1;
@@ -158,10 +162,11 @@ bool AffichagePlateau::Event()
                         }
                         else
                         {
-                            m_cliquee = m_pointee;
-                            if(m_pointee != -1)
+                            std::cout << "Clic : " << m_pointee << std::endl;
+                            if((m_pointee != -1) && (m_cliquee != m_pointee))
                                 SetDep(m_plateau->GetPieceI(m_joueur, m_pointee)->GetDeplacements(*m_plateau));
                             else DelDep();
+                            m_cliquee = m_pointee;
                         }
                     }
 
@@ -255,8 +260,8 @@ void AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2]
             if(p != NULL)
             {
                 //Position de la case occuppée par la piece
-                int px = p->GetLigne() * _TAILLE_CASE;
-                int py = p->GetColonne() * _TAILLE_CASE;
+                int px = p->GetColonne() * _TAILLE_CASE;
+                int py = p->GetLigne() * _TAILLE_CASE;
                 //Ecarts de position dus à la taille de la piece
                 int ex = (_TAILLE_CASE - (tailles[0][index] * _RATIO)) / 2;
                 int ey = (_TAILLE_CASE - (tailles[1][index] * _RATIO)) / 2;

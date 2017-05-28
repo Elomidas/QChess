@@ -266,16 +266,21 @@ std::string Plateau::ToStr()
 }
 
 //x ligne, y colonne
-bool Plateau::Libre(const int x, const int y) const
+bool Plateau::Libre(const int ligne, const int colonne) const
 {
+    if((ligne < 0)
+       || (ligne > 7)
+       || (colonne < 0)
+       || (colonne > 7))
+        return false;
     for(int i = 0; i < 2; i++)
     {
         for(int j = 0; j < _NB_PIECES; j++)
         {
             Piece* p = m_pieces[i][j];
             if((p != NULL)
-               && (p->GetColonne() == y)
-               && (p->GetLigne() == x))
+               && (p->GetLigne() == ligne)
+               && (p->GetColonne() == colonne))
                return false;
         }
     }
