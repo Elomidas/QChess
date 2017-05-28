@@ -98,9 +98,9 @@ bool AffichagePlateau::Rafraichir()
                 s = GetSprite(p->GetChar(), h, l, (c == m_joueur) && (m_pointee == i));
                 int py = p->GetLigne() * _TAILLE_CASE;
                 int px = p->GetColonne() * _TAILLE_CASE;
-                int dx = (_TAILLE_CASE - h) / 2;
-                int dy = (_TAILLE_CASE - l) / 2;
-                s.setPosition(py + dy, px + dx);
+                int dy = (_TAILLE_CASE - h) / 2;
+                int dx = (_TAILLE_CASE - l) / 2;
+                s.setPosition(px + dx, py + dy);
                 m_fenetre.draw(s);
             }
         }
@@ -147,11 +147,11 @@ bool AffichagePlateau::Event()
                     //On ne traite l'action que si le joueur a la main
                     if(m_gui[m_joueur])
                     {
-                        x = posSouris[0] / _TAILLE_CASE;
-                        y = posSouris[1] / _TAILLE_CASE;
+                        x = posSouris[1] / _TAILLE_CASE;
+                        y = posSouris[0] / _TAILLE_CASE;
                         if(DepOK(x, y))
                         {
-                            m_plateau->Bouger(m_joueur, m_cliquee, y, x);
+                            m_plateau->Bouger(m_joueur, m_cliquee, x, y);
                             m_pointee = -1;
                             m_cliquee = -1;
                             DelDep();
