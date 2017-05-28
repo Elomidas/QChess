@@ -17,20 +17,20 @@ Plateau::Plateau(Plateau &p)
     //Blancs
     Couleur c = _BLANC;
     Piece *piece = p.GetPieceI(c, 1);
-    Tour* pt = (piece == NULL) ? NULL : new Tour(c, piece->GetColonne(), piece->GetLigne());
+    Tour* pt = (piece == NULL) ? NULL : new Tour(c, piece->GetLigne(), piece->GetColonne());
     piece = p.GetPieceI(c, 2);
-    Fou* pf = (piece == NULL) ? NULL : new Fou(c, piece->GetColonne(), piece->GetLigne());
+    Fou* pf = (piece == NULL) ? NULL : new Fou(c, piece->GetLigne(), piece->GetColonne());
     Roi* r = (Roi*)p.GetPieceI(c, 0);
-    Roi* pr = (r == NULL) ? NULL : new Roi(c, r->GetColonne(), r->GetLigne());
+    Roi* pr = (r == NULL) ? NULL : new Roi(c, r->GetLigne(), r->GetColonne());
     if((r != NULL) && (!r->GetRoque()))
         pr->Bouge();
     piece = p.GetPieceI(c, 3);
-    Cavalier* pc = (piece == NULL) ? NULL : new Cavalier(c, piece->GetColonne(), piece->GetLigne());
+    Cavalier* pc = (piece == NULL) ? NULL : new Cavalier(c, piece->GetLigne(), piece->GetColonne());
     Pion* pp[8];
     for(int i = 0; i < 8; i++)
     {
         Pion* pi = (Pion*)p.GetPieceI(c, 4+i);
-        pp[i] = (pi == NULL) ? NULL : new Pion(c, pi->GetColonne(), pi->GetLigne());
+        pp[i] = (pi == NULL) ? NULL : new Pion(c, pi->GetLigne(), pi->GetColonne());
         if((pi != NULL) && (!pi->GetFirst()))
             pp[i]->Bouge();
     }
@@ -44,19 +44,19 @@ Plateau::Plateau(Plateau &p)
     //Noirs
     c = _NOIR;
     piece = p.GetPieceI(c, 1);
-    pt = (piece == NULL) ? NULL : new Tour(c, piece->GetColonne(), piece->GetLigne());
+    pt = (piece == NULL) ? NULL : new Tour(c, piece->GetLigne(), piece->GetColonne());
     piece = p.GetPieceI(c, 2);
-    pf = (piece == NULL) ? NULL : new Fou(c, piece->GetColonne(), piece->GetLigne());
+    pf = (piece == NULL) ? NULL : new Fou(c, piece->GetLigne(), piece->GetColonne());
     r = (Roi*)p.GetPieceI(c, 0);
-    pr = (r == NULL) ? NULL : new Roi(c, r->GetColonne(), r->GetLigne());
+    pr = (r == NULL) ? NULL : new Roi(c, r->GetLigne(), r->GetColonne());
     if((r != NULL) && (!r->GetRoque()))
         pr->Bouge();
     piece = p.GetPieceI(c, 3);
-    pc = (piece == NULL) ? NULL : new Cavalier(c, piece->GetColonne(), piece->GetLigne());
+    pc = (piece == NULL) ? NULL : new Cavalier(c, piece->GetLigne(), piece->GetColonne());
     for(int i = 0; i < 8; i++)
     {
         Pion* pi = (Pion*)p.GetPieceI(c, 4+i);
-        pp[i] = (pi == NULL) ? NULL : new Pion(c, pi->GetColonne(), pi->GetLigne());
+        pp[i] = (pi == NULL) ? NULL : new Pion(c, pi->GetLigne(), pi->GetColonne());
         if((pi != NULL) && (!pi->GetFirst()))
             pp[i]->Bouge();
     }

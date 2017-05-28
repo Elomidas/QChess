@@ -109,22 +109,22 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
     int score;
     std::vector<int*> deplacements;
 
-    Plateau plateau_mod(plateau);
 
     if ( prof >= _PROF )
-        return Eval(plateau_mod,(Couleur) (_NOIR - couleur));
+        return Eval(plateau,(Couleur) (_NOIR - couleur));
     //Pour chaque piece une par une
     for (int index = 0;index<_NB_PIECES; index++)
     {
         std::cout <<"Piece : " <<index <<std::endl;
-        if( plateau_mod.GetPieceI(couleur,index) != NULL )
+        if( plateau.GetPieceI(couleur,index) != NULL )
         {
 
             //on stocke ses deplacements possibles
-            deplacements = (plateau_mod.GetPieceI(couleur,index))->GetDeplacements(plateau_mod);
+            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
 
             if(!deplacements.empty())
             {
+                Plateau plateau_mod(plateau);
                 //pour chaque deplacement de la piece un par un
                 //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
                 for(unsigned int i = 0; i < deplacements.size(); i++)
@@ -178,20 +178,20 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
     int score;
     std::vector<int*> deplacements;
 
-    Plateau plateau_mod(plateau);
 
     //std::cout <<"Rentre dans ABMin: "<< prof<<std::endl;
     if ( prof >=_PROF )
-        return -Eval(plateau_mod,(Couleur) (_NOIR - couleur));
+        return -Eval(plateau,(Couleur) (_NOIR - couleur));
     for (int index = 0;index<_NB_PIECES; index++)
     {
         std::cout <<"Piece : " <<index <<std::endl;
-        if( plateau_mod.GetPieceI(couleur,index) != NULL )
+        if( plateau.GetPieceI(couleur,index) != NULL )
         {
             //on stocke ses deplacements possibles
-            deplacements = (plateau_mod.GetPieceI(couleur,index))->GetDeplacements(plateau_mod);
+            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
+                Plateau plateau_mod(plateau);
                 //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
                 for(int i = 0; i < deplacements.size(); i++)
                 {
@@ -255,7 +255,6 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
     std::vector<int*> deplacements;
 
 
-    Plateau plateau_mod(plateau);
 
     //pour chaque piece une par une du plateau
     for (int index = 0;index<_NB_PIECES; index++)
@@ -263,11 +262,12 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
         std::cout <<"Piece : " <<index <<std::endl;
         //on stocke ses deplacements possibles
 
-        if( plateau_mod.GetPieceI(couleur,index) != NULL )
+        if( plateau.GetPieceI(couleur,index) != NULL )
         {
-            deplacements = (plateau_mod.GetPieceI(couleur,index))->GetDeplacements(plateau_mod);
+            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
+                Plateau plateau_mod(plateau);
 
                 //pour chaque deplacement de la piece d'index index
                 //for (std::vector<int*>::iterator i = deplacements.begin(); i != deplacements.end(); i++)
