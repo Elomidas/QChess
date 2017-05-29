@@ -30,10 +30,10 @@ void AlphaBeta::VerifAssertMove(int * moveAB, std::string titre)
     assert(moveAB[2] < 12 );
 }
 
-int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
+double AlphaBeta::Eval(Plateau plateau)
 {
-    int valeur=0;
-    Couleur c_act = couleur, c_adv = (Couleur)(_NOIR - couleur);
+    double valeur=0;
+    Couleur c_act = m_couleur, c_adv = (Couleur)(_NOIR - m_couleur);
 
     int i,j;
     Piece *  pieces[2][_NB_PIECES];
@@ -57,7 +57,7 @@ int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
                 //cas roi couleur actuelle
                 case 0:
 
-                    valeur += 30;
+                    valeur += 200;
                 break;
                 //cas tour couleur actuelle
                 case 1:
@@ -80,7 +80,45 @@ int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
                     valeur += 1;
             }
         }
+        else
+        {
+            if (pieces[c_adv][j] != NULL)
+            {
+                //Si la j ème piece n'existe pas chez la couleur adversaire -> on gagne des points d'évaluation
+                switch(j)
+                {
+                    //cas roi couleur actuelle
+                    case 0:
+
+                        valeur -= 200;
+                    break;
+                    //cas tour couleur actuelle
+                    case 1:
+
+                        valeur -= 5;
+                    break;
+                    //cas fou couleur actuelle
+                    case 2:
+
+                        valeur -= 3;
+                    break;
+                    //cas cavalier couleur actuelle
+                    case 3:
+
+                        valeur -= 3;
+                    break;
+                    //cas pions couleur actuelle
+                    default:
+
+                        valeur -= 1;
+                }
+            }
+        }
     }
+    double mobility = 0;
+
+    mobility = 0.1 * (NombreMovePossible(plateau,m_couleur) - NombreMovePossible(plateau,(Couleur) (_NOIR - m_couleur)));
+    valeur += mobility;
     //Fn Victor
     /*
     //Roi
@@ -115,15 +153,39 @@ int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
     return valeur;
 }
 
-int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Couleur couleur )
+double AlphaBeta::NombreMovePossible(Plateau plateau,Couleur couleur)
+{
+    double valeur = 0;
+    std::vector<int*> deplacements;
+    for(int index =  0; index< _NB_PIECES; index++)
+    {
+        if( plateau.GetPieceI(couleur,index) != NULL )
+        {
+            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
+
+            if(!deplacements.empty())
+            {
+                //pour chaque deplacement de la piece un par un
+                for(unsigned int i = 0; i < deplacements.size(); i++)
+                {
+                    valeur++;
+                }
+
+            }
+        }
+    }
+    return valeur;
+}
+
+double AlphaBeta::AlphaBetaMax(Plateau plateau, double alpha, double beta, int prof, Couleur couleur )
 {
     //std::cout << "max" << std::endl;
-    int score;
+    double score;
     std::vector<int*> deplacements;
 
 
     if ( prof >= _PROF )
-        return Eval(plateau,(Couleur) (_NOIR - couleur));
+        return Eval(plateau);
     //Pour chaque piece une par une
     for (int index = 0;index<_NB_PIECES; index++)
     {
@@ -162,7 +224,7 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
 
                     //On lance AlphaBetaMin sur le plateau ou la piece a été bougée
                     if(plateau_mod.Fin())
-                        score = Eval(plateau_mod, couleur);
+                        score = Eval(plateau_mod);
                     else score = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
 
                     if( score >= beta )
@@ -179,13 +241,13 @@ int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Coul
 }
 
 //La meme chose que ABMax en inverse  pour ABMin
-int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Couleur couleur )
+double AlphaBeta::AlphaBetaMin(Plateau plateau, double alpha, double beta, int prof, Couleur couleur )
 {
-    int score;
+    double score;
     std::vector<int*> deplacements;
 
     if ( prof >=_PROF )
-        return -Eval(plateau,(Couleur) (_NOIR - couleur));
+        return -Eval(plateau);
     for (int index = 0;index<_NB_PIECES; index++)
     {
         if( plateau.GetPieceI(couleur,index) != NULL )
@@ -219,7 +281,7 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
                     }
                     //std::cout << "OK 1" << std::endl;
                     if(plateau_mod.Fin())
-                        score = Eval(plateau_mod, couleur);
+                        score = Eval(plateau_mod);
                     else score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
 
                     if( score <= alpha )
@@ -237,10 +299,10 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
 
 //Lors du premier appel --> permet de sauvegarder le tout premier deplacement (celui qui compte pour l'IA)
 //la fonction ne sera plus appelée par la suite , on appelera ABMax dans ABMin
-void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur,int (&tab)[3])
+void AlphaBeta::AlphaBetaBigMax(Plateau plateau,double alpha, double beta, int prof, Couleur couleur,int (&tab)[3])
 {
-    int score = -1000; //meilleur score enregistré
-    int score_temp; //score recueilli à partir d'ABMin
+    double score = -1000; //meilleur score enregistré
+    double score_temp; //score recueilli à partir d'ABMin
     int first_movement[3]; //tableau du mouvement final comprenant [0] ligne [1] colonne [2] index de la piece
 
     //initialisation du mouvement
@@ -292,7 +354,7 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
 
                     //score_temp recevra le score de ABMin
                     if(plateau_mod.Fin())
-                        score_temp = Eval(plateau_mod, couleur);
+                        score_temp = Eval(plateau_mod);
                     else score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
                     //Si le score obtenue est meilleur que celui actuellement enregistré
                     if (score <= score_temp)

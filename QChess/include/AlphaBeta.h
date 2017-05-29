@@ -20,7 +20,7 @@ class AlphaBeta
         Couleur Getcouleur() { return m_couleur; }
         void Setcouleur(Couleur couleur) { std::cout << "Couleur changee : " << couleur; m_couleur = couleur; }
 
-        int Eval(Plateau plateau, Couleur couleur);
+        double Eval(Plateau plateau);
 
         //Retourne le mouvement à faire
         //contient [2] l'index de la piece, [1] la ligne [2] la colonne
@@ -29,11 +29,11 @@ class AlphaBeta
         int* ABMinMove(Plateau* plateau, short int prof, int a, int b, int * move_env,int &index_move,Couleur couleur);
 
 
-        int AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Couleur couleur );
-        int AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Couleur couleur );
-        void AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleurint,int (&tab)[3]);
+        double AlphaBetaMax(Plateau plateau, double alpha, double beta, int prof, Couleur couleur );
+        double AlphaBetaMin(Plateau plateau, double alpha, double beta, int prof, Couleur couleur );
+        void AlphaBetaBigMax(Plateau plateau,double alpha, double beta, int prof, Couleur couleurint,int (&tab)[3]);
         void VerifAssertMove(int* move, std::string titre);
-
+        double NombreMovePossible(Plateau plateau,Couleur couleur);
         void NettoieVecteur(std::vector<int*> &v);
     protected:
 
