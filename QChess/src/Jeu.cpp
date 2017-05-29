@@ -65,9 +65,7 @@ void Jeu::Jouer()
                 //On repasse la main à l'adversaire
                 SetActu((Couleur)(1 - m_actu));
                 m_plateau.Reset();
-                int v;
-                std::cout << "val : " << std::endl;
-                std::cin >> v;
+                sf::sleep(sf::milliseconds(200));
             }
         }
     }
