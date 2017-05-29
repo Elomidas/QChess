@@ -69,5 +69,7 @@ void Jeu::Jouer()
             }
         }
     }
+    m_affichage.Event();
+    sf::sleep(sf::milliseconds(600));
 }
 

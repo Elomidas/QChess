@@ -117,6 +117,7 @@ int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
 
 int AlphaBeta::AlphaBetaMax(Plateau plateau, int alpha, int beta, int prof, Couleur couleur )
 {
+    //std::cout << "max" << std::endl;
     int score;
     std::vector<int*> deplacements;
 
@@ -206,7 +207,7 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
                     assert(colonne >= 0);
                     assert(ligne < 8);
                     assert(colonne < 8);
-
+                    //std::cout << "Test 1" << std::endl;
                     if(!plateau_mod.Bouger((Couleur)couleur, index, ligne, colonne))
                     {
                         std::cout << "Mouvement impossible" << std::endl
@@ -216,6 +217,7 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
                                   << "> Colonne : " << colonne << std::endl;
                         assert(false);
                     }
+                    //std::cout << "OK 1" << std::endl;
                     if(plateau_mod.Fin())
                         score = Eval(plateau_mod, couleur);
                     else score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));

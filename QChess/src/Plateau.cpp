@@ -168,16 +168,20 @@ bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, co
 //Bouge une pièce aux coordonnées indiquées
 bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
 {
-    assert(p != NULL);
+    if(p == NULL)
+    {
+        std::cout << "Piece NULL" << std::endl;
+        return false;
+    }
     if((ligne < 0) || (ligne > 7))
     {
         std::cout << "Ligne incorrecte : " << ligne << std::endl;
-        assert(false);
+        return false;
     }
     if((colonne < 0) || (colonne > 7))
     {
         std::cout << "Colonne incorrecte : " << colonne << std::endl;
-        assert(false);
+        return false;
     }
     char c = p->GetChar();
     bool roque[2] = {false, false};
@@ -195,8 +199,12 @@ bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
     Piece *np = GetPiece(ligne, colonne);
     if(np != NULL)
     {
+        //Si le roi est pris, c'est la fin de la partie
+        //Si la tour est prise, on empêche le roque
         if(np == m_pieces[np->GetCouleur()][0])
             m_fini = true;
+        else if(np == m_pieces[np->GetCouleur()][1])
+            m_pieces[np->GetCouleur()][0]->Bouge();
         SetPiece(np, NULL);
     }
     p->SetPosition(ligne, colonne);

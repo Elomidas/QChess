@@ -5,7 +5,7 @@
 #include "Plateau.h"
 
 #define _NB_PIECES  12
-#define    _PROF    5
+#define    _PROF    6
 
 class AlphaBeta
 {
