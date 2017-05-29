@@ -165,6 +165,7 @@ bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, co
     return Bouger(GetPieceI(couleur, index), ligne, colonne);
 }
 
+//Bouge une pièce aux coordonnées indiquées
 bool Plateau::Bouger(Piece *p, const int ligne, const int colonne)
 {
     assert(p != NULL);

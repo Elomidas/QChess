@@ -33,7 +33,7 @@ void AlphaBeta::VerifAssertMove(int * moveAB, std::string titre)
 int AlphaBeta::Eval(Plateau plateau, Couleur couleur)
 {
     int valeur=0;
-    Couleur c_act = couleur;
+    Couleur c_act = couleur, c_adv = (Couleur)(_NOIR - couleur);
 
     int i,j;
     Piece *  pieces[2][_NB_PIECES];
@@ -237,7 +237,7 @@ int AlphaBeta::AlphaBetaMin(Plateau plateau, int alpha, int beta, int prof, Coul
 //la fonction ne sera plus appelée par la suite , on appelera ABMax dans ABMin
 void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, Couleur couleur,int (&tab)[3])
 {
-    int score; //meilleur score enregistré
+    int score = -1000; //meilleur score enregistré
     int score_temp; //score recueilli à partir d'ABMin
     int first_movement[3]; //tableau du mouvement final comprenant [0] ligne [1] colonne [2] index de la piece
 
@@ -261,7 +261,6 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
             deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
-
                 //pour chaque deplacement de la piece d'index index
                 for(int i = 0; i < deplacements.size(); i++)
                 {
@@ -291,10 +290,10 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,int alpha, int beta, int prof, C
 
                     //score_temp recevra le score de ABMin
                     if(plateau_mod.Fin())
-                        score = Eval(plateau_mod, couleur);
+                        score_temp = Eval(plateau_mod, couleur);
                     else score_temp = AlphaBetaMin(plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
                     //Si le score obtenue est meilleur que celui actuellement enregistré
-                    if (score <=score_temp)
+                    if (score <= score_temp)
                     {
                         //on le retiens
                         score = score_temp;

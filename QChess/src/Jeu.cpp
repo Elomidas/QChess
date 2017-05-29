@@ -5,8 +5,8 @@ Jeu::Jeu() : m_plateau(), m_affichage(), m_alphabeta(m_plateau,_BLANC), m_AB2(m_
 {
     m_affichage.SetPlateau(&m_plateau);
     //Les couleurs sont jouées par l'humain (true) ou l'IA (false)
-    ModeJeu(_NOIR, true);
-    ModeJeu(_BLANC, true);
+    ModeJeu(_NOIR, false);
+    ModeJeu(_BLANC, false);
     //Choix de la couleur qui commence
     SetActu(_BLANC);
     m_continuer = true;
