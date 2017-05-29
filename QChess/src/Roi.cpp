@@ -50,7 +50,7 @@ std::vector<const Deplacement*> Roi::InitDeplacements()
     return vDep;
 }
 
-const std::vector<int*> Roi::GetDeplacements(Plateau &p)
+const std::vector<int*> Roi::GetDeplacements(const Plateau &p) const
 {
     std::vector<int*> vect;
     for(unsigned int i = 0; i < m_deplacements.size(); i++)

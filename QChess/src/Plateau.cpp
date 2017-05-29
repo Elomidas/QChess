@@ -5,13 +5,13 @@ Plateau::Plateau()
     InitialiserPieces();
 }
 
-Plateau::Plateau(Plateau &p)
+Plateau::Plateau(const Plateau &p)
 {
     m_action = false;
     m_fini = false;
     //Blancs
     Couleur c = _BLANC;
-    Piece *piece = p.GetPieceI(c, 1);
+    const Piece *piece = p.GetPieceI(c, 1);
     Tour* pt = (piece == NULL) ? NULL : new Tour(c, piece->GetLigne(), piece->GetColonne());
     piece = p.GetPieceI(c, 2);
     Fou* pf = (piece == NULL) ? NULL : new Fou(c, piece->GetLigne(), piece->GetColonne());
@@ -124,6 +124,16 @@ void Plateau::InitialiserPieces()
         m_pieces[c][4 + i] = pp[i];
 }
 
+const Piece* Plateau::GetPieceI(const Couleur c, const int index) const
+{
+    if((0 > index) || (_NB_PIECES <= index))
+    {
+        std::cout << "Index out of range : " << index << std::endl;
+        assert(false);
+    }
+    return m_pieces[c][index];
+}
+
 Piece* Plateau::GetPieceI(const Couleur c, const int index)
 {
     if((0 > index) || (_NB_PIECES <= index))
@@ -132,6 +142,23 @@ Piece* Plateau::GetPieceI(const Couleur c, const int index)
         assert(false);
     }
     return m_pieces[c][index];
+}
+
+const Piece* Plateau::GetPiece(const int ligne, const int colonne) const
+{
+    for(int i = 0; i < 2; i++)
+    {
+        for(int j = 0; j < _NB_PIECES; j++)
+        {
+            if((m_pieces[i][j] != NULL)
+                && (m_pieces[i][j]->GetLigne() == ligne)
+                && (m_pieces[i][j]->GetColonne() == colonne))
+            {
+                return m_pieces[i][j];
+            }
+        }
+    }
+    return NULL;
 }
 
 Piece* Plateau::GetPiece(const int ligne, const int colonne)
@@ -151,13 +178,22 @@ Piece* Plateau::GetPiece(const int ligne, const int colonne)
     return NULL;
 }
 
-void Plateau::GetPieces(Piece* tab[2][_NB_PIECES])
+void Plateau::GetPieces(Piece* tab[2][_NB_PIECES]) const
 {
     for(int i = 0; i < _NB_PIECES; i++)
     {
         tab[0][i] = m_pieces[0][i];
         tab[1][i] = m_pieces[1][i];
     }
+}
+
+const std::vector<int*> Plateau::GetDeplacements(const Couleur couleur, const int index) const
+{
+    if(m_pieces[couleur][index] != NULL)
+        return m_pieces[couleur][index]->GetDeplacements(*this);
+        std::cout << "Echec ! Couleur : " << couleur << ", Index : " << index << std::endl;
+    std::vector<int*> vect;
+    return vect;
 }
 
 bool Plateau::Bouger(const Couleur couleur, const int index, const int ligne, const int colonne)
@@ -242,7 +278,7 @@ void Plateau::SetPiece(Piece *oldP, Piece *newP)
     }
 }
 
-std::string Plateau::ToStr()
+std::string Plateau::ToStr() const
 {
     std::string str("");
     char tab[_HAUTEUR_PLATEAU][_LARGEUR_PLATEAU];

@@ -38,7 +38,7 @@ std::vector<const Deplacement*> Fou::InitDeplacements()
     return vDep;
 }
 
-const std::vector<int*> Fou::GetDeplacements(Plateau &p)
+const std::vector<int*> Fou::GetDeplacements(const Plateau &p) const
 {
     std::vector<int*> vect;
     for(unsigned int i = 0; i < m_deplacements.size(); i++)

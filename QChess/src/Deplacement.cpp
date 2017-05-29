@@ -62,7 +62,7 @@ const bool Deplacement::Accessible(const int ligne, const int colonne)
 }
 
 //x ligne, y colonne
-const std::vector<int*> Deplacement::GetPossibles(const int ligne, const int colonne, Plateau &p, const Couleur couleur, const bool limite) const
+const std::vector<int*> Deplacement::GetPossibles(const int ligne, const int colonne, const Plateau &p, const Couleur couleur, const bool limite) const
 {
     std::vector<int*> vect;
     if(m_couleur[couleur] && (m_limitee || limite))
@@ -110,7 +110,7 @@ const std::vector<int*> Deplacement::GetPossibles(const int ligne, const int col
                     }
                     else
                     {
-                        Piece *pt = p.GetPiece(dLig, dCol);
+                        const Piece *pt = p.GetPiece(dLig, dCol);
                         if((pt != NULL) && (!m_libre) && (pt->GetCouleur() != couleur))
                             enreg = true;
                         continuer = false;

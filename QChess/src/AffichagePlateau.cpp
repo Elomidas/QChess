@@ -92,7 +92,7 @@ bool AffichagePlateau::Rafraichir()
     {
         for(int i = 0; i < _NB_PIECES; i++)
         {
-            Piece *p = m_plateau->GetPieceI((Couleur)c, i);
+            const Piece *p = m_plateau->GetPieceI((Couleur)c, i);
             if(p != 0)
             {
                 int h, l;
@@ -256,7 +256,7 @@ void AffichagePlateau::GetPiece(const int &x, const int &y, const int tailles[2]
         for(int i(0); i < _NB_PIECES; i++)
         {
             int index = (i < 4) ? i : 4;
-            Piece *p = m_plateau->GetPieceI((Couleur)m_joueur, i);
+            const Piece *p = m_plateau->GetPieceI((Couleur)m_joueur, i);
             if(p != NULL)
             {
                 //Position de la case occuppée par la piece

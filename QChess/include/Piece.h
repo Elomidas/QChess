@@ -20,10 +20,10 @@ class Piece
         void Init(const Couleur, const int, const int);
 
         //Accesseurs
-        const Couleur GetCouleur();
-        const char GetChar();
-        const int GetLigne();
-        const int GetColonne();
+        const Couleur GetCouleur() const;
+        const char GetChar() const;
+        const int GetLigne() const;
+        const int GetColonne() const;
 
         //Mutateurs
         void SetCouleur(const Couleur);
@@ -33,7 +33,7 @@ class Piece
 
         //Autres
         //Retourne le liste des cases atteignables
-        virtual const std::vector<int*> GetDeplacements(Plateau&);
+        virtual const std::vector<int*> GetDeplacements(const Plateau&) const;
         virtual void Bouge() {};
 
         //Fonctions statiques

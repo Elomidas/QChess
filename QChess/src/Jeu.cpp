@@ -1,7 +1,7 @@
 #include "Jeu.h"
 #include <iostream>
 #include "../include/AlphaBeta.h"
-Jeu::Jeu() : m_plateau(), m_affichage(), m_alphabeta(m_plateau,_BLANC), m_AB2(m_plateau, _NOIR)
+Jeu::Jeu() : m_plateau(), m_affichage(), m_IAB(_BLANC), m_IAN(_NOIR)
 {
     m_affichage.SetPlateau(&m_plateau);
     //Les couleurs sont jouées par l'humain (true) ou l'IA (false)
@@ -56,10 +56,10 @@ void Jeu::Jouer()
                 int movementIA[3];
                 AlphaBeta * algo = NULL;
                 if(m_actu == _BLANC)
-                    algo = &m_alphabeta;
-                else algo = &m_AB2;
-                algo->ABMinMax(m_plateau,movementIA);
-                algo->VerifAssertMove(movementIA,"CoteJeu");
+                    algo = &m_IAB;
+                else algo = &m_IAN;
+                algo->ABMinMax(m_plateau, movementIA);
+                algo->VerifAssertMove(movementIA);
                 std::cout << "Mouvement : " << movementIA[2] << ", " << movementIA[0] << ", " << movementIA[1] << std::endl;
                 m_plateau.Bouger(m_actu, movementIA[2], movementIA[0], movementIA[1]);
                 //On repasse la main à l'adversaire

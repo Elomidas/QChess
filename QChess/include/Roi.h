@@ -15,7 +15,7 @@ class Roi : public Piece
         //Initialisation
         void Init(const Couleur, const int, const int);
         //Autres
-        const std::vector<int*> GetDeplacements(Plateau&);
+        const std::vector<int*> GetDeplacements(const Plateau&) const;
         void Bouge();
         bool GetRoque() {return m_roque;};
 

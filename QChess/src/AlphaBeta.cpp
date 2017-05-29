@@ -4,12 +4,21 @@
 #include "AlphaBeta.h"
 #include "algorithm"
 
+#define _SCORE  600
+#define _V_ROI  200
+#define _V_TOUR 5.5
+#define _V_FOU  3.5
+#define _V_CAV  3.5
+#define _V_PION 1
+#define _V_MOB  0.1
+#define _V_BLO  0.5
+
 AlphaBeta::AlphaBeta()
 {
    m_couleur = _NOIR;
 }
 
-AlphaBeta::AlphaBeta(Plateau &plateau, Couleur couleur) : m_plateau(plateau)
+AlphaBeta::AlphaBeta(Couleur couleur)
 {
     m_couleur = couleur;
 }
@@ -19,7 +28,7 @@ AlphaBeta::~AlphaBeta()
     //dtor
 }
 
-void AlphaBeta::VerifAssertMove(int * moveAB, std::string titre)
+void AlphaBeta::VerifAssertMove(const int * moveAB)
 {
     assert(moveAB!= NULL);
     assert(moveAB[0] >= 0);
@@ -30,154 +39,74 @@ void AlphaBeta::VerifAssertMove(int * moveAB, std::string titre)
     assert(moveAB[2] < 12 );
 }
 
-double AlphaBeta::Eval(Plateau plateau)
+double AlphaBeta::Eval(const Plateau &plateau)
 {
-    double valeur=0;
+    double valeur = _V_ROI;
     Couleur c_act = m_couleur, c_adv = (Couleur)(_NOIR - m_couleur);
 
-    int i,j;
     Piece *  pieces[2][_NB_PIECES];
     //On recupere toutes les pieces du tableau et on mets un boolean selon leur existence dans deux lignes distinctes suivant la couleur;
     //[0] roi, [1] tour, [2] fou, [3] cavalier, [4} -> [7] pion.
     plateau.GetPieces(pieces);
     //On traite chaque type de piece un par un et on calcule la différence entre les pieces de la couleur actuelle(c_act)
     // avec celles de l'adversaire(c_adv)
-    //Fn Martial
-    for (j = 0; j < _NB_PIECES; j++)
+    if(pieces[c_act][0] == NULL)
+        valeur = - _V_ROI;
+    else
     {
-
-        assert(c_act >= 0);
-        assert(c_act < 2);
-        //Si la j ème piece existe chez la couleur actuelle
-        if (pieces[c_act][j] != NULL)
+        if(pieces[c_adv][0] != NULL)
+            valeur -= _V_ROI;
+        //Tour
+        if(pieces[c_act][1] != NULL)
+            valeur += _V_TOUR;
+        if(pieces[c_adv][1] != NULL)
+            valeur -= _V_TOUR;
+        //Fou
+        if(pieces[c_act][2] != NULL)
+            valeur += _V_FOU;
+        if(pieces[c_adv][2] != NULL)
+            valeur -= _V_FOU;
+        //Cavalier
+        if(pieces[c_act][3] != NULL)
+            valeur += _V_CAV;
+        if(pieces[c_adv][3] != NULL)
+            valeur -= _V_CAV;
+        for(int i = 4; i < 12; i++)
         {
-            //Si la j ème piece n'existe pas chez la couleur adversaire -> on gagne des points d'évaluation
-            switch(j)
-            {
-                //cas roi couleur actuelle
-                case 0:
-
-                    valeur += 200;
-                break;
-                //cas tour couleur actuelle
-                case 1:
-
-                    valeur += 5;
-                break;
-                //cas fou couleur actuelle
-                case 2:
-
-                    valeur += 3;
-                break;
-                //cas cavalier couleur actuelle
-                case 3:
-
-                    valeur += 3;
-                break;
-                //cas pions couleur actuelle
-                default:
-
-                    valeur += 1;
-            }
+            //Pion
+            if(pieces[c_act][i] != NULL)
+                valeur += _V_PION;
+            if(pieces[c_adv][i] != NULL)
+                valeur -= _V_PION;
         }
-        else
-        {
-            if (pieces[c_adv][j] != NULL)
-            {
-                //Si la j ème piece n'existe pas chez la couleur adversaire -> on gagne des points d'évaluation
-                switch(j)
-                {
-                    //cas roi couleur actuelle
-                    case 0:
 
-                        valeur -= 200;
-                    break;
-                    //cas tour couleur actuelle
-                    case 1:
-
-                        valeur -= 5;
-                    break;
-                    //cas fou couleur actuelle
-                    case 2:
-
-                        valeur -= 3;
-                    break;
-                    //cas cavalier couleur actuelle
-                    case 3:
-
-                        valeur -= 3;
-                    break;
-                    //cas pions couleur actuelle
-                    default:
-
-                        valeur -= 1;
-                }
-            }
-        }
+        int bloquesAl = 0, bloquesAd = 0;
+        int mobility = NombreMovePossible(plateau, m_couleur, bloquesAl) - NombreMovePossible(plateau,(Couleur) (_NOIR - m_couleur), bloquesAd);
+        //std::cout << "Mob : " << mobility * _V_MOB << std::endl;
+        valeur += mobility * _V_MOB;
+        //std::cout << "Bloques : " << (bloquesAl - bloquesAd) * _V_BLO << std::endl;
+        valeur -= (bloquesAl - bloquesAd) * _V_BLO;
     }
-    double mobility = 0;
-
-    mobility = 0.1 * (NombreMovePossible(plateau,m_couleur) - NombreMovePossible(plateau,(Couleur) (_NOIR - m_couleur)));
-    valeur += mobility;
-    //Fn Victor
-    /*
-    //Roi
-    if(pieces[c_act][0] != NULL)
-        valeur += 100;
-    if(pieces[c_adv][0] != NULL)
-        valeur -= 100;
-    //Tour
-    if(pieces[c_act][1] != NULL)
-        valeur += 5;
-    if(pieces[c_adv][1] != NULL)
-        valeur -= 5;
-    //Fou
-    if(pieces[c_act][2] != NULL)
-        valeur += 3;
-    if(pieces[c_adv][2] != NULL)
-        valeur -= 3;
-    //Cavalier
-    if(pieces[c_act][3] != NULL)
-        valeur += 3;
-    if(pieces[c_adv][3] != NULL)
-        valeur -= 3;
-    for(int i = 4; i < 12; i++)
-    {
-        //Pion
-        if(pieces[c_act][i] != NULL)
-            valeur += 1;
-        if(pieces[c_adv][i] != NULL)
-            valeur -= 1;
-    }
-    */
+    //std::cout << "Score : " << valeur << std::endl;
     return valeur;
 }
 
-double AlphaBeta::NombreMovePossible(Plateau plateau,Couleur couleur)
+int AlphaBeta::NombreMovePossible(const Plateau &plateau, const Couleur couleur, int &bloques)
 {
-    double valeur = 0;
-    std::vector<int*> deplacements;
-    for(int index =  0; index< _NB_PIECES; index++)
+    int valeur = 0;
+    for(int index =  0; index < _NB_PIECES; index++)
     {
         if( plateau.GetPieceI(couleur,index) != NULL )
         {
-            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
-
-            if(!deplacements.empty())
-            {
-                //pour chaque deplacement de la piece un par un
-                for(unsigned int i = 0; i < deplacements.size(); i++)
-                {
-                    valeur++;
-                }
-
-            }
+            int taille = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau).size();
+            valeur += taille;
+            bloques += (taille == 0);
         }
     }
     return valeur;
 }
 
-double AlphaBeta::AlphaBetaMax(Plateau plateau, double alpha, double beta, int prof, Couleur couleur )
+double AlphaBeta::AlphaBetaMax(const Plateau &plateau, double alpha, double beta, const int prof, const Couleur couleur )
 {
     //std::cout << "max" << std::endl;
     double score;
@@ -241,13 +170,14 @@ double AlphaBeta::AlphaBetaMax(Plateau plateau, double alpha, double beta, int p
 }
 
 //La meme chose que ABMax en inverse  pour ABMin
-double AlphaBeta::AlphaBetaMin(Plateau plateau, double alpha, double beta, int prof, Couleur couleur )
+double AlphaBeta::AlphaBetaMin(const Plateau &plateau, double alpha, double beta, const int prof, const Couleur couleur )
 {
+    //std::cout << "min" << std::endl;
     double score;
     std::vector<int*> deplacements;
 
     if ( prof >=_PROF )
-        return -Eval(plateau);
+        return Eval(plateau);
     for (int index = 0;index<_NB_PIECES; index++)
     {
         if( plateau.GetPieceI(couleur,index) != NULL )
@@ -256,7 +186,7 @@ double AlphaBeta::AlphaBetaMin(Plateau plateau, double alpha, double beta, int p
             deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
             if(!deplacements.empty())
             {
-                for(int i = 0; i < deplacements.size(); i++)
+                for(unsigned int i = 0; i < deplacements.size(); i++)
                 {
                     Plateau plateau_mod(plateau);
                     assert(deplacements[i] != NULL);
@@ -269,7 +199,6 @@ double AlphaBeta::AlphaBetaMin(Plateau plateau, double alpha, double beta, int p
                     assert(colonne >= 0);
                     assert(ligne < 8);
                     assert(colonne < 8);
-                    //std::cout << "Test 1" << std::endl;
                     if(!plateau_mod.Bouger((Couleur)couleur, index, ligne, colonne))
                     {
                         std::cout << "Mouvement impossible" << std::endl
@@ -279,7 +208,6 @@ double AlphaBeta::AlphaBetaMin(Plateau plateau, double alpha, double beta, int p
                                   << "> Colonne : " << colonne << std::endl;
                         assert(false);
                     }
-                    //std::cout << "OK 1" << std::endl;
                     if(plateau_mod.Fin())
                         score = Eval(plateau_mod);
                     else score = AlphaBetaMax( plateau_mod, alpha, beta, prof + 1 ,(Couleur) (_NOIR - couleur));
@@ -299,7 +227,7 @@ double AlphaBeta::AlphaBetaMin(Plateau plateau, double alpha, double beta, int p
 
 //Lors du premier appel --> permet de sauvegarder le tout premier deplacement (celui qui compte pour l'IA)
 //la fonction ne sera plus appelée par la suite , on appelera ABMax dans ABMin
-void AlphaBeta::AlphaBetaBigMax(Plateau plateau,double alpha, double beta, int prof, Couleur couleur,int (&tab)[3])
+void AlphaBeta::AlphaBetaBigMax(const Plateau &plateau, double alpha, double beta, const int prof, const Couleur couleur,int tab[3])
 {
     double score = -1000; //meilleur score enregistré
     double score_temp; //score recueilli à partir d'ABMin
@@ -322,11 +250,12 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,double alpha, double beta, int p
 
         if( plateau.GetPieceI(couleur,index) != NULL )
         {
-            deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
+            //deplacements = (plateau.GetPieceI(couleur,index))->GetDeplacements(plateau);
+            deplacements = plateau.GetDeplacements(couleur, index);
             if(!deplacements.empty())
             {
                 //pour chaque deplacement de la piece d'index index
-                for(int i = 0; i < deplacements.size(); i++)
+                for(unsigned int i = 0; i < deplacements.size(); i++)
                 {
                     Plateau plateau_mod(plateau);
                     assert(deplacements[i] != NULL);
@@ -367,7 +296,7 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,double alpha, double beta, int p
                         first_movement[1] = deplacements[i][1];
                         first_movement[2] = index;
                         //On verifie qu'il n'y a pas d'erreur
-                        VerifAssertMove(first_movement,"first_movement");
+                        VerifAssertMove(first_movement);
                     }
                 }
             }
@@ -382,9 +311,9 @@ void AlphaBeta::AlphaBetaBigMax(Plateau plateau,double alpha, double beta, int p
 }
 
 //fonction principale qui appelle ABMax (appelée dans Jeu) qui lance la recheche du mouvement avec les variable initialisées.
-void AlphaBeta::ABMinMax(Plateau plateau,int (&tab)[3])
+void AlphaBeta::ABMinMax(const Plateau &plateau, int tab[3])
 {
-	AlphaBetaBigMax(plateau, -100, +100, 1,m_couleur,tab);
+	AlphaBetaBigMax(plateau, -_SCORE, _SCORE, 1,m_couleur,tab);
 }
 
 

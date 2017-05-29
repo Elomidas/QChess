@@ -18,7 +18,7 @@ class Cavalier : public Piece
         void Init(const Couleur, const int, const int);
         //Autres
         //Retourne le liste des cases atteignables
-        const std::vector<int*> GetDeplacements(Plateau&);
+        const std::vector<int*> GetDeplacements(const Plateau&) const;
 
     protected:
         static std::vector<const Deplacement*> m_deplacements;

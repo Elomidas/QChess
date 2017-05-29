@@ -23,7 +23,7 @@ class Jeu
         Couleur m_actu;
         bool m_gui[2];
         bool m_continuer;
-        AlphaBeta m_alphabeta, m_AB2;
+        AlphaBeta m_IAB, m_IAN;
 
     private:
 };

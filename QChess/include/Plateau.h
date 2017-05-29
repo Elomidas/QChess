@@ -23,24 +23,27 @@ class Plateau
     public:
         //Constructeur
         Plateau();
-        Plateau(Plateau&);
+        Plateau(const Plateau&);
         //Destructeur
         virtual ~Plateau();
         //Initialisation
         void InitialiserPieces();
         //Accesseur
+        const Piece* GetPieceI(const Couleur, const int) const;
         Piece* GetPieceI(const Couleur, const int);
+        const Piece* GetPiece(const int, const int) const;
         Piece* GetPiece(const int, const int);
         bool Libre(const int, const int) const;
         bool GetAction() {return m_action;}
-        void GetPieces(Piece* tab[2][_NB_PIECES]);
+        void GetPieces(Piece* tab[2][_NB_PIECES]) const;
+        const std::vector<int*> GetDeplacements(const Couleur, const int) const;
         bool Fin() {return m_fini;}
         //Mutateur
         bool Bouger(const Couleur, const int, const int, const int);
         bool Bouger(Piece*, const int, const int);
         void Reset() {m_action = false;}
         //Affichage
-        std::string ToStr();
+        std::string ToStr() const;
 
     protected:
         Piece* m_pieces[2][_NB_PIECES];

@@ -15,7 +15,7 @@ class Tour : public Piece
         //Initialisation
         void Init(const Couleur, const int, const int);
         //Autres
-        const std::vector<int*> GetDeplacements(Plateau&);
+        const std::vector<int*> GetDeplacements(const Plateau&) const;
 
     protected:
         static std::vector<const Deplacement*> m_deplacements;

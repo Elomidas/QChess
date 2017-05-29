@@ -49,7 +49,7 @@ std::vector<const Deplacement*> Pion::InitDeplacements()
     return vDep;
 }
 
-const std::vector<int*> Pion::GetDeplacements(Plateau &p)
+const std::vector<int*> Pion::GetDeplacements(const Plateau &p) const
 {
     std::vector<int*> vect;
     for(unsigned int i = 0; i < m_deplacements.size(); i++)

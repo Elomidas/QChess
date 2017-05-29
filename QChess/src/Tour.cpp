@@ -38,7 +38,7 @@ std::vector<const Deplacement*> Tour::InitDeplacements()
     return vDep;
 }
 
-const std::vector<int*> Tour::GetDeplacements(Plateau &p)
+const std::vector<int*> Tour::GetDeplacements(const Plateau &p) const
 {
     std::vector<int*> vect;
     for(unsigned int i = 0; i < m_deplacements.size(); i++)

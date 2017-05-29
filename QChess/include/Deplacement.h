@@ -24,7 +24,7 @@ class Deplacement
         int GetRepetition();
         const int X() {return m_ligne;};
         const int Y() {return m_colonne;};
-        const std::vector<int*> GetPossibles(const int, const int, Plateau&, const Couleur, const bool = false) const;
+        const std::vector<int*> GetPossibles(const int, const int, const Plateau&, const Couleur, const bool = false) const;
         //Déplacements
         static Deplacement LigneH,
                            LigneB,

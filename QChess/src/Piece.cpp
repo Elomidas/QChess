@@ -26,22 +26,22 @@ void Piece::Init(const Couleur c, const int ligne, const int colonne)
     SetPosition(ligne, colonne);
 }
 
-const char Piece::GetChar()
+const char Piece::GetChar() const
 {
     return m_caractere;
 }
 
-const Couleur Piece::GetCouleur()
+const Couleur Piece::GetCouleur() const
 {
     return m_couleur;
 }
 
-const int Piece::GetLigne()
+const int Piece::GetLigne() const
 {
     return m_ligne;
 }
 
-const int Piece::GetColonne()
+const int Piece::GetColonne() const
 {
     return m_colonne;
 }
@@ -81,8 +81,9 @@ const bool Piece::Accessible(const int ligne, const int colonne, const std::vect
     return test;
 }
 
-const std::vector<int*> Piece::GetDeplacements(Plateau &p)
+const std::vector<int*> Piece::GetDeplacements(const Plateau &p) const
 {
+    std::cout << "Virtual" << std::endl;
     std::vector<int*> vect;
     return vect;
 }
